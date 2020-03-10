@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "138929793965",
+    "firebase_url": "https://spot-629a6.firebaseio.com",
+    "project_id": "spot-629a6",
+    "storage_bucket": "spot-629a6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138929793965:android:54374c90e53a27b2cc8f24",
+        "android_client_info": {
+          "package_name": "com.example.seven_spot_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "138929793965-0oo1ra7938v1tihj2s4u4et6gcq28v4n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAq_b1mjR0n72EClv8uQZIhc29786iensM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "138929793965-0oo1ra7938v1tihj2s4u4et6gcq28v4n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
