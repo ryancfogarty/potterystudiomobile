@@ -1,4 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:seven_spot_mobile/models/Opening.dart';
+import 'package:seven_spot_mobile/pages/OpeningsList.dart';
 import 'package:seven_spot_mobile/usecases/GetAllOpeningsUseCase.dart';
 
 class MainPage extends StatefulWidget {
@@ -7,26 +11,50 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  String test = "empty";
+  int _currentIndex = 0;
+  Iterable<Opening> _openings = Iterable.empty();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: FlatButton(
-          child: Text(test),
-          onPressed: () => fetch(),
-        )
+      appBar: AppBar(
+        title: Text("7spot")
       ),
+      bottomNavigationBar: _bottomNavBar(),
+      backgroundColor: Colors.white,
+      body: _currentIndex == 0
+        ? OpeningsList(openings: _openings, onRefresh: _fetch)
+        : Text("Firings")
     );
   }
 
-  void fetch() async {
+  Widget _bottomNavBar() {
+    return BottomNavigationBar(
+      items: [
+        BottomNavigationBarItem(
+          title: Text("Slots"),
+          icon: Icon(Icons.event_available)
+        ),
+        BottomNavigationBarItem(
+          title: Text("Firings"),
+          icon: Icon(Icons.hot_tub)
+        )
+      ],
+      currentIndex: _currentIndex,
+      onTap: (idx) {
+        setState(() {
+          _currentIndex = idx;
+        });
+      },
+      selectedItemColor: Colors.amber
+    );
+  }
+
+  Future<void> _fetch() async {
     var openings = await GetAllOpeningsUseCase().invoke();
 
     setState(() {
-      test = openings.first?.start?.toIso8601String() ?? "none";
+      _openings = openings;
     });
   }
 }
