@@ -21,9 +21,13 @@ class _OpeningsListState extends State<OpeningsList> {
   RefreshController _refreshController = RefreshController(initialRefresh: true);
 
   void _onRefresh() async {
-    await widget.onRefresh();
-
-    _refreshController.refreshCompleted();
+    try {
+      await widget.onRefresh();
+    } catch (e) {
+      print(e);
+    } finally {
+      _refreshController.refreshCompleted();
+    }
   }
 
   @override

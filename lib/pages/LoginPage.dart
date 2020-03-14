@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:seven_spot_mobile/pages/MainPage.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 
 class LoginPage extends StatefulWidget {
@@ -29,11 +28,5 @@ class _LoginPageState extends State<LoginPage> {
     final authService = AuthService();
     await authService.signInWithGoogle();
     _isLoading = false;
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) {
-        return MainPage();
-      }),
-    );
   }
 }

@@ -1,8 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:seven_spot_mobile/models/Opening.dart';
 import 'package:seven_spot_mobile/pages/OpeningsList.dart';
+import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/usecases/GetAllOpeningsUseCase.dart';
 
 class MainPage extends StatefulWidget {
@@ -18,7 +17,13 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("7spot")
+        title: Text("7spot"),
+        actions: [
+          FlatButton(
+            child: Icon(Icons.power),
+            onPressed: () => AuthService().signOutOfGoogle(),
+          )
+        ],
       ),
       bottomNavigationBar: _bottomNavBar(),
       backgroundColor: Colors.white,

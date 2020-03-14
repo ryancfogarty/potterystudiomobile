@@ -4,7 +4,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 enum AppState {
   UNAUTHENTICATED,
-  AUTHENTICATED
+  AUTHENTICATED,
+  VALIDATED
 }
 
 class AuthService extends ChangeNotifier {
@@ -28,7 +29,7 @@ class AuthService extends ChangeNotifier {
     final FirebaseUser user = result.user;
 
     if (user.isAnonymous || await user.getIdToken() == null) {
-      throw Exception("User is invalid");
+      throw Exception("Invalid user");
     }
 
     state = AppState.AUTHENTICATED;

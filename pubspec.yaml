@@ -16,6 +16,7 @@ dependencies:
   firebase_auth: 0.15.4
   firebase_core: 0.4.4
   pull_to_refresh: ^1.5.8
+  provider: ^3.1.0+1
 
 
 dev_dependencies:

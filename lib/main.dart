@@ -1,33 +1,53 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/pages/CreateAccountPage.dart';
 import 'package:seven_spot_mobile/pages/LoginPage.dart';
 import 'package:seven_spot_mobile/pages/MainPage.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  var authService = AuthService();
 
-class MyApp extends StatelessWidget {
+  return await runZoned<Future<Null>>(
+    () async {
+      runApp(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<AuthService>(
+              create: (_) => authService,
+            )
+          ],
+          child: MyApp()
+        ),
+      );
+    }
+  );
+}
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    final authService = AuthService();
-
     return MaterialApp(
-      title: "7 Spot",
-      home: FutureBuilder(
-        future: authService.currentUser,
-        builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) =>
-            _getBody(snapshot)
-      ),
-    );
-  }
+      home: Consumer<AuthService>(
+        builder: (context, auth, child) {
+          print("state: " + auth.state.toString());
 
-  Widget _getBody(AsyncSnapshot<FirebaseUser> snapshot) {
-    if (snapshot.connectionState != ConnectionState.done) {
-      return Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
-    if (snapshot.error != null) {
-      return Scaffold(body: Center(child: Text(snapshot.error.toString())));
-    }
-    return snapshot.data == null ? LoginPage() : MainPage();
+          if (auth.state == AppState.VALIDATED) {
+            return MainPage();
+          } else if (auth.state == AppState.AUTHENTICATED) {
+            return CreateAccountPage();
+          } else {
+            return LoginPage();
+          }
+        },
+      )
+    );
   }
 }
