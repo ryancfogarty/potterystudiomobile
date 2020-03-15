@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
+
 
 enum AppState {
   UNAUTHENTICATED,
@@ -32,7 +34,7 @@ class AuthService extends ChangeNotifier {
       throw Exception("Invalid user");
     }
 
-    state = AppState.AUTHENTICATED;
+    state = await _isValid() ? AppState.VALIDATED : AppState.AUTHENTICATED;
     notifyListeners();
   }
 
@@ -42,5 +44,17 @@ class AuthService extends ChangeNotifier {
 
     state = AppState.UNAUTHENTICATED;
     notifyListeners();
+  }
+
+  String _baseUrl = "https://us-central1-spot-629a6.cloudfunctions.net";
+//  String _baseUrl = "http://10.0.2.2:5001/spot-629a6/us-central1";
+  Future<bool> _isValid() async {
+    var idToken = await (await currentUser).getIdToken(refresh: true);
+
+    var url = "$_baseUrl/api/user/valid";
+    var response = await http.get(url,
+        headers: { "Authorization": idToken.token });
+
+    return response.statusCode == 200;
   }
 }
