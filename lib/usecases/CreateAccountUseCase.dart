@@ -14,7 +14,7 @@ class CreateAccountUseCase {
     var success = await _repo.createAccount(companySecret);
 
     if (success) {
-      _authService.state = AppState.VALIDATED;
+      _authService.updateState(AppState.VALIDATED);
     }
   }
 }

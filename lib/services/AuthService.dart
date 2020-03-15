@@ -38,6 +38,11 @@ class AuthService extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateState(AppState newState) {
+    state = newState;
+    notifyListeners();
+  }
+
   Future<void> signOutOfGoogle() async {
     await _googleSignIn.signOut();
     await _auth.signOut();
