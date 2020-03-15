@@ -2,15 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:seven_spot_mobile/pages/CreateAccountPage.dart';
+import 'package:seven_spot_mobile/pages/CreateUserPage.dart';
 import 'package:seven_spot_mobile/pages/LoginPage.dart';
 import 'package:seven_spot_mobile/pages/MainPage.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
-import 'package:seven_spot_mobile/usecases/CreateAccountUseCase.dart';
+import 'package:seven_spot_mobile/usecases/CreateUserUseCase.dart';
 
 void main() async {
   var authService = AuthService();
-  var createAccountUseCase = CreateAccountUseCase(authService);
+  var createUserUseCase = CreateUserUseCase(authService);
 
   return await runZoned<Future<Null>>(
     () async {
@@ -20,8 +20,8 @@ void main() async {
             ChangeNotifierProvider<AuthService>(
               create: (_) => authService,
             ),
-            Provider<CreateAccountUseCase>(
-              create: (_) => createAccountUseCase,
+            Provider<CreateUserUseCase>(
+              create: (_) => createUserUseCase,
             )
           ],
           child: MyApp()
@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
             case AppState.VALIDATED:
               return MainPage();
             case AppState.AUTHENTICATED:
-              return CreateAccountPage();
+              return CreateUserPage();
             default:
               return LoginPage();
           }

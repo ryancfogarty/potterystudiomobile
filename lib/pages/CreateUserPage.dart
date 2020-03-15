@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
-import 'package:seven_spot_mobile/usecases/CreateAccountUseCase.dart';
+import 'package:seven_spot_mobile/usecases/CreateUserUseCase.dart';
 
-class CreateAccountPage extends StatefulWidget {
+class CreateUserPage extends StatefulWidget {
   @override
-  _CreateAccountPageState createState() => _CreateAccountPageState();
+  _CreateUserPageState createState() => _CreateUserPageState();
 }
 
-class _CreateAccountPageState extends State<CreateAccountPage> {
+class _CreateUserPageState extends State<CreateUserPage> {
   String _name = "";
   final _companySecretController = TextEditingController();
 
@@ -16,7 +16,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   void initState() {
     super.initState();
 
-    _fetchUsersName();
+    Future.delayed(Duration.zero, () async {
+      _fetchUsersName();
+    });
   }
 
   @override
@@ -34,8 +36,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               ),
             ),
             RaisedButton(
-              onPressed: () => _createAccount(),
-              child: Text("Create account"),
+              onPressed: () => _createUser(),
+              child: Text("Submit"),
             )
           ],
         )
@@ -46,15 +48,16 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   void _fetchUsersName() async {
     var authService = Provider.of<AuthService>(context);
     var currentUser = await authService.currentUser;
+    print(currentUser.displayName);
 
     setState(() {
       _name = currentUser.displayName;
     });
   }
 
-  void _createAccount() async {
-    var useCase = Provider.of<CreateAccountUseCase>(context);
+  void _createUser() async {
+    var useCase = Provider.of<CreateUserUseCase>(context);
 
-    await useCase.createAccount(_companySecretController.text);
+    await useCase.createUser(_companySecretController.text);
   }
 }
