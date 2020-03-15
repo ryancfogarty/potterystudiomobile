@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/models/Opening.dart';
 import 'package:seven_spot_mobile/pages/OpeningsList.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
@@ -15,13 +16,15 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    var authService = Provider.of<AuthService>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("7spot"),
         actions: [
           FlatButton(
             child: Icon(Icons.power),
-            onPressed: () => AuthService().signOutOfGoogle(),
+            onPressed: () => authService.signOutOfGoogle(),
           )
         ],
       ),

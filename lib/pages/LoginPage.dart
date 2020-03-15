@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 
 class LoginPage extends StatefulWidget {
@@ -24,9 +25,15 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _loginWithGoogle(BuildContext context) async {
-    _isLoading = true;
-    final authService = AuthService();
+    setState(() {
+      _isLoading = true;
+    });
+
+    final authService = Provider.of<AuthService>(context);
     await authService.signInWithGoogle();
-    _isLoading = false;
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

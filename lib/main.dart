@@ -6,9 +6,11 @@ import 'package:seven_spot_mobile/pages/CreateAccountPage.dart';
 import 'package:seven_spot_mobile/pages/LoginPage.dart';
 import 'package:seven_spot_mobile/pages/MainPage.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
+import 'package:seven_spot_mobile/usecases/CreateAccountUseCase.dart';
 
 void main() async {
   var authService = AuthService();
+  var createAccountUseCase = CreateAccountUseCase(authService);
 
   return await runZoned<Future<Null>>(
     () async {
@@ -17,6 +19,9 @@ void main() async {
           providers: [
             ChangeNotifierProvider<AuthService>(
               create: (_) => authService,
+            ),
+            Provider<CreateAccountUseCase>(
+              create: (_) => createAccountUseCase,
             )
           ],
           child: MyApp()
@@ -37,14 +42,13 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Consumer<AuthService>(
         builder: (context, auth, child) {
-          print("state: " + auth.state.toString());
-
-          if (auth.state == AppState.VALIDATED) {
-            return MainPage();
-          } else if (auth.state == AppState.AUTHENTICATED) {
-            return CreateAccountPage();
-          } else {
-            return LoginPage();
+          switch(auth.state) {
+            case AppState.VALIDATED:
+              return MainPage();
+            case AppState.AUTHENTICATED:
+              return CreateAccountPage();
+            default:
+              return LoginPage();
           }
         },
       )
