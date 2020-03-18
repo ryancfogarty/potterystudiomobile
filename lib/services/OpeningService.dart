@@ -22,6 +22,12 @@ class OpeningService {
     if (response.statusCode >= 400) throw Exception("Error");
 
     List openingsJson = json.decode(response.body);
-    return openingsJson.map((openingJson) => OpeningDto(openingJson["start"]));
+    return openingsJson.map((openingJson) {
+      List<String> reservedUsers = openingJson["reservedUsers"].cast<String>();
+
+        return OpeningDto(openingJson["start"], openingJson["lengthSeconds"],
+          openingJson["size"], reservedUsers, reservedUsers.contains(currentUser.uid));
+      }
+    );
   }
 }

@@ -39,10 +39,31 @@ class _OpeningsListState extends State<OpeningsList> {
           itemBuilder: (buildContext, index) {
             var opening = widget.openings.elementAt(index);
 
-            return Text(opening.start.toIso8601String());
+            return _openingCard(opening);
           },
           itemCount: widget.openings.length
       )
+    );
+  }
+
+  Widget _openingCard(Opening opening) {
+    return Card(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(opening.start.toString()),
+              Text(opening.end.toString())
+            ],
+          ),
+          Row(
+            children: [
+              Text("Reservations ${opening.reservedUserIds.length}/${opening.size}"),
+              Text(opening.loggedInUserReserved ? "Yes" : "No")
+            ]
+          )
+        ],
+      ),
     );
   }
 }
