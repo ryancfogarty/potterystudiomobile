@@ -50,10 +50,11 @@ class _OpeningsListState extends State<OpeningsList> {
     return Card(
       child: Column(
         children: [
+          Text("${opening.start.day}-${opening.start.month}-${opening.start.year}"),
           Row(
             children: [
-              Text(opening.start.toString()),
-              Text(opening.end.toString())
+              Text("${opening.start.hour}:${opening.start.minute}"),
+              Text("${opening.end.hour}:${opening.end.minute}")
             ],
           ),
           Row(
