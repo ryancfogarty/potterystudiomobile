@@ -29,8 +29,12 @@ class _LoginPageState extends State<LoginPage> {
       _isLoading = true;
     });
 
-    final authService = Provider.of<AuthService>(context);
-    await authService.signInWithGoogle();
+    try {
+      final authService = Provider.of<AuthService>(context);
+      await authService.signInWithGoogle();
+    } catch (e) {
+      print(e.toString());
+    }
 
     setState(() {
       _isLoading = false;

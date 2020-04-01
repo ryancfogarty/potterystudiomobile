@@ -13,4 +13,16 @@ class OpeningRepository {
 
     return openingDtos.map((dto) => dto.toModel());
   }
+  
+  Future<Opening> reserveOpening(Opening opening) async {
+    var openingDto = await _service.reserveOpening(opening.id);
+
+    return openingDto.toModel();
+  }
+
+  Future<Opening> removeReservation(Opening opening) async {
+    var openingDto = await _service.removeReservation(opening.id);
+
+    return openingDto.toModel();
+  }
 }

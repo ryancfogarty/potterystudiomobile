@@ -5,12 +5,16 @@ import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/pages/CreateUserPage.dart';
 import 'package:seven_spot_mobile/pages/LoginPage.dart';
 import 'package:seven_spot_mobile/pages/MainPage.dart';
+import 'package:seven_spot_mobile/repositories/OpeningRepository.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/usecases/CreateUserUseCase.dart';
+import 'package:seven_spot_mobile/usecases/ToggleReservationUseCase.dart';
 
 void main() async {
   var authService = AuthService();
   var createUserUseCase = CreateUserUseCase(authService);
+  var openingRepository = OpeningRepository();
+  var toggleReservationUseCase = ToggleReservationUseCaseImpl(openingRepository);
 
   return await runZoned<Future<Null>>(
     () async {
@@ -22,6 +26,9 @@ void main() async {
             ),
             Provider<CreateUserUseCase>(
               create: (_) => createUserUseCase,
+            ),
+            ChangeNotifierProvider<ToggleReservationUseCase>(
+              create: (_) => toggleReservationUseCase
             )
           ],
           child: MyApp()

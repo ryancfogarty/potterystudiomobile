@@ -22,12 +22,43 @@ class OpeningService {
     if (response.statusCode >= 400) throw Exception("Error");
 
     List openingsJson = json.decode(response.body);
-    return openingsJson.map((openingJson) {
-      List<String> reservedUsers = openingJson["reservedUsers"].cast<String>();
+    return openingsJson.map((openingJson) => _jsonToDto(openingJson, currentUser.uid));
+  }
 
-        return OpeningDto(openingJson["start"], openingJson["lengthSeconds"],
-          openingJson["size"], reservedUsers, reservedUsers.contains(currentUser.uid));
-      }
-    );
+  OpeningDto _jsonToDto(dynamic openingJson, String currentUserId) {
+    List<String> reservedUsers = openingJson["reservedUsers"].cast<String>();
+
+    return OpeningDto(openingJson["id"], openingJson["start"], openingJson["lengthSeconds"],
+        openingJson["size"], reservedUsers, reservedUsers.contains(currentUserId));
+  }
+
+  Future<OpeningDto> reserveOpening(String openingId) async {
+    var currentUser = await AuthService().currentUser;
+    var idToken = await currentUser.getIdToken(refresh: true);
+
+    var url = "$_baseUrl/api/opening/$openingId/reserve";
+    var response = await http.put(url, headers: {
+      "Authorization": idToken.token
+    });
+
+    if (response.statusCode >= 400) throw Exception("Error");
+
+    var openingJson = json.decode(response.body);
+    return _jsonToDto(openingJson, currentUser.uid);
+  }
+
+  Future<OpeningDto> removeReservation(String openingId) async {
+    var currentUser = await AuthService().currentUser;
+    var idToken = await currentUser.getIdToken(refresh: true);
+
+    var url = "$_baseUrl/api/opening/$openingId/reserve";
+    var response = await http.delete(url, headers: {
+      "Authorization": idToken.token
+    });
+
+    if (response.statusCode >= 400) throw Exception("Error");
+
+    var openingJson = json.decode(response.body);
+    return _jsonToDto(openingJson, currentUser.uid);
   }
 }

@@ -1,13 +1,15 @@
 import 'OpeningDto.dart';
 
 class Opening {
+  String id;
   DateTime start;
   DateTime end;
   int size;
   List<String> reservedUserIds;
   bool loggedInUserReserved;
 
-  Opening(DateTime start, DateTime end, int size, List<String> reservedUserIds, bool loggedInUserReserved) {
+  Opening(String id, DateTime start, DateTime end, int size, List<String> reservedUserIds, bool loggedInUserReserved) {
+    this.id = id;
     this.start = start;
     this.end = end;
     this.size = size;
@@ -16,6 +18,6 @@ class Opening {
   }
 
   OpeningDto toDto() {
-    return OpeningDto(start.toIso8601String(), end.difference(start).inSeconds, size, reservedUserIds, loggedInUserReserved);
+    return OpeningDto(id, start.toIso8601String(), end.difference(start).inSeconds, size, reservedUserIds, loggedInUserReserved);
   }
 }

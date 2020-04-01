@@ -1,13 +1,15 @@
 import 'Opening.dart';
 
 class OpeningDto {
+  String id;
   String start;
   int lengthSeconds;
   int size;
   List<String> reservedUserIds;
   bool loggedInUserReserved;
 
-  OpeningDto(String start, int lengthSeconds, int size, List<String> reservedUserIds, bool loggedInUserReserved) {
+  OpeningDto(String id, String start, int lengthSeconds, int size, List<String> reservedUserIds, bool loggedInUserReserved) {
+    this.id = id;
     this.start = start;
     this.lengthSeconds = lengthSeconds;
     this.size = size;
@@ -18,6 +20,6 @@ class OpeningDto {
   Opening toModel() {
     var startDateTime = DateTime.parse(start);
 
-    return Opening(startDateTime, startDateTime.add(Duration(seconds: lengthSeconds)), size, reservedUserIds, loggedInUserReserved);
+    return Opening(id, startDateTime, startDateTime.add(Duration(seconds: lengthSeconds)), size, reservedUserIds, loggedInUserReserved);
   }
 }
