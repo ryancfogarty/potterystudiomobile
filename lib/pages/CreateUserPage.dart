@@ -9,7 +9,8 @@ class CreateUserPage extends StatefulWidget {
 }
 
 class _CreateUserPageState extends State<CreateUserPage> {
-  String _name = "";
+  String _usersName = "";
+  final _companyNameController = TextEditingController();
   final _companySecretController = TextEditingController();
 
   @override
@@ -28,7 +29,13 @@ class _CreateUserPageState extends State<CreateUserPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(_name),
+            Text(_usersName),
+            TextField(
+              controller: _companyNameController,
+              decoration: InputDecoration(
+                  hintText: "Enter your studio name"
+              ),
+            ),
             TextField(
               controller: _companySecretController,
               decoration: InputDecoration(
@@ -51,13 +58,16 @@ class _CreateUserPageState extends State<CreateUserPage> {
     print(currentUser.displayName);
 
     setState(() {
-      _name = currentUser.displayName;
+      _usersName = currentUser.displayName;
     });
   }
 
   void _createUser() async {
     var useCase = Provider.of<CreateUserUseCase>(context);
 
-    await useCase.createUser(_companySecretController.text);
+    print(_companySecretController.text);
+    print(_companyNameController.text);
+
+    await useCase.createUser(_companySecretController.text, _companyNameController.text);
   }
 }

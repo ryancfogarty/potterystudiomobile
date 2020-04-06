@@ -4,6 +4,7 @@ import 'package:seven_spot_mobile/models/Opening.dart';
 import 'package:seven_spot_mobile/pages/OpeningsList.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/usecases/GetAllOpeningsUseCase.dart';
+import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -12,7 +13,20 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
+  String _companyName = "Loading...";
   Iterable<Opening> _openings = Iterable.empty();
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, _getUser);
+  }
+
+  _getUser() {
+    var useCase = Provider.of<GetUserUseCase>(context, listen: false);
+    useCase.getUser();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +34,11 @@ class _MainPageState extends State<MainPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("7spot"),
+        title: Consumer<GetUserUseCase>(
+          builder: (context, useCase, child) {
+            return Text(useCase.user?.companyName ?? "Loading...");
+          },
+        ),
         actions: [
           FlatButton(
             child: Icon(Icons.power),

@@ -66,7 +66,7 @@ class _OpeningsListState extends State<OpeningsList> {
                 Padding(
                   padding: const EdgeInsets.only(top: 4.0),
                   child: Text(
-                    "${opening.reservedUserIds.length}/${opening.size} spots reserved",
+                    "${opening.reservedUserIds.length}/${opening.size} spots reserved${opening.reservedUserIds.length == opening.size ? " - FULL" : ""}",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),

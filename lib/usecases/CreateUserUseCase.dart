@@ -10,8 +10,8 @@ class CreateUserUseCase {
     _authService = authService;
   }
 
-  Future<void> createUser(companySecret) async {
-    var success = await _repo.createUser(companySecret);
+  Future<void> createUser(String companySecret, String companyName) async {
+    var success = await _repo.createUser(companySecret, companyName);
 
     if (success) {
       _authService.updateState(AppState.VALIDATED);

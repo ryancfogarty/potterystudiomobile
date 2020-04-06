@@ -1,3 +1,4 @@
+import 'package:seven_spot_mobile/models/User.dart';
 import 'package:seven_spot_mobile/services/UserService.dart';
 
 class UserRepository {
@@ -7,7 +8,13 @@ class UserRepository {
     _service = UserService();
   }
 
-  Future<bool> createUser(String companySecret) async {
-    return await _service.createUser(companySecret);
+  Future<bool> createUser(String companySecret, String companyName) async {
+    return await _service.createUser(companyName, companySecret);
+  }
+
+  Future<User> getUser() async {
+    var userDto = await _service.getUser();
+
+    return userDto.toModel();
   }
 }
