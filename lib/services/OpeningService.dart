@@ -26,10 +26,10 @@ class OpeningService {
   }
 
   OpeningDto _jsonToDto(dynamic openingJson, String currentUserId) {
-    List<String> reservedUsers = openingJson["reservedUsers"].cast<String>();
+    List<String> reservedUserIds = openingJson["reservedUserIds"].cast<String>();
 
     return OpeningDto(openingJson["id"], openingJson["start"], openingJson["lengthSeconds"],
-        openingJson["size"], reservedUsers, reservedUsers.contains(currentUserId));
+        openingJson["size"], reservedUserIds, reservedUserIds.contains(currentUserId));
   }
 
   Future<OpeningDto> reserveOpening(String openingId) async {

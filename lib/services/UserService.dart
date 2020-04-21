@@ -12,8 +12,9 @@ class UserService {
   Future<bool> createUser(String companyName, String companySecret) async {
     var currentUser = await AuthService().currentUser;
     var idToken = await currentUser.getIdToken(refresh: true);
+    var name = currentUser.displayName;
 
-    var url = "$_baseUrl/api/user?companySecret=$companySecret&companyName=$companyName";
+    var url = "$_baseUrl/api/user?companySecret=$companySecret&companyName=$companyName&name=$name";
     var response = await http.post(url,
       headers: { "Authorization": idToken.token });
 

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:seven_spot_mobile/models/Opening.dart';
+import 'package:seven_spot_mobile/pages/OpeningPage.dart';
 import 'package:seven_spot_mobile/usecases/ToggleReservationUseCase.dart';
 
 class OpeningsList extends StatefulWidget {
@@ -50,51 +51,62 @@ class _OpeningsListState extends State<OpeningsList> {
   }
 
   Widget _openingCard(Opening opening) {
-    return Card(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "${DateFormat("dd MMMM").format(opening.start)} ${DateFormat("HH:mm").format(opening.start)} - ${DateFormat("HH:mm").format(opening.end)}",
-                  style: TextStyle(fontSize: 16.0)
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 4.0),
-                  child: Text(
-                    "${opening.reservedUserIds.length}/${opening.size} spots reserved${opening.reservedUserIds.length == opening.size ? " - FULL" : ""}",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Visibility(
-            visible: opening.loggedInUserReserved || opening.size > opening.reservedUserIds.length,
-            child: FlatButton(
-              onPressed: () => _toggleReservation(opening),
-              color: Colors.white,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => OpeningPage(openingId: opening.id)),
+        );
+      },
+      child: Card(
+        color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    children: [
-                      Icon(
-                          opening.loggedInUserReserved ? Icons.remove_circle : Icons.check_circle,
-                          color: opening.loggedInUserReserved ? Colors.red : Colors.green
-                      ),
-                      Text(opening.loggedInUserReserved ? "Leave" : "Join")
-                    ],
-                  )
+                  Text(
+                    "${DateFormat("dd MMMM").format(opening.start)} ${DateFormat("HH:mm").format(opening.start)} - ${DateFormat("HH:mm").format(opening.end)}",
+                    style: TextStyle(fontSize: 16.0)
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4.0),
+                    child: Text(
+                      "${opening.reservedUserIds.length}/${opening.size} spots reserved${opening.reservedUserIds.length == opening.size ? " - FULL" : ""}",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ],
               ),
             ),
-          )
-        ],
+            Visibility(
+              visible: opening.loggedInUserReserved || opening.size > opening.reservedUserIds.length,
+              child: InkResponse(
+                onTap: () => _toggleReservation(opening),
+                child: Container(
+                  width: 100,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          Icon(
+                              opening.loggedInUserReserved ? Icons.remove_circle : Icons.check_circle,
+                              color: opening.loggedInUserReserved ? Colors.red : Colors.green
+                          ),
+                          Text(opening.loggedInUserReserved ? "Leave" : "Join")
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
