@@ -41,7 +41,10 @@ class _MainPageState extends State<MainPage> {
         ),
         actions: [
           FlatButton(
-            child: Icon(Icons.power),
+            child: Text(
+              "Sign out",
+              style: TextStyle(color: Colors.white)
+            ),
             onPressed: () => authService.signOutOfGoogle(),
           )
         ],
