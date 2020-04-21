@@ -51,15 +51,12 @@ class _OpeningsListState extends State<OpeningsList> {
   }
 
   Widget _openingCard(Opening opening) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => OpeningPage(openingId: opening.id)),
-        );
-      },
-      child: Card(
-        color: Colors.white,
+    return Card(
+      color: Colors.white,
+      child: InkWell(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => OpeningPage(openingId: opening.id)));
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
