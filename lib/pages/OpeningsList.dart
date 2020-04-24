@@ -83,22 +83,30 @@ class _OpeningsListState extends State<OpeningsList> {
               visible: opening.loggedInUserReserved || opening.size > opening.reservedUserIds.length,
               child: InkResponse(
                 onTap: () => _toggleReservation(opening),
-                child: Container(
-                  width: 100,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: [
-                          Icon(
-                              opening.loggedInUserReserved ? Icons.remove_circle : Icons.check_circle,
-                              color: opening.loggedInUserReserved ? Colors.red : Colors.green
-                          ),
-                          Text(opening.loggedInUserReserved ? "Leave" : "Join")
-                        ],
-                      )
-                    ],
-                  ),
+                child: Consumer<ToggleReservationUseCase>(
+                  builder: (context, useCase, _) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                      child: Visibility(
+                        visible: useCase.openingLoadingId != opening.id,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              children: [
+                                Icon(
+                                    opening.loggedInUserReserved ? Icons.remove_circle : Icons.check_circle,
+                                    color: opening.loggedInUserReserved ? Colors.red : Colors.green
+                                ),
+                                Text(opening.loggedInUserReserved ? "Leave" : "Join")
+                              ],
+                            )
+                          ],
+                        ),
+                        replacement: CircularProgressIndicator(),
+                      ),
+                    );
+                  },
                 ),
               ),
             )
@@ -111,10 +119,9 @@ class _OpeningsListState extends State<OpeningsList> {
   void _toggleReservation(Opening opening) async {
     ToggleReservationUseCase useCase = Provider.of<ToggleReservationUseCase>(context);
 
-    _refreshController.headerMode.value = RefreshStatus.refreshing;
-
     try {
       await useCase.toggleReservationForOpening(opening);
+      _refreshController.headerMode.value = RefreshStatus.refreshing;
       await widget.onRefresh();
     } catch (e) {
       print(e.toString());

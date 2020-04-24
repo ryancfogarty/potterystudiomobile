@@ -4,10 +4,15 @@ import 'package:seven_spot_mobile/repositories/OpeningRepository.dart';
 
 abstract class ToggleReservationUseCase extends ChangeNotifier {
   Future<void> toggleReservationForOpening(Opening opening);
+
+  String get openingLoadingId;
 }
 
 class ToggleReservationUseCaseImpl extends ToggleReservationUseCase {
   OpeningRepository _openingRepository;
+  String _openingLoadingId;
+
+  String get openingLoadingId => _openingLoadingId;
 
   ToggleReservationUseCaseImpl(OpeningRepository openingRepository) {
     _openingRepository = openingRepository;
@@ -15,14 +20,18 @@ class ToggleReservationUseCaseImpl extends ToggleReservationUseCase {
 
   @override
   Future<void> toggleReservationForOpening(Opening opening) async {
-    if (opening.loggedInUserReserved) {
-      await _openingRepository.removeReservation(opening);
+    _openingLoadingId = opening.id;
+    notifyListeners();
 
-      print("Removed reservation!");
-    } else {
-      await _openingRepository.reserveOpening(opening);
-
-      print("Reserved!");
+    try {
+      if (opening.loggedInUserReserved) {
+        await _openingRepository.removeReservation(opening);
+      } else {
+        await _openingRepository.reserveOpening(opening);
+      }
+    } finally {
+      _openingLoadingId = null;
+      notifyListeners();
     }
   }
 }
