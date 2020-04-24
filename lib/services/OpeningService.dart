@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:seven_spot_mobile/DebugUtils.dart';
 import 'package:seven_spot_mobile/models/OpeningDto.dart';
+import 'package:seven_spot_mobile/models/User.dart';
+import 'package:seven_spot_mobile/models/UserDto.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 
 class OpeningService {
@@ -27,9 +29,13 @@ class OpeningService {
 
   OpeningDto _jsonToDto(dynamic openingJson, String currentUserId) {
     List<String> reservedUserIds = openingJson["reservedUserIds"].cast<String>();
+    List<UserDto> reservedUserDtos = [
+      for (var userJson in (openingJson["reservedUsers"] ?? []))
+        UserDto(userJson["id"], userJson["companyName"], userJson["name"])
+    ];
 
     return OpeningDto(openingJson["id"], openingJson["start"], openingJson["lengthSeconds"],
-        openingJson["size"], reservedUserIds, reservedUserIds.contains(currentUserId));
+        openingJson["size"], reservedUserIds, reservedUserIds.contains(currentUserId), reservedUserDtos);
   }
 
   Future<OpeningDto> reserveOpening(String openingId) async {
@@ -53,6 +59,21 @@ class OpeningService {
 
     var url = "$_baseUrl/api/opening/$openingId/reserve";
     var response = await http.delete(url, headers: {
+      "Authorization": idToken.token
+    });
+
+    if (response.statusCode >= 400) throw Exception("Error");
+
+    var openingJson = json.decode(response.body);
+    return _jsonToDto(openingJson, currentUser.uid);
+  }
+
+  Future<OpeningDto> getOpening(String openingId) async {
+    var currentUser = await AuthService().currentUser;
+    var idToken = await currentUser.getIdToken(refresh: true);
+
+    var url = "$_baseUrl/api/opening/$openingId";
+    var response = await http.get(url, headers: {
       "Authorization": idToken.token
     });
 

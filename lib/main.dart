@@ -9,6 +9,7 @@ import 'package:seven_spot_mobile/repositories/OpeningRepository.dart';
 import 'package:seven_spot_mobile/repositories/UserRepository.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/usecases/CreateUserUseCase.dart';
+import 'package:seven_spot_mobile/usecases/GetOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ToggleReservationUseCase.dart';
 
@@ -19,6 +20,7 @@ void main() async {
   var userRepository = UserRepository();
   var toggleReservationUseCase = ToggleReservationUseCaseImpl(openingRepository);
   var getUserUseCase = GetUserUseCaseImpl(userRepository);
+  var getOpeningUseCase = GetOpeningUseCase(openingRepository);
 
   return await runZoned<Future<Null>>(
     () async {
@@ -36,6 +38,9 @@ void main() async {
             ),
             ChangeNotifierProvider<GetUserUseCase>(
               create: (_) => getUserUseCase
+            ),
+            ChangeNotifierProvider<GetOpeningUseCase>(
+              create: (_) => getOpeningUseCase,
             )
           ],
           child: MyApp()

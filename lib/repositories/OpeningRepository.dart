@@ -13,6 +13,12 @@ class OpeningRepository {
 
     return openingDtos.map((dto) => dto.toModel());
   }
+
+  Future<Opening> getOpening(String openingId) async {
+    var openingDto = await _service.getOpening(openingId);
+
+    return openingDto.toModel();
+  }
   
   Future<Opening> reserveOpening(Opening opening) async {
     var openingDto = await _service.reserveOpening(opening.id);
