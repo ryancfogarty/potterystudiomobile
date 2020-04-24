@@ -61,7 +61,7 @@ class _OpeningPageState extends State<OpeningPage> {
         var reserved;
 
         if (opening != null) {
-          reserved = "${opening.reservedUsers.length}/${opening.size}";
+          reserved = "${opening.reservedUserIds.length}/${opening.size}";
         } else {
           reserved = "loading...";
         }
