@@ -36,5 +36,9 @@ class OpeningRepository {
     var createdOpeningDto = await _service.createOpening(opening.toDto());
 
     return createdOpeningDto.toModel();
-}
+  }
+
+  Future<void> deleteOpening(String openingId) async {
+    return await _service.deleteOpening(openingId);
+  }
 }

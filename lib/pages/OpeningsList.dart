@@ -54,8 +54,12 @@ class _OpeningsListState extends State<OpeningsList> {
     return Card(
       color: Colors.white,
       child: InkWell(
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => OpeningPage(openingId: opening.id)));
+        onTap: () async {
+          var shouldRefreshList = await Navigator.push(context, MaterialPageRoute(builder: (context) => OpeningPage(openingId: opening.id)));
+
+          if (shouldRefreshList ?? false) {
+            _refreshController.requestRefresh();
+          }
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -102,4 +102,15 @@ class OpeningService {
     var openingJson = json.decode(response.body)[0];
     return _jsonToDto(openingJson, currentUser.uid);
   }
+
+  Future<void> deleteOpening(String openingId) async {
+    var currentUser = await AuthService().currentUser;
+    var idToken = await currentUser.getIdToken(refresh: true);
+
+    var url = "$_baseUrl/api/opening/$openingId";
+    var response = await http.delete(url, headers: {
+      "Authorization": idToken.token,
+    });
+    if (response.statusCode != 204) throw Exception("Error");
+  }
 }

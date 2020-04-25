@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/usecases/DeleteOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetOpeningUseCase.dart';
 
 class OpeningPage extends StatefulWidget {
@@ -98,10 +99,23 @@ class _OpeningPageState extends State<OpeningPage> {
                   itemCount: useCase.opening != null ? useCase.opening.reservedUsers.length : 0
               ),
               
+            ),
+            RaisedButton(
+              child: Text("Delete opening"),
+              onPressed: _deleteOpening
             )
           ],
         );
       },
     );
+  }
+
+  void _deleteOpening() async {
+    try {
+      await Provider.of<DeleteOpeningUseCase>(context, listen: false).deleteOpening(widget.openingId);
+      Navigator.pop(context, true);
+    } catch (e) {
+      // todo: show error
+    }
   }
 }

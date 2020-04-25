@@ -9,6 +9,7 @@ import 'package:seven_spot_mobile/repositories/OpeningRepository.dart';
 import 'package:seven_spot_mobile/repositories/UserRepository.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/usecases/CreateUserUseCase.dart';
+import 'package:seven_spot_mobile/usecases/DeleteOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
@@ -23,6 +24,7 @@ void main() async {
   var getUserUseCase = GetUserUseCaseImpl(userRepository);
   var getOpeningUseCase = GetOpeningUseCase(openingRepository);
   var manageOpeningUseCase = ManageOpeningUseCase(openingRepository);
+  var deleteOpeningUseCase = DeleteOpeningUseCase(openingRepository);
 
   return await runZoned<Future<Null>>(
     () async {
@@ -46,6 +48,9 @@ void main() async {
             ),
             ChangeNotifierProvider<ManageOpeningUseCase>(
               create: (_) => manageOpeningUseCase,
+            ),
+            ChangeNotifierProvider<DeleteOpeningUseCase>(
+              create: (_) => deleteOpeningUseCase,
             )
           ],
           child: MyApp()
