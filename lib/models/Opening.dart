@@ -11,6 +11,14 @@ class Opening {
   bool loggedInUserReserved;
   List<User> reservedUsers;
 
+  Opening.empty() {
+    var now = DateTime.now();
+    var startOfToday = DateTime(now.year, now.month, now.day);
+    start = startOfToday;
+    end = startOfToday;
+    size = 0;
+  }
+
   Opening(String id, DateTime start, DateTime end, int size, List<String> reservedUserIds, bool loggedInUserReserved, List<User> reservedUsers) {
     this.id = id;
     this.start = start;
@@ -24,6 +32,6 @@ class Opening {
   OpeningDto toDto() {
     return OpeningDto(id, start.toIso8601String(), end.difference(start).inSeconds,
         size, reservedUserIds, loggedInUserReserved,
-        reservedUsers.map((User user) => user.toDto()).toList());
+        [for (User user in (reservedUsers ?? [])) user.toDto()]);
   }
 }

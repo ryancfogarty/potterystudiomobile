@@ -82,4 +82,24 @@ class OpeningService {
     var openingJson = json.decode(response.body);
     return _jsonToDto(openingJson, currentUser.uid);
   }
+
+  Future<OpeningDto> createOpening(OpeningDto openingDto) async {
+    var currentUser = await AuthService().currentUser;
+    var idToken = await currentUser.getIdToken(refresh: true);
+
+    var url = "$_baseUrl/api/opening";
+    var requestBody = json.encode({
+      "start": openingDto.start,
+      "lengthSeconds": openingDto.lengthSeconds,
+      "size": openingDto.size
+    });
+    var response = await http.post(url, body: requestBody, headers: {
+      "Authorization": idToken.token,
+      "Content-Type": "application/json"
+    });
+    if (response.statusCode >= 400) throw Exception("Error");
+
+    var openingJson = json.decode(response.body)[0];
+    return _jsonToDto(openingJson, currentUser.uid);
+  }
 }

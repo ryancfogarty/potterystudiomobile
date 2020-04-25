@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/models/Opening.dart';
+import 'package:seven_spot_mobile/pages/ManageOpeningPage.dart';
 import 'package:seven_spot_mobile/pages/OpeningsList.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/usecases/GetAllOpeningsUseCase.dart';
@@ -52,8 +53,22 @@ class _MainPageState extends State<MainPage> {
       backgroundColor: Colors.white,
       body: _currentIndex == 0
         ? OpeningsList(openings: _openings, onRefresh: _fetch)
-        : Text("Firings")
+        : Text("Firings"),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _onFabPressed,
+        child: Icon(Icons.add),
+      ),
     );
+  }
+
+  void _onFabPressed() async {
+    if (_currentIndex == 0) {
+      var shouldRefreshList = await Navigator.push(context, MaterialPageRoute(builder: (context) => ManageOpeningPage()));
+
+      if (shouldRefreshList ?? false) _fetch();
+    } else {
+      // create new firing
+    }
   }
 
   Widget _bottomNavBar() {

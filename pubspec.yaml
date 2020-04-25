@@ -18,6 +18,7 @@ dependencies:
   pull_to_refresh: ^1.5.8
   provider: ^3.1.0+1
   intl: ^0.16.1
+  numberpicker: ^1.2.0
 
 
 dev_dependencies:

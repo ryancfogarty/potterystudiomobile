@@ -31,4 +31,10 @@ class OpeningRepository {
 
     return openingDto.toModel();
   }
+
+  Future<Opening> createOpening(Opening opening) async {
+    var createdOpeningDto = await _service.createOpening(opening.toDto());
+
+    return createdOpeningDto.toModel();
+}
 }
