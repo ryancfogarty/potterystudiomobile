@@ -92,7 +92,7 @@ class _OpeningsListState extends State<OpeningsList> {
                     return Padding(
                       padding: const EdgeInsets.only(left: 24.0, right: 24.0),
                       child: Visibility(
-                        visible: useCase.openingLoadingId != opening.id,
+                        visible: !useCase.openingLoadingIds.contains(opening.id),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
