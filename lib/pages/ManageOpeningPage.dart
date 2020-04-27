@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
 
 class ManageOpeningPage extends StatefulWidget {
@@ -19,6 +20,8 @@ class ManageOpeningPage extends StatefulWidget {
 
 class _ManageOpeningPageState extends State<ManageOpeningPage> {
   bool get _isNewOpening => widget.openingId == null;
+
+  var k = 0;
 
   @override
   void initState() {
@@ -77,14 +80,17 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
       builder: (context, useCase, _) {
         return Visibility(
           visible: !useCase.loading,
-          child: Column(
-            children: [
-              _startDate(),
-              _startTime(),
-              _endDate(),
-              _endTime(),
-              _size()
-            ],
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                _startDate(),
+                _startTime(),
+                _endDate(),
+                _endTime(),
+                _size()
+              ],
+            ),
           ),
           replacement: Center(child: CircularProgressIndicator())
         );
@@ -93,28 +99,23 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
   }
 
   Widget _startDate() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text("Start date"),
-        Consumer<ManageOpeningUseCase>(
-          builder: (context, useCase, _) {
-            var text;
+    return Consumer<ManageOpeningUseCase>(
+      builder: (context, useCase, _) {
+        var text = "Start date: ";
 
-            if (useCase.opening.start != null) {
-              text = DateFormat("EEE dd MMMM y").format(useCase.opening.start);
-            } else {
-              text = "Select a date";
-            }
+        if (useCase.opening.start != null) {
+          text += DateFormat("EEE dd MMMM y").format(useCase.opening.start);
+        } else {
+          text += "Select a date";
+        }
 
-            return Text(text);
-          },
-        ),
-        RaisedButton(
-          child: Text("Change"),
-          onPressed: _editStartDate,
-        ),
-      ],
+        return Card(
+          child: FlatButton(
+            child: Text(text),
+            onPressed: _editStartDate
+          )
+        );
+      },
     );
   }
 
@@ -140,28 +141,23 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
   }
 
   Widget _startTime() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text("Start time"),
-        Consumer<ManageOpeningUseCase>(
-          builder: (context, useCase, _) {
-            var text;
+    return Consumer<ManageOpeningUseCase>(
+      builder: (context, useCase, _) {
+        var text = "Start time: ";
 
-            if (useCase.opening.start != null) {
-              text = DateFormat("HH:mm").format(useCase.opening.start);
-            } else {
-              text = "Select a time";
-            }
+        if (useCase.opening.start != null) {
+          text += DateFormat("HH:mm").format(useCase.opening.start);
+        } else {
+          text += "Select a time";
+        }
 
-            return Text(text);
-          },
-        ),
-        RaisedButton(
-          child: Text("Change"),
-          onPressed: _editStartTime,
-        ),
-      ],
+        return Card(
+          child: FlatButton(
+            child: Text(text),
+            onPressed: _editStartTime,
+          ),
+        );
+      },
     );
   }
 
@@ -180,28 +176,23 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
   }
 
   Widget _endDate() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text("End date"),
-        Consumer<ManageOpeningUseCase>(
-          builder: (context, useCase, _) {
-            var text;
+    return Consumer<ManageOpeningUseCase>(
+      builder: (context, useCase, _) {
+        var text = "End date: ";
 
-            if (useCase.opening.end != null) {
-              text = DateFormat("EEE dd MMMM y").format(useCase.opening.end);
-            } else {
-              text = "Select a date";
-            }
+        if (useCase.opening.end != null) {
+          text += DateFormat("EEE dd MMMM y").format(useCase.opening.end);
+        } else {
+          text += "Select a date";
+        }
 
-            return Text(text);
-          },
-        ),
-        RaisedButton(
-          child: Text("Change"),
-          onPressed: _editEndDate,
-        ),
-      ],
+        return Card(
+          child: FlatButton(
+            child: Text(text),
+            onPressed: _editEndDate,
+          ),
+        );
+      },
     );
   }
 
@@ -227,28 +218,23 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
   }
 
   Widget _endTime() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text("End time"),
-        Consumer<ManageOpeningUseCase>(
-          builder: (context, useCase, _) {
-            var text;
+    return Consumer<ManageOpeningUseCase>(
+      builder: (context, useCase, _) {
+        var text = "End time: ";
 
-            if (useCase.opening.end != null) {
-              text = DateFormat("HH:mm").format(useCase.opening.end);
-            } else {
-              text = "Select a time";
-            }
+        if (useCase.opening.end != null) {
+          text += DateFormat("HH:mm").format(useCase.opening.end);
+        } else {
+          text += "Select a time";
+        }
 
-            return Text(text);
-          },
-        ),
-        RaisedButton(
-          child: Text("Change"),
-          onPressed: _editEndTime,
-        ),
-      ],
+        return Card(
+          child: FlatButton(
+            child: Text(text),
+            onPressed: _editEndTime,
+          ),
+        );
+      },
     );
   }
 
@@ -268,17 +254,27 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
 
   Widget _size() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Text("Capacity"),
+        Text(
+          "Capacity:",
+          style: TextStyles().mediumBoldStyle
+        ),
         Consumer<ManageOpeningUseCase>(
           builder: (context, useCase, _) {
-            return new NumberPicker.integer(
+            var picker = NumberPicker.integer(
               initialValue: useCase.opening.size,
               minValue: 0,
               maxValue: 100,
               onChanged: (num) => useCase.updateSize(num),
             );
+
+            try {
+              // hack around https://github.com/MarcinusX/NumberPicker/issues/26
+              Future.delayed(Duration(milliseconds: 200), () => picker.animateInt(useCase.opening.size));
+            } catch (e) {}
+
+            return picker;
           },
         )
       ],

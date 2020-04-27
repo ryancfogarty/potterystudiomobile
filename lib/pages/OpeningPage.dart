@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/pages/ManageOpeningPage.dart';
 import 'package:seven_spot_mobile/usecases/DeleteOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetOpeningUseCase.dart';
@@ -54,8 +55,6 @@ class _OpeningPageState extends State<OpeningPage> {
   }
 
   Widget _body() {
-    const bigBoldStyle = const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold);
-
     return Consumer<GetOpeningUseCase>(
       builder: (context, useCase, child) {
         var opening = useCase.opening;
@@ -72,19 +71,19 @@ class _OpeningPageState extends State<OpeningPage> {
           children: [
             Row(
               children: [
-                Text("Start: ", style: bigBoldStyle),
+                Text("Start: ", style: TextStyles().mediumBoldStyle),
                 Text(opening != null ? DateFormat("dd MMMM HH:mm").format(opening.start) : "Loading...")
               ],
             ),
             Row(
               children: [
-                Text("End: ", style: bigBoldStyle),
+                Text("End: ", style: TextStyles().mediumBoldStyle),
                 Text(opening != null ? DateFormat("dd MMMM HH:mm").format(opening.end) : "Loading...")
               ],
             ),
             Text(
               "Reserved users ($reserved)",
-              style: bigBoldStyle
+              style: TextStyles().mediumBoldStyle
             ),
             Expanded(
               child: ListView.builder(
