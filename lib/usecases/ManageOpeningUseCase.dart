@@ -94,7 +94,11 @@ class ManageOpeningUseCase extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await _repo.createOpening(_opening);
+      if (_opening.id != null) {
+        await _repo.updateOpening(_opening);
+      } else {
+        await _repo.createOpening(_opening);
+      }
     } catch (e) {
       print(e);
       throw e;

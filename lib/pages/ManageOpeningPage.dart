@@ -30,7 +30,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
   void _setup() async {
     Provider.of<ManageOpeningUseCase>(context, listen: false).clear();
 
-    if (_isNewOpening) {
+    if (!_isNewOpening) {
       try {
         Provider.of<ManageOpeningUseCase>(context, listen: false).getOpening(widget.openingId);
       } catch (e) {
@@ -76,7 +76,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
     return Consumer<ManageOpeningUseCase>(
       builder: (context, useCase, _) {
         return Visibility(
-          visible: useCase.loading,
+          visible: !useCase.loading,
           child: Column(
             children: [
               _startDate(),

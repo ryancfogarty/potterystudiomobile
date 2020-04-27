@@ -38,6 +38,12 @@ class OpeningRepository {
     return createdOpeningDto.toModel();
   }
 
+  Future<Opening> updateOpening(Opening opening) async {
+    var createdOpeningDto = await _service.updateOpening(opening.toDto());
+
+    return createdOpeningDto.toModel();
+  }
+
   Future<void> deleteOpening(String openingId) async {
     return await _service.deleteOpening(openingId);
   }

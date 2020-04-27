@@ -20,6 +20,8 @@ class OpeningPage extends StatefulWidget {
 
 class _OpeningPageState extends State<OpeningPage> {
 
+  bool _edited = false;
+
   @override
   void initState() {
     super.initState();
@@ -35,22 +37,19 @@ class _OpeningPageState extends State<OpeningPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Consumer<GetOpeningUseCase>(
-          builder: (context, useCase, child) {
-            var title = "Loading...";
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.pop(context, _edited);
 
-            if (useCase.opening != null) {
-              title = "Opening";
-            }
-
-            return Text(title);
-          },
-        )
+        return Future(() => false);
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: Text("Opening")
+        ),
+        body: _body(),
       ),
-      body: _body(),
     );
   }
 
@@ -125,6 +124,11 @@ class _OpeningPageState extends State<OpeningPage> {
   }
 
   void _editOpening() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => ManageOpeningPage(openingId: widget.openingId)));
+    var edited = await Navigator.push(context, MaterialPageRoute(builder: (context) => ManageOpeningPage(openingId: widget.openingId)));
+
+    if (edited) {
+      _getOpening();
+      _edited = true;
+    }
   }
 }

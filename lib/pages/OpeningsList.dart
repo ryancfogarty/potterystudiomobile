@@ -55,7 +55,7 @@ class _OpeningsListState extends State<OpeningsList> {
       color: Colors.white,
       child: InkWell(
         onTap: () async {
-          var shouldRefreshList = await Navigator.push(context, MaterialPageRoute(builder: (context) => OpeningPage(openingId: opening.id)));
+          var shouldRefreshList = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => OpeningPage(openingId: opening.id)));
 
           if (shouldRefreshList ?? false) {
             _refreshController.requestRefresh();
