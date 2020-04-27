@@ -24,11 +24,20 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration.zero, _resetOpening);
+    Future.delayed(Duration.zero, _setup);
   }
 
-  void _resetOpening() {
+  void _setup() async {
     Provider.of<ManageOpeningUseCase>(context, listen: false).clear();
+
+    if (_isNewOpening) {
+      try {
+        Provider.of<ManageOpeningUseCase>(context, listen: false).getOpening(widget.openingId);
+      } catch (e) {
+        // todo: throw error and prompt refresh instead
+        Navigator.pop(context);
+      }
+    }
   }
 
   @override
@@ -64,14 +73,22 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
   }
 
   Widget _body() {
-    return Column(
-      children: [
-        _startDate(),
-        _startTime(),
-        _endDate(),
-        _endTime(),
-        _size()
-      ],
+    return Consumer<ManageOpeningUseCase>(
+      builder: (context, useCase, _) {
+        return Visibility(
+          visible: useCase.loading,
+          child: Column(
+            children: [
+              _startDate(),
+              _startTime(),
+              _endDate(),
+              _endTime(),
+              _size()
+            ],
+          ),
+          replacement: Center(child: CircularProgressIndicator())
+        );
+      }
     );
   }
 

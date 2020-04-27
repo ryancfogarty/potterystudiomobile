@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/pages/ManageOpeningPage.dart';
 import 'package:seven_spot_mobile/usecases/DeleteOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetOpeningUseCase.dart';
 
@@ -103,6 +104,10 @@ class _OpeningPageState extends State<OpeningPage> {
             RaisedButton(
               child: Text("Delete opening"),
               onPressed: _deleteOpening
+            ),
+            RaisedButton(
+                child: Text("Edit opening"),
+                onPressed: _editOpening
             )
           ],
         );
@@ -117,5 +122,9 @@ class _OpeningPageState extends State<OpeningPage> {
     } catch (e) {
       // todo: show error
     }
+  }
+
+  void _editOpening() async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => ManageOpeningPage(openingId: widget.openingId)));
   }
 }

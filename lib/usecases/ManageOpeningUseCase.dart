@@ -13,8 +13,26 @@ class ManageOpeningUseCase extends ChangeNotifier {
   bool _saving = false;
   bool get saving => _saving;
 
+  bool _loading = false;
+  bool get loading => _loading;
+
   ManageOpeningUseCase(OpeningRepository repo) {
     _repo = repo;
+  }
+
+  Future<void> getOpening(String openingId) async {
+    _loading = true;
+    notifyListeners();
+
+    try {
+      _opening = await _repo.getOpening(openingId);
+    } catch (e) {
+      print(e);
+      throw e;
+    } finally {
+      _loading = false;
+      notifyListeners();
+    }
   }
 
   void clear() {
