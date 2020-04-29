@@ -1,4 +1,3 @@
-import 'package:seven_spot_mobile/models/User.dart';
 import 'package:seven_spot_mobile/models/UserDto.dart';
 
 import 'Opening.dart';
