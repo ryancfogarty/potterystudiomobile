@@ -13,6 +13,7 @@ import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/services/FiringService.dart';
 import 'package:seven_spot_mobile/usecases/CreateUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/DeleteOpeningUseCase.dart';
+import 'package:seven_spot_mobile/usecases/DeleteUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetAllFiringsUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
@@ -33,6 +34,7 @@ void main() async {
   var firingRepository = FiringRepository(firingService);
   var getAllFiringsUseCase = GetAllFiringsUseCase(firingRepository);
   var firingListInteractor = FiringListInteractor(getAllFiringsUseCase);
+  var deleteUserUseCase = DeleteUserUseCase(userRepository);
 
   return await runZoned<Future<Null>>(
     () async {
@@ -62,6 +64,9 @@ void main() async {
             ),
             ChangeNotifierProvider<FiringListInteractor>(
               create: (_) => firingListInteractor,
+            ),
+            Provider<DeleteUserUseCase>(
+              create: (_) => deleteUserUseCase
             )
           ],
           child: MyApp()

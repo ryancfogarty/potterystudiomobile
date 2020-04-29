@@ -34,4 +34,15 @@ class UserService {
     var userJson = json.decode(response.body);
     return UserDto(userJson["id"], userJson["companyName"], userJson["name"]);
   }
+
+  Future<void> deleteUser() async {
+    var currentUser = await AuthService().currentUser;
+    var idToken = await currentUser.getIdToken(refresh: true);
+
+    var url = "$_baseUrl/api/user";
+    var response = await http.delete(url,
+        headers: { "Authorization": idToken.token });
+
+    if (response.statusCode != 204) throw Exception("Error");
+  }
 }

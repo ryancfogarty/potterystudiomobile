@@ -7,6 +7,7 @@ import 'package:seven_spot_mobile/pages/FiringsList.dart';
 import 'package:seven_spot_mobile/pages/ManageOpeningPage.dart';
 import 'package:seven_spot_mobile/pages/OpeningsList.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
+import 'package:seven_spot_mobile/usecases/DeleteUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetAllOpeningsUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
 
@@ -63,10 +64,26 @@ class _MainPageState extends State<MainPage> {
               onTap: authService.signOutOfGoogle
             ),
             ListTile(
+              leading: Icon(
+                Icons.delete,
+                color: Colors.black
+              ),
+              title: Text("Delete my account"),
+              onTap: () async {
+                var success = await Provider.of<DeleteUserUseCase>(context, listen: false).invoke();
+
+                if (success) {
+                  authService.signOutOfGoogle();
+                } else {
+                  // todo: show error message asking user to contact admin
+                }
+              }
+            ),
+            ListTile(
               title: Text("Become an admin (coming soon...)")
             ),
             ListTile(
-              title: Text("Promote a user to an admin (coming soon...)")
+              title: Text("Make a user an admin (coming soon...)")
             )
           ],
         ),

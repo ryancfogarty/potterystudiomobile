@@ -17,4 +17,8 @@ class UserRepository {
 
     return userDto.toModel();
   }
+
+  Future<void> deleteUser() async {
+    return await _service.deleteUser();
+  }
 }
