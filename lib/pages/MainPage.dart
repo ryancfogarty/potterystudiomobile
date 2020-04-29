@@ -49,14 +49,24 @@ class _MainPageState extends State<MainPage> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              child: Text('Pottery studio 2.0'),
+              child: Text('Pottery studio'),
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
             ),
             ListTile(
+              leading: Icon(
+                Icons.exit_to_app,
+                color: Colors.black
+              ),
               title: Text("Sign out"),
-              onTap: () => authService.signOutOfGoogle()
+              onTap: authService.signOutOfGoogle
+            ),
+            ListTile(
+              title: Text("Become an admin (coming soon...)")
+            ),
+            ListTile(
+              title: Text("Promote a user to an admin (coming soon...)")
             )
           ],
         ),
@@ -69,7 +79,7 @@ class _MainPageState extends State<MainPage> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _onFabPressed,
         icon: Icon(Icons.add),
-        label: Text("Create ${_currentIndex == 0 ? "Opening" : "Firing"}"),
+        label: Text("Add ${_currentIndex == 0 ? "Opening" : "Firing"}"),
       )
     );
   }
