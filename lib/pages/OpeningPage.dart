@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/common/DateFormatter.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/pages/ManageOpeningPage.dart';
 import 'package:seven_spot_mobile/usecases/DeleteOpeningUseCase.dart';
@@ -72,13 +72,13 @@ class _OpeningPageState extends State<OpeningPage> {
             Row(
               children: [
                 Text("Start: ", style: TextStyles().mediumBoldStyle),
-                Text(opening != null ? DateFormat("dd MMMM HH:mm").format(opening.start) : "Loading...")
+                Text(opening != null ? DateFormatter().dd_MMMM_HH_mm.format(opening.start) : "Loading...")
               ],
             ),
             Row(
               children: [
                 Text("End: ", style: TextStyles().mediumBoldStyle),
-                Text(opening != null ? DateFormat("dd MMMM HH:mm").format(opening.end) : "Loading...")
+                Text(opening != null ? DateFormatter().dd_MMMM_HH_mm.format(opening.end) : "Loading...")
               ],
             ),
             Text(
@@ -104,8 +104,8 @@ class _OpeningPageState extends State<OpeningPage> {
               onPressed: _deleteOpening
             ),
             RaisedButton(
-                child: Text("Edit opening"),
-                onPressed: _editOpening
+              child: Text("Edit opening"),
+              onPressed: _editOpening
             )
           ],
         );

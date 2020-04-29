@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/common/DateFormatter.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
 
@@ -20,8 +21,6 @@ class ManageOpeningPage extends StatefulWidget {
 
 class _ManageOpeningPageState extends State<ManageOpeningPage> {
   bool get _isNewOpening => widget.openingId == null;
-
-  var k = 0;
 
   @override
   void initState() {
@@ -104,7 +103,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
         var text = "Start date: ";
 
         if (useCase.opening.start != null) {
-          text += DateFormat("EEE dd MMMM y").format(useCase.opening.start);
+          text += DateFormatter().EEE_dd_MMMM_y.format(useCase.opening.start);
         } else {
           text += "Select a date";
         }
@@ -146,7 +145,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
         var text = "Start time: ";
 
         if (useCase.opening.start != null) {
-          text += DateFormat("HH:mm").format(useCase.opening.start);
+          text += DateFormatter().HH_mm.format(useCase.opening.start);
         } else {
           text += "Select a time";
         }
@@ -181,7 +180,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
         var text = "End date: ";
 
         if (useCase.opening.end != null) {
-          text += DateFormat("EEE dd MMMM y").format(useCase.opening.end);
+          text += DateFormatter().EEE_dd_MMMM_y.format(useCase.opening.end);
         } else {
           text += "Select a date";
         }
@@ -223,7 +222,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
         var text = "End time: ";
 
         if (useCase.opening.end != null) {
-          text += DateFormat("HH:mm").format(useCase.opening.end);
+          text += DateFormatter().HH_mm.format(useCase.opening.end);
         } else {
           text += "Select a time";
         }

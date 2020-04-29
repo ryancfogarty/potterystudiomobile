@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:seven_spot_mobile/common/DateFormatter.dart';
 import 'package:seven_spot_mobile/models/Opening.dart';
 import 'package:seven_spot_mobile/pages/OpeningPage.dart';
 import 'package:seven_spot_mobile/usecases/ToggleReservationUseCase.dart';
@@ -70,7 +71,7 @@ class _OpeningsListState extends State<OpeningsList> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "${DateFormat("dd MMMM").format(opening.start)} ${DateFormat("HH:mm").format(opening.start)} - ${DateFormat("HH:mm").format(opening.end)}",
+                    "${DateFormatter().dd_MMMM.format(opening.start)} ${DateFormatter().HH_mm.format(opening.start)} - ${DateFormatter().HH_mm.format(opening.end)}",
                     style: TextStyle(fontSize: 16.0)
                   ),
                   Padding(
