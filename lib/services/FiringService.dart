@@ -28,4 +28,19 @@ class FiringService {
     return FiringDto(firingJson["id"], firingJson["start"], firingJson["durationSeconds"],
         firingJson["cooldownSeconds"], firingJson["type"]);
   }
+
+  Future<FiringDto> getFiring(String firingId) async {
+    var currentUser = await AuthService().currentUser;
+    var idToken = await currentUser.getIdToken(refresh: true);
+
+    var url = "$_baseUrl/api/firing/$firingId";
+    var response = await http.get(url, headers: {
+      "Authorization": idToken.token
+    });
+
+    if (response.statusCode >= 400) throw Exception("Error");
+
+    dynamic firingJson = json.decode(response.body);
+    return _jsonToDto(firingJson);
+  }
 }

@@ -3,7 +3,9 @@ import 'package:seven_spot_mobile/models/Opening.dart';
 import 'package:seven_spot_mobile/repositories/OpeningRepository.dart';
 
 class GetOpeningUseCase extends ChangeNotifier {
-  Opening opening;
+
+  Opening _opening;
+  Opening get opening => _opening;
 
   OpeningRepository _repo;
 
@@ -12,13 +14,13 @@ class GetOpeningUseCase extends ChangeNotifier {
   }
 
   Future invoke(String openingId) async {
-    opening = await _repo.getOpening(openingId);
+    _opening = await _repo.getOpening(openingId);
 
     notifyListeners();
   }
 
   void clear() {
-    opening = null;
+    _opening = null;
 
     notifyListeners();
   }

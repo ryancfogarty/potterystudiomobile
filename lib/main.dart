@@ -15,6 +15,7 @@ import 'package:seven_spot_mobile/usecases/CreateUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/DeleteOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/DeleteUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetAllFiringsUseCase.dart';
+import 'package:seven_spot_mobile/usecases/GetFiringUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
@@ -35,6 +36,7 @@ void main() async {
   var getAllFiringsUseCase = GetAllFiringsUseCase(firingRepository);
   var firingListInteractor = FiringListInteractor(getAllFiringsUseCase);
   var deleteUserUseCase = DeleteUserUseCase(userRepository);
+  var getFiringUseCase = GetFiringUseCase(firingRepository);
 
   return await runZoned<Future<Null>>(
     () async {
@@ -67,6 +69,9 @@ void main() async {
             ),
             Provider<DeleteUserUseCase>(
               create: (_) => deleteUserUseCase
+            ),
+            ChangeNotifierProvider<GetFiringUseCase>(
+              create: (_) => getFiringUseCase,
             )
           ],
           child: MyApp()

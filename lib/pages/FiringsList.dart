@@ -6,6 +6,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
 import 'package:seven_spot_mobile/models/Firing.dart';
 import 'package:seven_spot_mobile/models/Opening.dart';
+import 'package:seven_spot_mobile/pages/FiringPage.dart';
 import 'package:seven_spot_mobile/pages/OpeningPage.dart';
 import 'package:seven_spot_mobile/usecases/ToggleReservationUseCase.dart';
 
@@ -59,11 +60,11 @@ class _FiringListState extends State<FiringsList> {
       color: Colors.white,
       child: InkWell(
         onTap: () async {
-//          var shouldRefreshList = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => OpeningPage(openingId: opening.id)));
-//
-//          if (shouldRefreshList ?? false) {
-//            _refreshController.requestRefresh();
-//          }
+          var shouldRefreshList = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => FiringPage(firingId: firing.id)));
+
+          if (shouldRefreshList ?? false) {
+            _refreshController.requestRefresh();
+          }
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

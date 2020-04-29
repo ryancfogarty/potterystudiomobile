@@ -13,4 +13,10 @@ class FiringRepository {
 
     return dtos.map((dto) => dto.toModel()).toList();
   }
+
+  Future<Firing> getFiring(String firingId) async {
+    var dto = await _service.getFiring(firingId);
+
+    return dto.toModel();
+  }
 }
