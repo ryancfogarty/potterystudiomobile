@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/models/Opening.dart';
+import 'package:seven_spot_mobile/pages/FiringsList.dart';
 import 'package:seven_spot_mobile/pages/ManageOpeningPage.dart';
 import 'package:seven_spot_mobile/pages/OpeningsList.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
@@ -53,7 +54,7 @@ class _MainPageState extends State<MainPage> {
       backgroundColor: Colors.white,
       body: _currentIndex == 0
         ? OpeningsList(openings: _openings, onRefresh: _fetch)
-        : Text("Firings"),
+        : FiringsList(),
       floatingActionButton: FloatingActionButton(
         onPressed: _onFabPressed,
         child: Icon(Icons.add),

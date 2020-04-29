@@ -2,14 +2,18 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
 import 'package:seven_spot_mobile/pages/CreateUserPage.dart';
 import 'package:seven_spot_mobile/pages/LoginPage.dart';
 import 'package:seven_spot_mobile/pages/MainPage.dart';
+import 'package:seven_spot_mobile/repositories/FiringRepository.dart';
 import 'package:seven_spot_mobile/repositories/OpeningRepository.dart';
 import 'package:seven_spot_mobile/repositories/UserRepository.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
+import 'package:seven_spot_mobile/services/FiringService.dart';
 import 'package:seven_spot_mobile/usecases/CreateUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/DeleteOpeningUseCase.dart';
+import 'package:seven_spot_mobile/usecases/GetAllFiringsUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
@@ -25,6 +29,10 @@ void main() async {
   var getOpeningUseCase = GetOpeningUseCase(openingRepository);
   var manageOpeningUseCase = ManageOpeningUseCase(openingRepository);
   var deleteOpeningUseCase = DeleteOpeningUseCase(openingRepository);
+  var firingService = FiringService();
+  var firingRepository = FiringRepository(firingService);
+  var getAllFiringsUseCase = GetAllFiringsUseCase(firingRepository);
+  var firingListInteractor = FiringListInteractor(getAllFiringsUseCase);
 
   return await runZoned<Future<Null>>(
     () async {
@@ -51,6 +59,9 @@ void main() async {
             ),
             ChangeNotifierProvider<DeleteOpeningUseCase>(
               create: (_) => deleteOpeningUseCase,
+            ),
+            ChangeNotifierProvider<FiringListInteractor>(
+              create: (_) => firingListInteractor,
             )
           ],
           child: MyApp()
