@@ -1,3 +1,5 @@
+import 'dart:wasm';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/models/Opening.dart';
@@ -39,26 +41,36 @@ class _MainPageState extends State<MainPage> {
           builder: (context, useCase, child) {
             return Text(useCase.user?.companyName ?? "Loading...");
           },
-        ),
-        actions: [
-          FlatButton(
-            child: Text(
-              "Sign out",
-              style: TextStyle(color: Colors.white)
+        )
+      ),
+      drawer: Drawer(
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('Pottery studio 2.0'),
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
             ),
-            onPressed: () => authService.signOutOfGoogle(),
-          )
-        ],
+            ListTile(
+              title: Text("Sign out"),
+              onTap: () => authService.signOutOfGoogle()
+            )
+          ],
+        ),
       ),
       bottomNavigationBar: _bottomNavBar(),
       backgroundColor: Colors.white,
       body: _currentIndex == 0
         ? OpeningsList(openings: _openings, onRefresh: _fetch)
         : FiringsList(),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: _onFabPressed,
-        child: Icon(Icons.add),
-      ),
+        icon: Icon(Icons.add),
+        label: Text("Create ${_currentIndex == 0 ? "Opening" : "Firing"}"),
+      )
     );
   }
 
@@ -76,7 +88,7 @@ class _MainPageState extends State<MainPage> {
     return BottomNavigationBar(
       items: [
         BottomNavigationBarItem(
-          title: Text("Slots"),
+          title: Text("Openings"),
           icon: Icon(Icons.event_available)
         ),
         BottomNavigationBarItem(
@@ -86,6 +98,7 @@ class _MainPageState extends State<MainPage> {
       ],
       currentIndex: _currentIndex,
       onTap: (idx) {
+        // todo: move to interactor: ChangeNotifier
         setState(() {
           _currentIndex = idx;
         });
@@ -95,6 +108,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Future<void> _fetch() async {
+    // todo: move to interactor: ChangeNotifier
     var openings = await GetAllOpeningsUseCase().invoke();
 
     setState(() {
