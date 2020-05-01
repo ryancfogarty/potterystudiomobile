@@ -19,6 +19,8 @@ dependencies:
   provider: ^3.1.0+1
   intl: ^0.16.1
   numberpicker: ^1.2.0
+  encrypt: ^4.0.0
+  pointycastle: ^1.0.2
 
 
 dev_dependencies:
@@ -29,6 +31,9 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+
+  assets:
+    - assets/public.pem
 
   # To add assets to your application, add an assets section, like this:
   # assets:

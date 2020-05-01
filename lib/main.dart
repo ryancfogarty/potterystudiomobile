@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
 import 'package:seven_spot_mobile/pages/CreateUserPage.dart';
@@ -22,8 +24,16 @@ import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ToggleReservationUseCase.dart';
 
 void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  var publicKeyString = await rootBundle.loadString('assets/public.pem');
+  var keyParser = RSAKeyParser();
+  var publicKey = keyParser.parse(publicKeyString);
+  var encrypter = Encrypter(RSA(publicKey: publicKey));
+
   var authService = AuthService();
-  var createUserUseCase = CreateUserUseCase(authService);
+  var createUserUseCase = CreateUserUseCase(authService, encrypter);
   var openingRepository = OpeningRepository();
   var userRepository = UserRepository();
   var toggleReservationUseCase = ToggleReservationUseCaseImpl(openingRepository);
@@ -72,7 +82,7 @@ void main() async {
             ),
             ChangeNotifierProvider<GetFiringUseCase>(
               create: (_) => getFiringUseCase,
-            )
+            ),
           ],
           child: MyApp()
         ),

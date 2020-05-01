@@ -56,9 +56,10 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
               child: CircularProgressIndicator(),
             );
           } else {
-           return FloatingActionButton(
+           return FloatingActionButton.extended(
              onPressed: _save,
-             child: Icon(Icons.save),
+             icon: Icon(Icons.save),
+             label: Text("Save")
            );
           }
         },

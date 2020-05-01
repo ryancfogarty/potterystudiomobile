@@ -14,9 +14,19 @@ class UserService {
     var idToken = await currentUser.getIdToken(refresh: true);
     var name = currentUser.displayName;
 
-    var url = "$_baseUrl/api/user?companySecret=$companySecret&companyName=$companyName&name=$name";
-    var response = await http.post(url,
-      headers: { "Authorization": idToken.token });
+    var requestBody = json.encode({
+      "name": name,
+      "companySecret": companySecret,
+      "companyName": companyName
+    });
+
+    var url = "$_baseUrl/api/user";
+    var response = await http.post(url, body: requestBody,
+      headers: {
+        "Authorization": idToken.token,
+        "Content-Type": "application/json"
+      }
+    );
 
     return response.statusCode >= 200 && response.statusCode < 300;
   }
