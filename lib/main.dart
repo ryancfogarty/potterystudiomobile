@@ -48,6 +48,8 @@ void main() async {
   var deleteUserUseCase = DeleteUserUseCase(userRepository);
   var getFiringUseCase = GetFiringUseCase(firingRepository);
 
+  authService.autoSignIn();
+
   return await runZoned<Future<Null>>(
     () async {
       runApp(
@@ -103,7 +105,7 @@ class _MyAppState extends State<MyApp> {
       home: Consumer<AuthService>(
         builder: (context, auth, child) {
           switch(auth.state) {
-            case AppState.VALIDATED:
+            case AppState.REGISTERED:
               return MainPage();
             case AppState.AUTHENTICATED:
               return CreateUserPage();

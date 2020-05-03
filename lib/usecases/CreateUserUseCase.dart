@@ -20,7 +20,7 @@ class CreateUserUseCase {
     var success = await _repo.createUser(encryptedCompanySecret, companyName);
 
     if (success) {
-      _authService.updateState(AppState.VALIDATED);
+      _authService.updateState(AppState.REGISTERED);
     }
   }
 }

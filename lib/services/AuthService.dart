@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 enum AppState {
   UNAUTHENTICATED,
   AUTHENTICATED,
-  VALIDATED
+  REGISTERED
 }
 
 class AuthService extends ChangeNotifier {
@@ -18,24 +18,52 @@ class AuthService extends ChangeNotifier {
 
   Future<FirebaseUser> get currentUser => _auth.currentUser();
 
-  Future<void> signInWithGoogle() async {
-    final GoogleSignInAccount account = await _googleSignIn.signIn();
-    final GoogleSignInAuthentication authentication = await account.authentication;
+  bool _signingIn = false;
+  bool get signingIn => _signingIn;
 
-    final AuthCredential creds = GoogleAuthProvider.getCredential(
-      idToken: authentication.idToken,
-      accessToken: authentication.accessToken,
-    );
-
-    final AuthResult result = await _auth.signInWithCredential(creds);
-    final FirebaseUser user = result.user;
-
-    if (user.isAnonymous || await user.getIdToken() == null) {
-      throw Exception("Invalid user");
-    }
-
-    state = await _isValid() ? AppState.VALIDATED : AppState.AUTHENTICATED;
+  Future<void> autoSignIn() async {
+    _signingIn = true;
     notifyListeners();
+
+    try {
+      if (await _isRegistered()) {
+        state = AppState.REGISTERED;
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      _signingIn = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> signInWithGoogle() async {
+    _signingIn = true;
+    notifyListeners();
+
+    try {
+      final account = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication authentication = await account.authentication;
+
+      final AuthCredential creds = GoogleAuthProvider.getCredential(
+        idToken: authentication.idToken,
+        accessToken: authentication.accessToken,
+      );
+
+      final AuthResult result = await _auth.signInWithCredential(creds);
+      final FirebaseUser user = result.user;
+
+      if (user.isAnonymous || await user.getIdToken() == null) {
+        throw Exception("Invalid user");
+      }
+
+      state = await _isRegistered() ? AppState.REGISTERED : AppState.AUTHENTICATED;
+    } catch (e) {
+      print(e);
+    } finally {
+      _signingIn = false;
+      notifyListeners();
+    }
   }
 
   void updateState(AppState newState) {
@@ -53,8 +81,10 @@ class AuthService extends ChangeNotifier {
 
   String _baseUrl = "https://us-central1-spot-629a6.cloudfunctions.net";
 //  String _baseUrl = "http://10.0.2.2:5001/spot-629a6/us-central1";
-  Future<bool> _isValid() async {
-    var idToken = await (await currentUser).getIdToken(refresh: true);
+  Future<bool> _isRegistered() async {
+    var idToken = await (await currentUser)?.getIdToken(refresh: true);
+
+    if (idToken == null) return false;
 
     var url = "$_baseUrl/api/user/valid";
     var response = await http.get(url,
