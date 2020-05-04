@@ -53,6 +53,7 @@ class _FiringListState extends State<FiringsList> {
 
   Widget _firingCard(Firing firing) {
     return Card(
+      elevation: 2.0,
       color: Colors.white,
       child: InkWell(
         onTap: () async {
