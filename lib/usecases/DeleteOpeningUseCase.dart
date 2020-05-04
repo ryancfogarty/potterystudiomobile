@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:seven_spot_mobile/models/Opening.dart';
 import 'package:seven_spot_mobile/repositories/OpeningRepository.dart';
 
 class DeleteOpeningUseCase extends ChangeNotifier {

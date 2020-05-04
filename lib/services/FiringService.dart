@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:seven_spot_mobile/DebugUtils.dart';
 import 'package:seven_spot_mobile/models/FiringDto.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 

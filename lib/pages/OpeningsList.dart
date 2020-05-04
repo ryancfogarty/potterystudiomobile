@@ -52,6 +52,7 @@ class _OpeningsListState extends State<OpeningsList> {
 
   Widget _openingCard(Opening opening) {
     return Card(
+      elevation: 2.0,
       color: Colors.white,
       child: InkWell(
         onTap: () async {

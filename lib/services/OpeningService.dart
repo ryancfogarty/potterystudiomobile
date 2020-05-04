@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:seven_spot_mobile/DebugUtils.dart';
 import 'package:seven_spot_mobile/models/OpeningDto.dart';
-import 'package:seven_spot_mobile/models/User.dart';
 import 'package:seven_spot_mobile/models/UserDto.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 
