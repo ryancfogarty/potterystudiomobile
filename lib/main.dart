@@ -20,6 +20,7 @@ import 'package:seven_spot_mobile/usecases/GetAllFiringsUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetFiringUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
+import 'package:seven_spot_mobile/usecases/ManageFiringUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ToggleReservationUseCase.dart';
 
@@ -47,6 +48,7 @@ void main() async {
   var firingListInteractor = FiringListInteractor(getAllFiringsUseCase);
   var deleteUserUseCase = DeleteUserUseCase(userRepository);
   var getFiringUseCase = GetFiringUseCase(firingRepository);
+  var manageFiringUseCase = ManageFiringUseCase(firingRepository);
 
   authService.autoSignIn();
 
@@ -85,6 +87,9 @@ void main() async {
             ChangeNotifierProvider<GetFiringUseCase>(
               create: (_) => getFiringUseCase,
             ),
+            ChangeNotifierProvider<ManageFiringUseCase>(
+              create: (_) => manageFiringUseCase,
+            )
           ],
           child: MyApp()
         ),

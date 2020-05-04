@@ -17,9 +17,7 @@ class FiringDto {
 
   Firing toModel() {
     var startDateTime = DateTime.parse(start);
-    var end = startDateTime.add(Duration(seconds: durationSeconds));
-    var cooldownEnd = end.add(Duration(seconds: cooldownSeconds));
 
-    return Firing(id, startDateTime, end, cooldownEnd, type);
+    return Firing(id, startDateTime, durationSeconds, cooldownSeconds, type);
   }
 }

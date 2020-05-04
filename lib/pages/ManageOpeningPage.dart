@@ -126,12 +126,6 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
       initialDate: useCase.opening?.start ?? DateTime.now(),
       firstDate: DateTime.now().add(Duration(days: -30)),
       lastDate: DateTime.now().add(Duration(days: 365)),
-      builder: (BuildContext context, Widget child) {
-        return Theme(
-          data: ThemeData.dark(),
-          child: child,
-        );
-      },
     );
 
     if (selectedDate != null) {
@@ -203,12 +197,6 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
       initialDate: useCase.opening.end ?? DateTime.now(),
       firstDate: DateTime.now().add(Duration(days: -30)),
       lastDate: DateTime.now().add(Duration(days: 365)),
-      builder: (BuildContext context, Widget child) {
-        return Theme(
-          data: ThemeData.dark(),
-          child: child,
-        );
-      },
     );
 
     if (selectedDate != null) {

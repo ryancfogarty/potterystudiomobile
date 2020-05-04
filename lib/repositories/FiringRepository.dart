@@ -19,4 +19,10 @@ class FiringRepository {
 
     return dto.toModel();
   }
+
+  Future<Firing> createFiring(Firing firing) async {
+    var createdFiringDto = await _service.createFiring(firing.toDto());
+
+    return createdFiringDto.toModel();
+  }
 }

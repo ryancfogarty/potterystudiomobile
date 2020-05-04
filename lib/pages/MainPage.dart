@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
 import 'package:seven_spot_mobile/models/Opening.dart';
 import 'package:seven_spot_mobile/pages/FiringsList.dart';
+import 'package:seven_spot_mobile/pages/ManageFiringPage.dart';
 import 'package:seven_spot_mobile/pages/ManageOpeningPage.dart';
 import 'package:seven_spot_mobile/pages/OpeningsList.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
@@ -105,7 +107,9 @@ class _MainPageState extends State<MainPage> {
 
       if (shouldRefreshList ?? false) _fetch();
     } else {
-      // create new firing
+      var shouldRefreshList = await Navigator.push(context, MaterialPageRoute(builder: (context) => ManageFiringPage()));
+
+      if (shouldRefreshList ?? false) Provider.of<FiringListInteractor>(context, listen: false).getAll();
     }
   }
 
