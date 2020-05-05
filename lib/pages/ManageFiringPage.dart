@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,9 @@ class ManageFiringPage extends StatefulWidget {
 
 class _ManageFiringPageState extends State<ManageFiringPage> {
   bool get _isNewFiring => widget.firingId == null;
+
+  var hours = "";
+  TextEditingController _controller = new TextEditingController();
 
   @override
   void initState() {
@@ -77,6 +81,29 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
     } catch (e) {}
   }
 
+  Widget _aaaa() {
+    return TextField(
+      decoration: new InputDecoration(labelText: "HH"),
+      keyboardType: TextInputType.number,
+      inputFormatters: [
+        WhitelistingTextInputFormatter.digitsOnly,
+        TextInputFormatter.withFunction((oldValue, newValue) {
+          if (newValue.text.length == 3) {
+            return newValue.copyWith(
+              text: newValue.text.substring(1, 3),
+              selection: TextSelection.fromPosition(TextPosition(offset: 2))
+            );
+          }
+
+          return newValue;
+        })
+      ],
+      onChanged: (text) {
+        print(text);
+      },
+    );
+  }
+
   Widget _body() {
     return Consumer<ManageFiringUseCase>(
         builder: (context, useCase, _) {
@@ -87,9 +114,7 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
                 child: Column(
                   children: [
                     _start(),
-                    _firingDuration(),
-                    _cooldownDuration(),
-                    _type()
+                    _aaaa()
                   ],
                 ),
               ),
