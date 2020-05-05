@@ -125,7 +125,7 @@ class _OpeningPageState extends State<OpeningPage> {
   void _editOpening() async {
     var edited = await Navigator.push(context, MaterialPageRoute(builder: (context) => ManageOpeningPage(openingId: widget.openingId)));
 
-    if (edited) {
+    if (edited == true) {
       _getOpening();
       _edited = true;
     }

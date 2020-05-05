@@ -13,9 +13,8 @@ class Opening {
 
   Opening.empty() {
     var now = DateTime.now();
-    var startOfToday = DateTime(now.year, now.month, now.day);
-    start = startOfToday;
-    end = startOfToday.add(Duration(hours: 1));
+    start = DateTime(now.year, now.month, now.day, 18);
+    end = start.add(Duration(hours: 2));
     size = 0;
   }
 

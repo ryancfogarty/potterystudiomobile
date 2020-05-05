@@ -1,9 +1,10 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
-import 'package:seven_spot_mobile/common/DateFormatter.dart';
-import 'package:seven_spot_mobile/common/TextStyles.dart';
+import 'package:seven_spot_mobile/pages/DateTimeView.dart';
 import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
 
 class ManageOpeningPage extends StatefulWidget {
@@ -19,6 +20,8 @@ class ManageOpeningPage extends StatefulWidget {
 }
 
 class _ManageOpeningPageState extends State<ManageOpeningPage> {
+  TextEditingController _capacityTextController = new TextEditingController();
+
   bool get _isNewOpening => widget.openingId == null;
 
   @override
@@ -68,10 +71,29 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
   }
 
   _save() async {
-    try {
-      await Provider.of<ManageOpeningUseCase>(context, listen: false).save();
+    var response = await Provider.of<ManageOpeningUseCase>(context, listen: false).save();
+
+    if (response == SaveResponse.SUCCESS) {
       Navigator.pop(context, true);
-    } catch (e) {}
+    } else if (response == SaveResponse.INVALID) {
+      var dialogDisplayer = defaultTargetPlatform == TargetPlatform.android ? showDialog : showCupertinoDialog;
+
+      dialogDisplayer(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("Invalid opening"),
+              content: Text("Start must be before end"),
+              actions: [
+                FlatButton(
+                  child: Text("Dismiss"),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+              ],
+            );
+          }
+      );
+    }
   }
 
   Widget _body() {
@@ -83,10 +105,11 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
             padding: EdgeInsets.all(8.0),
             child: Column(
               children: [
-                _startDate(),
-                _startTime(),
-                _endDate(),
-                _endTime(),
+                Container(height: 24.0),
+                _start(),
+                Container(height: 24.0),
+                _end(),
+                Container(height: 24.0),
                 _size()
               ],
             ),
@@ -97,174 +120,58 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
     );
   }
 
-  Widget _startDate() {
+  Widget _start() {
     return Consumer<ManageOpeningUseCase>(
       builder: (context, useCase, _) {
-        var text = "Start date: ";
-
-        if (useCase.opening.start != null) {
-          text += DateFormatter().EEE_dd_MMMM_y.format(useCase.opening.start);
-        } else {
-          text += "Select a date";
-        }
-
-        return Card(
-          child: FlatButton(
-            child: Text(text),
-            onPressed: _editStartDate
-          )
+        return DateTimeView(
+          title: "Start:",
+          onDateChanged: useCase.updateStartDate,
+          onTimeChanged: useCase.updateStartTime,
+          dateTime: useCase.opening.start,
+          isValid: useCase.opening.start.difference(useCase.opening.end).inMilliseconds < 0,
         );
-      },
+      }
     );
   }
 
-  void _editStartDate() async {
-    var useCase = Provider.of<ManageOpeningUseCase>(context, listen: false);
-
-    var selectedDate = await showDatePicker(
-      context: context,
-      initialDate: useCase.opening?.start ?? DateTime.now(),
-      firstDate: DateTime.now().add(Duration(days: -30)),
-      lastDate: DateTime.now().add(Duration(days: 365)),
-    );
-
-    if (selectedDate != null) {
-      useCase.updateStartDate(selectedDate);
-    }
-  }
-
-  Widget _startTime() {
+  Widget _end() {
     return Consumer<ManageOpeningUseCase>(
       builder: (context, useCase, _) {
-        var text = "Start time: ";
-
-        if (useCase.opening.start != null) {
-          text += DateFormatter().HH_mm.format(useCase.opening.start);
-        } else {
-          text += "Select a time";
-        }
-
-        return Card(
-          child: FlatButton(
-            child: Text(text),
-            onPressed: _editStartTime,
-          ),
+        return DateTimeView(
+          title: "End:",
+          onDateChanged: useCase.updateEndDate,
+          onTimeChanged: useCase.updateEndTime,
+          dateTime: useCase.opening.end,
+          isValid: useCase.opening.start.difference(useCase.opening.end).inMilliseconds < 0,
         );
-      },
+      }
     );
-  }
-
-  void _editStartTime() async {
-    var useCase = Provider.of<ManageOpeningUseCase>(context, listen: false);
-
-    var timeOfDay = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay(hour: useCase.opening?.start?.hour ?? 0,
-            minute: useCase.opening?.start?.minute ?? 0)
-    );
-
-    if (timeOfDay != null) {
-      useCase.updateStartTime(timeOfDay);
-    }
-  }
-
-  Widget _endDate() {
-    return Consumer<ManageOpeningUseCase>(
-      builder: (context, useCase, _) {
-        var text = "End date: ";
-
-        if (useCase.opening.end != null) {
-          text += DateFormatter().EEE_dd_MMMM_y.format(useCase.opening.end);
-        } else {
-          text += "Select a date";
-        }
-
-        return Card(
-          child: FlatButton(
-            child: Text(text),
-            onPressed: _editEndDate,
-          ),
-        );
-      },
-    );
-  }
-
-  void _editEndDate() async {
-    var useCase = Provider.of<ManageOpeningUseCase>(context, listen: false);
-
-    var selectedDate = await showDatePicker(
-      context: context,
-      initialDate: useCase.opening.end ?? DateTime.now(),
-      firstDate: DateTime.now().add(Duration(days: -30)),
-      lastDate: DateTime.now().add(Duration(days: 365)),
-    );
-
-    if (selectedDate != null) {
-      useCase.updateEndDate(selectedDate);
-    }
-  }
-
-  Widget _endTime() {
-    return Consumer<ManageOpeningUseCase>(
-      builder: (context, useCase, _) {
-        var text = "End time: ";
-
-        if (useCase.opening.end != null) {
-          text += DateFormatter().HH_mm.format(useCase.opening.end);
-        } else {
-          text += "Select a time";
-        }
-
-        return Card(
-          child: FlatButton(
-            child: Text(text),
-            onPressed: _editEndTime,
-          ),
-        );
-      },
-    );
-  }
-
-  void _editEndTime() async {
-    var useCase = Provider.of<ManageOpeningUseCase>(context, listen: false);
-
-    var timeOfDay = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay(hour: useCase.opening?.end?.hour ?? 0,
-            minute: useCase.opening?.end?.minute ?? 0)
-    );
-
-    if (timeOfDay != null) {
-      useCase.updateEndTime(timeOfDay);
-    }
   }
 
   Widget _size() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Text(
-          "Capacity:",
-          style: TextStyles().mediumBoldStyle
-        ),
-        Consumer<ManageOpeningUseCase>(
-          builder: (context, useCase, _) {
-            var picker = NumberPicker.integer(
-              initialValue: useCase.opening.size,
-              minValue: 0,
-              maxValue: 100,
-              onChanged: (num) => useCase.updateSize(num),
-            );
+    return Consumer<ManageOpeningUseCase>(
+      builder: (context, useCase, _) {
+        if (_capacityTextController.text != useCase.opening.size.toString()) {
+          _capacityTextController.text = useCase.opening.size.toString();
+        }
 
-            try {
-              // hack around https://github.com/MarcinusX/NumberPicker/issues/26
-              Future.delayed(Duration(milliseconds: 200), () => picker.animateInt(useCase.opening.size));
-            } catch (e) {}
+        _capacityTextController.selection = TextSelection.fromPosition(
+            TextPosition(offset: _capacityTextController.text.length));
 
-            return picker;
+        return TextField(
+          controller: _capacityTextController,
+          decoration: new InputDecoration(labelText: "Capacity"),
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            WhitelistingTextInputFormatter.digitsOnly
+          ], // Only numbers can be entered
+          onChanged: (input) {
+            var capacity = num.tryParse(input) ?? 0;
+
+            useCase.updateSize(capacity);
           },
-        )
-      ],
+        );
+      }
     );
   }
 }

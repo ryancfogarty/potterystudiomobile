@@ -3,6 +3,12 @@ import 'package:flutter/widgets.dart';
 import 'package:seven_spot_mobile/models/Opening.dart';
 import 'package:seven_spot_mobile/repositories/OpeningRepository.dart';
 
+enum SaveResponse {
+  SUCCESS,
+  ERROR,
+  INVALID
+}
+
 class ManageOpeningUseCase extends ChangeNotifier {
 
   OpeningRepository _repo;
@@ -43,7 +49,6 @@ class ManageOpeningUseCase extends ChangeNotifier {
   void updateStartDate(DateTime startDate) {
     _opening.start = DateTime(startDate.year, startDate.month, startDate.day,
         _opening.start.hour, _opening.start.minute);
-    _forceEndAfterStart();
 
     notifyListeners();
   }
@@ -51,7 +56,6 @@ class ManageOpeningUseCase extends ChangeNotifier {
   void updateStartTime(TimeOfDay startTime) {
     _opening.start = DateTime(_opening.start.year, _opening.start.month,
         _opening.start.day, startTime.hour, startTime.minute);
-    _forceEndAfterStart();
 
     notifyListeners();
   }
@@ -59,7 +63,6 @@ class ManageOpeningUseCase extends ChangeNotifier {
   void updateEndDate(DateTime endDate) {
     _opening.end = DateTime(endDate.year, endDate.month, endDate.day,
         _opening.end.hour, _opening.end.minute);
-    _forceStartBeforeEnd();
 
     notifyListeners();
   }
@@ -67,21 +70,8 @@ class ManageOpeningUseCase extends ChangeNotifier {
   void updateEndTime(TimeOfDay endTime) {
     _opening.end = DateTime(_opening.end.year, _opening.end.month,
         _opening.end.day, endTime.hour, endTime.minute);
-    _forceStartBeforeEnd();
 
     notifyListeners();
-  }
-
-  void _forceEndAfterStart() {
-    if (_opening.start.difference(_opening.end).inMilliseconds > 0) {
-      _opening.end = _opening.start.add(Duration(hours: 1));
-    }
-  }
-
-  void _forceStartBeforeEnd() {
-    if (_opening.start.difference(_opening.end).inMilliseconds > 0) {
-      _opening.start = _opening.end.add(Duration(hours: -1));
-    }
   }
 
   void updateSize(int size) {
@@ -89,7 +79,13 @@ class ManageOpeningUseCase extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> save() async {
+  Future<SaveResponse> save() async {
+    if (_opening.start.difference(_opening.end).inMilliseconds >= 0) {
+      return SaveResponse.INVALID;
+    }
+
+    var response = SaveResponse.SUCCESS;
+
     _saving = true;
     notifyListeners();
 
@@ -100,11 +96,13 @@ class ManageOpeningUseCase extends ChangeNotifier {
         await _repo.createOpening(_opening);
       }
     } catch (e) {
+      response = SaveResponse.ERROR;
       print(e);
-      throw e;
     } finally {
       _saving = false;
       notifyListeners();
     }
+
+    return response;
   }
 }
