@@ -29,4 +29,10 @@ class FiringRepository {
   Future<void> deleteFiring(String firingId) async {
     return await _service.deleteFiring(firingId);
   }
+
+  Future<Firing> updateFiring(Firing firing) async {
+    var updatedFiringDto = await _service.updateFiring(firing.toDto());
+
+    return updatedFiringDto.toModel();
+  }
 }

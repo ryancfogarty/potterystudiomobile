@@ -24,6 +24,21 @@ class ManageFiringUseCase extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> getFiring(String firingId) async {
+    _loading = true;
+    notifyListeners();
+
+    try {
+      _firing = await _repo.getFiring(firingId);
+    } catch (e) {
+      print(e);
+      throw e;
+    } finally {
+      _loading = false;
+      notifyListeners();
+    }
+  }
+
   void updateStartDate(DateTime startDate) {
     _firing.start = DateTime(startDate.year, startDate.month, startDate.day,
         _firing.start.hour, _firing.start.minute);
@@ -67,7 +82,7 @@ class ManageFiringUseCase extends ChangeNotifier {
 
     try {
       if (_firing.id != null) {
-        // todo: update firing
+        await _repo.updateFiring(_firing);
       } else {
         await _repo.createFiring(_firing);
       }

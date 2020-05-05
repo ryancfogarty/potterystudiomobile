@@ -35,7 +35,7 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
 
     if (!_isNewFiring) {
       try {
-        Provider.of<ManageOpeningUseCase>(context, listen: false).getOpening(widget.firingId);
+        Provider.of<ManageFiringUseCase>(context, listen: false).getFiring(widget.firingId);
       } catch (e) {
         // todo: throw error and prompt refresh instead
         Navigator.pop(context);
@@ -50,7 +50,7 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
         title: Text(_isNewFiring ? "Create firing" : "Edit firing"),
       ),
       body: _body(),
-      floatingActionButton: Consumer<ManageOpeningUseCase>(
+      floatingActionButton: Consumer<ManageFiringUseCase>(
         builder: (context, useCase, _) {
           if (useCase.saving) {
             return Padding(
@@ -204,7 +204,6 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
       ],
     );
   }
-
 
   Widget _cooldownDuration() {
     return Padding(
