@@ -5,6 +5,7 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/DateFormatter.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
+import 'package:seven_spot_mobile/pages/DateTimeView.dart';
 import 'package:seven_spot_mobile/usecases/ManageFiringUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
 
@@ -103,47 +104,15 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
   Widget _start() {
     return Consumer<ManageFiringUseCase>(
       builder: (context, useCase, _) {
-        var text = "Start: ";
-
-        if (useCase.firing.start != null) {
-          text += DateFormatter().dd_MMMM_HH_mm.format(useCase.firing.start);
-        } else {
-          text += "Select a date and time";
-        }
-
-        return Card(
-          child: FlatButton(
-            child: Text(text),
-            onPressed: _editStart,
-          )
+        return DateTimeView(
+          title: "Start:",
+          onDateChanged: useCase.updateStartDate,
+          onTimeChanged: useCase.updateStartTime,
+          dateTime: useCase.firing.start,
+          isValid: true,
         );
-      }
+      },
     );
-  }
-
-  void _editStart() async {
-    var useCase = Provider.of<ManageFiringUseCase>(context, listen: false);
-
-    var selectedDate = await showDatePicker(
-      context: context,
-      initialDate: useCase.firing?.start ?? DateTime.now(),
-      firstDate: DateTime.now().add(Duration(days: -30)),
-      lastDate: DateTime.now().add(Duration(days: 365)),
-    );
-
-    if (selectedDate == null) return;
-
-    useCase.updateStartDate(selectedDate);
-
-    var timeOfDay = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay(hour: useCase.firing?.start?.hour ?? 0,
-            minute: useCase.firing?.start?.minute ?? 0)
-    );
-
-    if (timeOfDay != null) {
-      useCase.updateStartTime(timeOfDay);
-    }
   }
 
   Widget _firingDuration() {
@@ -301,22 +270,47 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
     return Consumer<ManageFiringUseCase>(
       builder: (context, useCase, _) {
         return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               "Type: ",
               style: TextStyles().mediumBoldStyle,
             ),
-            Text("BISQUE"),
-            Radio(
-              value: "BISQUE",
-              groupValue: useCase.firing.type,
-              onChanged: useCase.updateType,
-            ),
-            Text("GLAZE"),
-            Radio(
-              value: "GLAZE",
-              groupValue: useCase.firing.type,
-              onChanged: useCase.updateType,
+            Row(
+              children: [
+                InkWell(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: Row(
+                      children: [
+                        Text("Bisque"),
+                        Radio(
+                          value: "BISQUE",
+                          groupValue: useCase.firing.type,
+                          onChanged: useCase.updateType,
+                        ),
+                      ],
+                    ),
+                  ),
+                  onTap: () => useCase.updateType("BISQUE"),
+                ),
+                InkWell(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: Row(
+                      children: [
+                        Text("Glaze"),
+                        Radio(
+                          value: "GLAZE",
+                          groupValue: useCase.firing.type,
+                          onChanged: useCase.updateType,
+                        ),
+                      ],
+                    ),
+                  ),
+                  onTap: () => useCase.updateType("GLAZE"),
+                ),
+              ],
             )
           ]
         );

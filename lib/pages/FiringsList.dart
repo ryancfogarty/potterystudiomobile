@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:seven_spot_mobile/common/DateFormatter.dart';
+import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
 import 'package:seven_spot_mobile/models/Firing.dart';
 import 'package:seven_spot_mobile/pages/FiringPage.dart';
@@ -72,20 +73,16 @@ class _FiringListState extends State<FiringsList> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Start: ${DateFormatter().dd_MMMM.format(firing.start)} ${DateFormatter().HH_mm.format(firing.start)}",
-                    style: TextStyle(fontSize: 16.0)
+                    "${DateFormatter().dd_MMMM_HH_mm.format(firing.start)} - ${DateFormatter().dd_MMMM_HH_mm.format(firing.end)}",
+                    style: TextStyles().mediumRegularStyle
                   ),
                   Text(
-                    "Firing end: ${DateFormatter().dd_MMMM.format(firing.end)} ${DateFormatter().HH_mm.format(firing.end)}",
-                    style: TextStyle(fontSize: 16.0)
-                  ),
-                  Text(
-                    "Cooldown end: ${DateFormatter().dd_MMMM.format(firing.cooldownEnd)} ${DateFormatter().HH_mm.format(firing.cooldownEnd)}",
-                    style: TextStyle(fontSize: 16.0)
+                    "Done cooling down: ${DateFormatter().dd_MMMM.format(firing.cooldownEnd)} ${DateFormatter().HH_mm.format(firing.cooldownEnd)}",
+                    style: TextStyles().mediumRegularStyle
                   ),
                   Text(
                     "Type: ${firing.type.toLowerCase()}",
-                    style: TextStyle(fontSize: 16.0)
+                    style: TextStyles().mediumRegularStyle
                   ),
                 ],
               ),
