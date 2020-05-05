@@ -13,7 +13,7 @@ class Opening {
 
   Opening.empty() {
     var now = DateTime.now();
-    start = DateTime(now.year, now.month, now.day, 18);
+    start = DateTime.utc(now.year, now.month, now.day, 18);
     end = start.add(Duration(hours: 2));
     size = 0;
   }

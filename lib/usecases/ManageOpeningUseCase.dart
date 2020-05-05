@@ -47,28 +47,28 @@ class ManageOpeningUseCase extends ChangeNotifier {
   }
 
   void updateStartDate(DateTime startDate) {
-    _opening.start = DateTime(startDate.year, startDate.month, startDate.day,
+    _opening.start = DateTime.utc(startDate.year, startDate.month, startDate.day,
         _opening.start.hour, _opening.start.minute);
 
     notifyListeners();
   }
 
   void updateStartTime(TimeOfDay startTime) {
-    _opening.start = DateTime(_opening.start.year, _opening.start.month,
+    _opening.start = DateTime.utc(_opening.start.year, _opening.start.month,
         _opening.start.day, startTime.hour, startTime.minute);
 
     notifyListeners();
   }
 
   void updateEndDate(DateTime endDate) {
-    _opening.end = DateTime(endDate.year, endDate.month, endDate.day,
+    _opening.end = DateTime.utc(endDate.year, endDate.month, endDate.day,
         _opening.end.hour, _opening.end.minute);
 
     notifyListeners();
   }
 
   void updateEndTime(TimeOfDay endTime) {
-    _opening.end = DateTime(_opening.end.year, _opening.end.month,
+    _opening.end = DateTime.utc(_opening.end.year, _opening.end.month,
         _opening.end.day, endTime.hour, endTime.minute);
 
     notifyListeners();
