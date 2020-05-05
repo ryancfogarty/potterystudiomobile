@@ -65,4 +65,15 @@ class FiringService {
     dynamic firingJson = json.decode(response.body);
     return _jsonToDto(firingJson);
   }
+
+  Future<void> deleteFiring(String firingId) async {
+    var currentUser = await AuthService().currentUser;
+    var idToken = await currentUser.getIdToken(refresh: true);
+
+    var url = "$_baseUrl/api/firing/$firingId";
+    var response = await http.delete(url, headers: {
+      "Authorization": idToken.token,
+    });
+    if (response.statusCode != 204) throw Exception("Error");
+  }
 }

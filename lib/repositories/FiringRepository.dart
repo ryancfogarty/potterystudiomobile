@@ -25,4 +25,8 @@ class FiringRepository {
 
     return createdFiringDto.toModel();
   }
+
+  Future<void> deleteFiring(String firingId) async {
+    return await _service.deleteFiring(firingId);
+  }
 }

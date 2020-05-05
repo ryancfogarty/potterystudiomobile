@@ -14,6 +14,7 @@ import 'package:seven_spot_mobile/repositories/UserRepository.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/services/FiringService.dart';
 import 'package:seven_spot_mobile/usecases/CreateUserUseCase.dart';
+import 'package:seven_spot_mobile/usecases/DeleteFiringUseCase.dart';
 import 'package:seven_spot_mobile/usecases/DeleteOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/DeleteUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetAllFiringsUseCase.dart';
@@ -49,6 +50,7 @@ void main() async {
   var deleteUserUseCase = DeleteUserUseCase(userRepository);
   var getFiringUseCase = GetFiringUseCase(firingRepository);
   var manageFiringUseCase = ManageFiringUseCase(firingRepository);
+  var deleteFiringUseCase = DeleteFiringUseCase(firingRepository);
 
   authService.autoSignIn();
 
@@ -89,6 +91,9 @@ void main() async {
             ),
             ChangeNotifierProvider<ManageFiringUseCase>(
               create: (_) => manageFiringUseCase,
+            ),
+            ChangeNotifierProvider<DeleteFiringUseCase>(
+              create: (_) => deleteFiringUseCase,
             )
           ],
           child: MyApp()
