@@ -105,7 +105,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
             padding: EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Container(height: 24.0),
+                Container(height: 12.0),
                 _start(),
                 Container(height: 24.0),
                 _end(),

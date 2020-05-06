@@ -54,6 +54,8 @@ class ManageFiringUseCase extends ChangeNotifier {
   }
 
   void updateDuration(int hours, int minutes) {
+    print("$hours:$minutes");
+
     var initialHours = (_firing.durationSeconds / 3600).floor();
     var initialMinutes = (_firing.durationSeconds / 60 % 60).floor();
 

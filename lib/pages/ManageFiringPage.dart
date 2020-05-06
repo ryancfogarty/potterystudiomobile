@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
-import 'package:seven_spot_mobile/common/DateFormatter.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/pages/DateTimeView.dart';
 import 'package:seven_spot_mobile/usecases/ManageFiringUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
+import 'package:seven_spot_mobile/views/DurationPicker.dart';
 
 class ManageFiringPage extends StatefulWidget {
   ManageFiringPage({
@@ -81,29 +80,6 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
     } catch (e) {}
   }
 
-  Widget _aaaa() {
-    return TextField(
-      decoration: new InputDecoration(labelText: "HH"),
-      keyboardType: TextInputType.number,
-      inputFormatters: [
-        WhitelistingTextInputFormatter.digitsOnly,
-        TextInputFormatter.withFunction((oldValue, newValue) {
-          if (newValue.text.length == 3) {
-            return newValue.copyWith(
-              text: newValue.text.substring(1, 3),
-              selection: TextSelection.fromPosition(TextPosition(offset: 2))
-            );
-          }
-
-          return newValue;
-        })
-      ],
-      onChanged: (text) {
-        print(text);
-      },
-    );
-  }
-
   Widget _body() {
     return Consumer<ManageFiringUseCase>(
         builder: (context, useCase, _) {
@@ -113,8 +89,14 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
                 padding: EdgeInsets.all(8.0),
                 child: Column(
                   children: [
+                    Container(height: 12.0),
                     _start(),
-                    _aaaa()
+                    Container(height: 24.0),
+                    _firingDuration(),
+                    Container(height: 24.0),
+                    _cooldownDuration(),
+                    Container(height: 24.0),
+                    _type()
                   ],
                 ),
               ),
@@ -141,153 +123,36 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
   }
 
   Widget _firingDuration() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Text(
-            "Firing duration:",
-            style: TextStyles().mediumBoldStyle
-        ),
-        Consumer<ManageFiringUseCase>(
-          builder: (context, useCase, _) {
-            var durationSeconds = useCase.firing.durationSeconds;
+    return Consumer<ManageFiringUseCase>(
+      builder: (context, useCase, _) {
+        var hours = (useCase.firing.durationSeconds / 3600).floor();
+        var minutes = (useCase.firing.durationSeconds / 60 % 60).floor();
 
-            var hours = (durationSeconds / 3600).floor();
-            var minutes = (durationSeconds / 60 % 60).floor();
-
-            var hoursPicker = NumberPicker.integer(
-              initialValue: hours,
-              minValue: 0,
-              maxValue: 24,
-              onChanged: (num) {
-                useCase.updateDuration(num, null);
-              },
-            );
-
-            var minutesPicker = NumberPicker.integer(
-              initialValue: minutes,
-              minValue: 0,
-              maxValue: 55,
-              step: 5,
-              onChanged: (num) {
-                print(num);
-                useCase.updateDuration(null, num);
-              },
-            );
-
-            try {
-              // hack around https://github.com/MarcinusX/NumberPicker/issues/26
-              Future.delayed(Duration(milliseconds: 200), () {
-                hoursPicker.animateInt(hours);
-                minutesPicker.animateInt(minutes);
-              });
-            } catch (e) {}
-
-            return Row(
-              children: [
-                hoursPicker,
-                Text(
-                  ":",
-                  style: TextStyles().bigBoldStyle
-                ),
-                minutesPicker
-              ]
-            );
-          },
-        )
-      ],
+        return DurationPicker(
+          title: "Firing duration:",
+          hours: hours,
+          minutes: minutes,
+          onHoursChanged: (newHours) => useCase.updateDuration(newHours, minutes),
+          onMinutesChanged: (newMinutes) => useCase.updateDuration(hours, newMinutes % 60),
+        );
+      },
     );
   }
 
   Widget _cooldownDuration() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 24.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-              "Cooldown duration:",
-              style: TextStyles().mediumBoldStyle
-          ),
-          Consumer<ManageFiringUseCase>(
-            builder: (context, useCase, _) {
-              var cooldownSeconds = useCase.firing.cooldownSeconds;
+    return Consumer<ManageFiringUseCase>(
+      builder: (context, useCase, _) {
+        var hours = (useCase.firing.cooldownSeconds / 3600).floor();
+        var minutes = (useCase.firing.cooldownSeconds / 60 % 60).floor();
 
-              var hours = (cooldownSeconds / 3600).floor();
-              var minutes = (cooldownSeconds / 60 % 60).floor();
-
-              var hoursPicker = NumberPicker.integer(
-                initialValue: hours,
-                minValue: 0,
-                maxValue: 24,
-                onChanged: (num) {
-                  useCase.updateCooldown(num, null);
-                },
-              );
-
-              var minutesPicker = NumberPicker.integer(
-                initialValue: minutes,
-                minValue: 0,
-                maxValue: 55,
-                step: 5,
-                onChanged: (num) {
-                  useCase.updateCooldown(null, num);
-                },
-              );
-
-              try {
-                // hack around https://github.com/MarcinusX/NumberPicker/issues/26
-                Future.delayed(Duration(milliseconds: 200), () {
-                  hoursPicker.animateInt(hours);
-                  minutesPicker.animateInt(minutes);
-                });
-              } catch (e) {}
-
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  hoursPicker,
-                  Text(
-                      ":",
-                      style: TextStyles().bigBoldStyle
-                  ),
-                  minutesPicker
-                ]
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-
-  Widget _size() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Text(
-            "Capacity:",
-            style: TextStyles().mediumBoldStyle
-        ),
-        Consumer<ManageOpeningUseCase>(
-          builder: (context, useCase, _) {
-            var picker = NumberPicker.integer(
-              initialValue: useCase.opening.size,
-              minValue: 0,
-              maxValue: 100,
-              onChanged: (num) => useCase.updateSize(num),
-            );
-
-            try {
-              // hack around https://github.com/MarcinusX/NumberPicker/issues/26
-              Future.delayed(Duration(milliseconds: 200), () => picker.animateInt(useCase.opening.size));
-            } catch (e) {}
-
-            return picker;
-          },
-        )
-      ],
+        return DurationPicker(
+          title: "Cooldown duration:",
+          hours: hours,
+          minutes: minutes,
+          onHoursChanged: (newHours) => useCase.updateCooldown(newHours, minutes),
+          onMinutesChanged: (newMinutes) => useCase.updateCooldown(hours, newMinutes % 60),
+        );
+      },
     );
   }
 
@@ -299,7 +164,7 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
           children: [
             Text(
               "Type: ",
-              style: TextStyles().mediumBoldStyle,
+              style: TextStyles().mediumRegularStyle,
             ),
             Row(
               children: [
