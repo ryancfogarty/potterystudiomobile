@@ -8,8 +8,8 @@ class OpeningRepository {
     _service = OpeningService();
   }
 
-  Future<Iterable<Opening>> getAll() async {
-    var openingDtos = await _service.getAll();
+  Future<Iterable<Opening>> getAll(bool includePast) async {
+    var openingDtos = await _service.getAll(includePast);
 
     return openingDtos.map((dto) => dto.toModel());
   }

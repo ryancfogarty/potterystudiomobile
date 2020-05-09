@@ -91,7 +91,14 @@ class _MainPageState extends State<MainPage> {
       bottomNavigationBar: _bottomNavBar(),
       backgroundColor: Colors.white,
       body: _currentIndex == 0
-        ? OpeningsList(openings: _openings, onRefresh: _fetch)
+        ? Consumer<GetAllOpeningsUseCase>(
+            builder: (context, useCase, _) {
+              return OpeningsList(
+                openings: useCase.openings,
+                onRefresh: _fetch
+              );
+            }
+        )
         : FiringsList(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _onFabPressed,
@@ -132,16 +139,11 @@ class _MainPageState extends State<MainPage> {
           _currentIndex = idx;
         });
       },
-      selectedItemColor: Colors.amber
+      selectedItemColor: Colors.lightBlue
     );
   }
 
   Future<void> _fetch() async {
-    // todo: move to interactor: ChangeNotifier
-    var openings = await GetAllOpeningsUseCase().invoke();
-
-    setState(() {
-      _openings = openings;
-    });
+    await Provider.of<GetAllOpeningsUseCase>(context, listen: false).invoke();
   }
 }

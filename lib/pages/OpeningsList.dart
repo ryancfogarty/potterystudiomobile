@@ -5,6 +5,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:seven_spot_mobile/common/DateFormatter.dart';
 import 'package:seven_spot_mobile/models/Opening.dart';
 import 'package:seven_spot_mobile/pages/OpeningPage.dart';
+import 'package:seven_spot_mobile/usecases/GetAllOpeningsUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ToggleReservationUseCase.dart';
 
 class OpeningsList extends StatefulWidget {
@@ -34,18 +35,46 @@ class _OpeningsListState extends State<OpeningsList> {
     }
   }
 
+  Widget _pastOpeningsItem() {
+    return Consumer<GetAllOpeningsUseCase>(
+      builder: (context, useCase, _) {
+        return InkWell(
+          onTap: () => useCase.setIncludePast(!useCase.includePast),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                "${useCase.includePast ? "Hide" : "Show"} past openings",
+                style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Theme.of(context).accentColor
+                ),
+              ),
+            ),
+          ),
+        );
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
       onRefresh: _onRefresh,
       controller: _refreshController,
       child: ListView.builder(
-          itemBuilder: (buildContext, index) {
-            var opening = widget.openings.elementAt(index);
+        itemBuilder: (buildContext, index) {
+          if (index == 0) {
+            return _pastOpeningsItem();
+          } else if (widget.openings.length == 0) {
+            return Center(child: Text("No openings to show"));
+          } else {
+            var opening = widget.openings.elementAt(index - 1);
 
             return _openingCard(opening);
-          },
-          itemCount: widget.openings.length
+          }
+        },
+        itemCount: widget.openings.length == 0 ? 2 : widget.openings.length + 1
       )
     );
   }

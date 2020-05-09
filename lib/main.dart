@@ -18,6 +18,7 @@ import 'package:seven_spot_mobile/usecases/DeleteFiringUseCase.dart';
 import 'package:seven_spot_mobile/usecases/DeleteOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/DeleteUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetAllFiringsUseCase.dart';
+import 'package:seven_spot_mobile/usecases/GetAllOpeningsUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetFiringUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
@@ -40,6 +41,7 @@ void main() async {
   var userRepository = UserRepository();
   var toggleReservationUseCase = ToggleReservationUseCaseImpl(openingRepository);
   var getUserUseCase = GetUserUseCaseImpl(userRepository);
+  var getAllOpeningsUseCase = GetAllOpeningsUseCase();
   var getOpeningUseCase = GetOpeningUseCase(openingRepository);
   var manageOpeningUseCase = ManageOpeningUseCase(openingRepository);
   var deleteOpeningUseCase = DeleteOpeningUseCase(openingRepository);
@@ -94,6 +96,9 @@ void main() async {
             ),
             ChangeNotifierProvider<DeleteFiringUseCase>(
               create: (_) => deleteFiringUseCase,
+            ),
+            ChangeNotifierProvider<GetAllOpeningsUseCase>(
+              create: (_) => getAllOpeningsUseCase,
             )
           ],
           child: MyApp()
@@ -112,6 +117,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.lightBlue,
+        fontFamily: "Lato"
+      ),
       home: Consumer<AuthService>(
         builder: (context, auth, child) {
           switch(auth.state) {

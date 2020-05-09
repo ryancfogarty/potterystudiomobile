@@ -15,7 +15,6 @@ class CreateUserUseCase {
 
   Future<void> createUser(String companySecret, String companyName) async {
     var encryptedCompanySecret = _encrypter.encrypt(companySecret).base64;
-    print(encryptedCompanySecret);
 
     var success = await _repo.createUser(encryptedCompanySecret, companyName);
 

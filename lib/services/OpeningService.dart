@@ -10,11 +10,11 @@ class OpeningService {
   String _baseUrl = "https://us-central1-spot-629a6.cloudfunctions.net";
 //  String _baseUrl = "http://10.0.2.2:5001/spot-629a6/us-central1";
 
-  Future<Iterable<OpeningDto>> getAll() async {
+  Future<Iterable<OpeningDto>> getAll(bool includePast) async {
     var currentUser = await AuthService().currentUser;
     var idToken = await currentUser.getIdToken(refresh: true);
 
-    var url = "$_baseUrl/api/opening";
+    var url = "$_baseUrl/api/opening?includePast=$includePast";
     var response = await http.get(url, headers: {
       "Authorization": idToken.token
     });
