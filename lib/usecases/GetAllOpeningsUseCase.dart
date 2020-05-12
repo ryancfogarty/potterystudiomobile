@@ -18,8 +18,6 @@ class GetAllOpeningsUseCase extends ChangeNotifier {
 
     _includePast = i;
     notifyListeners();
-
-    if (refresh) invoke();
   }
 
   OpeningRepository _repo;

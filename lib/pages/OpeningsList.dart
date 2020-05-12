@@ -7,6 +7,7 @@ import 'package:seven_spot_mobile/models/Opening.dart';
 import 'package:seven_spot_mobile/pages/OpeningPage.dart';
 import 'package:seven_spot_mobile/usecases/GetAllOpeningsUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ToggleReservationUseCase.dart';
+import 'package:seven_spot_mobile/views/ToggleButtonView.dart';
 
 class OpeningsList extends StatefulWidget {
   OpeningsList({
@@ -35,26 +36,23 @@ class _OpeningsListState extends State<OpeningsList> {
     }
   }
 
-  Widget _pastOpeningsItem() {
+  Widget _toggleButton() {
     return Consumer<GetAllOpeningsUseCase>(
       builder: (context, useCase, _) {
-        return InkWell(
-          onTap: () => useCase.setIncludePast(!useCase.includePast),
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                "${useCase.includePast ? "Hide" : "Show"} past openings",
-                style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: Theme.of(context).accentColor
-                ),
-              ),
-            ),
-          ),
+        return ToggleButtonView(
+          title: "openings",
+          toggleOn: useCase.includePast,
+          onToggle: _togglePastOpeningsShown,
         );
       }
     );
+  }
+
+  void _togglePastOpeningsShown() {
+    var useCase = Provider.of<GetAllOpeningsUseCase>(context, listen: false);
+
+    useCase.setIncludePast(!useCase.includePast);
+    _refreshController.requestRefresh();
   }
 
   @override
@@ -65,7 +63,7 @@ class _OpeningsListState extends State<OpeningsList> {
       child: ListView.builder(
         itemBuilder: (buildContext, index) {
           if (index == 0) {
-            return _pastOpeningsItem();
+            return _toggleButton();
           } else if (widget.openings.length == 0) {
             return Center(child: Text("No openings to show"));
           } else {
