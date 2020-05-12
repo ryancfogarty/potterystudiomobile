@@ -153,12 +153,9 @@ class _OpeningsListState extends State<OpeningsList> {
 
     try {
       await useCase.toggleReservationForOpening(opening);
-      _refreshController.headerMode.value = RefreshStatus.refreshing;
-      await widget.onRefresh();
+      _refreshController.requestRefresh();
     } catch (e) {
       print(e.toString());
-    } finally {
-      _refreshController.refreshCompleted();
     }
   }
 }

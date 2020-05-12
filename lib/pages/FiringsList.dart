@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:seven_spot_mobile/common/DateFormatter.dart';
+import 'package:seven_spot_mobile/common/FiringTypeFormatter.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
 import 'package:seven_spot_mobile/models/Firing.dart';
@@ -100,11 +101,14 @@ class _FiringListState extends State<FiringsList> {
                     "Done cooling down: ${DateFormatter().dd_MMMM.format(firing.cooldownEnd)} ${DateFormatter().HH_mm.format(firing.cooldownEnd)}",
                     style: TextStyles().mediumRegularStyle
                   ),
-                  Text(
-                    "Type: ${firing.type.toLowerCase()}",
-                    style: TextStyles().mediumRegularStyle
-                  ),
                 ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                FiringTypeFormatter().format(firing.type),
+                style: TextStyles().mediumBoldStyle
               ),
             ),
           ],
