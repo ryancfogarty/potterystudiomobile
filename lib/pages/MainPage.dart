@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
@@ -70,13 +72,39 @@ class _MainPageState extends State<MainPage> {
               ),
               title: Text("Delete my account"),
               onTap: () async {
-                var success = await Provider.of<DeleteUserUseCase>(context, listen: false).invoke();
+                Navigator.of(context).pop();
 
-                if (success) {
-                  authService.signOutOfGoogle();
-                } else {
-                  // todo: show error message asking user to contact admin
-                }
+                var dialogDisplayer = defaultTargetPlatform == TargetPlatform.android ? showDialog : showCupertinoDialog;
+
+                dialogDisplayer(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text("Delete account"),
+                        content: Text("Deleting your account will remove you from all reservations."),
+                        actions: [
+                          FlatButton(
+                            child: Text("Cancel"),
+                            onPressed: () => Navigator.of(context).pop(),
+                          ),
+                          FlatButton(
+                            color: Colors.red,
+                            child: Text("Delete"),
+                            onPressed: () async {
+                              Navigator.of(context).pop();
+                              var success = await Provider.of<DeleteUserUseCase>(context, listen: false).invoke();
+
+                              if (success) {
+                                authService.signOutOfGoogle();
+                              } else {
+                                // todo: show error message asking user to contact admin
+                              }
+                            },
+                          )
+                        ],
+                      );
+                    }
+                );
               }
             ),
             ListTile(
