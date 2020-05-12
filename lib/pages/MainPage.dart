@@ -133,7 +133,7 @@ class _MainPageState extends State<MainPage> {
         ),
         BottomNavigationBarItem(
           title: Text("Firings"),
-          icon: Icon(Icons.hot_tub)
+          icon: Icon(Icons.whatshot)
         )
       ],
       currentIndex: _currentIndex,
