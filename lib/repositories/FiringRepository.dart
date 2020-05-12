@@ -8,8 +8,8 @@ class FiringRepository {
     _service = service;
   }
 
-  Future<Iterable<Firing>> getAll() async  {
-    var dtos = await _service.getAll();
+  Future<Iterable<Firing>> getAll(bool includePast) async  {
+    var dtos = await _service.getAll(includePast);
 
     return dtos.map((dto) => dto.toModel()).toList();
   }

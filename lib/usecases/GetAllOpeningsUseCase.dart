@@ -10,12 +10,10 @@ class GetAllOpeningsUseCase extends ChangeNotifier {
   Iterable<Opening> _openings = Iterable.empty();
   Iterable<Opening> get openings => _openings;
 
-  bool _includePast = true;
+  bool _includePast = false;
   bool get includePast => _includePast;
 
   void setIncludePast(bool i) {
-    var refresh = i != _includePast;
-
     _includePast = i;
     notifyListeners();
   }
@@ -27,10 +25,8 @@ class GetAllOpeningsUseCase extends ChangeNotifier {
   }
 
   Future<void> invoke() async {
-    print(_includePast);
     _openings = await _repo.getAll(_includePast);
 
-    print(_openings.length);
     notifyListeners();
   }
 

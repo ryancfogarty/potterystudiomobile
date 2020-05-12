@@ -8,14 +8,16 @@ class FiringService {
   String _baseUrl = "https://us-central1-spot-629a6.cloudfunctions.net";
 //  String _baseUrl = "http://10.0.2.2:5001/spot-629a6/us-central1";
 
-  Future<Iterable<FiringDto>> getAll() async {
+  Future<Iterable<FiringDto>> getAll(bool includePast) async {
     var currentUser = await AuthService().currentUser;
     var idToken = await currentUser.getIdToken(refresh: true);
 
-    var url = "$_baseUrl/api/firing";
+    var url = "$_baseUrl/api/firing?includePast=$includePast";
     var response = await http.get(url, headers: {
       "Authorization": idToken.token
     });
+
+    print(response.statusCode);
 
     if (response.statusCode >= 400) throw Exception("Error getAll firingService");
 

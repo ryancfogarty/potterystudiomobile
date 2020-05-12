@@ -6,6 +6,7 @@ import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
 import 'package:seven_spot_mobile/models/Firing.dart';
 import 'package:seven_spot_mobile/pages/FiringPage.dart';
+import 'package:seven_spot_mobile/views/ToggleButtonView.dart';
 
 class FiringsList extends StatefulWidget {
   @override
@@ -41,15 +42,34 @@ class _FiringListState extends State<FiringsList> {
             controller: _refreshController,
             child: ListView.builder(
                 itemBuilder: (buildContext, index) {
-                  var firing = interactor.firings.elementAt(index);
+                  if (index == 0) {
+                    return Consumer<FiringListInteractor>(
+                      builder: (context, useCase, _) {
+                        return ToggleButtonView(
+                          title: "firings",
+                          toggleOn: useCase.includePast,
+                          onToggle: _togglePastFiringsShown,
+                        );
+                      },
+                    );
+                  } else {
+                    var firing = interactor.firings.elementAt(index - 1);
 
-                  return _firingCard(firing);
+                    return _firingCard(firing);
+                  }
                 },
-                itemCount: interactor.firings.length
+                itemCount: interactor.firings.length + 1
             )
         );
       },
     );
+  }
+
+  void _togglePastFiringsShown() {
+    var interactor = Provider.of<FiringListInteractor>(context, listen: false);
+
+    interactor.setIncludePast(!interactor.includePast);
+    _refreshController.requestRefresh();
   }
 
   Widget _firingCard(Firing firing) {

@@ -96,6 +96,9 @@ class OpeningService {
       "Authorization": idToken.token,
       "Content-Type": "application/json"
     });
+
+    print(response.statusCode);
+
     if (response.statusCode >= 400) throw Exception("Error");
 
     var openingJson = json.decode(response.body)[0];

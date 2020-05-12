@@ -10,8 +10,16 @@ class FiringListInteractor extends ChangeNotifier {
   List<Firing> get firings => _firings;
   bool get loading => _loading;
 
+  bool _includePast = false;
+  bool get includePast => _includePast;
+
   FiringListInteractor(GetAllFiringsUseCase getAllFiringsUseCase) {
     _getAllFiringsUseCase = getAllFiringsUseCase;
+  }
+
+  void setIncludePast(bool i) {
+    _includePast = i;
+    notifyListeners();
   }
 
   Future<void> getAll() async {
@@ -19,7 +27,7 @@ class FiringListInteractor extends ChangeNotifier {
     notifyListeners();
 
     try {
-      _firings = await _getAllFiringsUseCase.invoke();
+      _firings = await _getAllFiringsUseCase.invoke(_includePast);
     } catch (e) {
       print(e);
       throw e;
