@@ -90,16 +90,20 @@ class _MainPageState extends State<MainPage> {
       ),
       bottomNavigationBar: _bottomNavBar(),
       backgroundColor: Colors.white,
-      body: _currentIndex == 0
-        ? Consumer<GetAllOpeningsUseCase>(
+      body: IndexedStack(
+        index: _currentIndex,
+        children: <Widget>[
+          Consumer<GetAllOpeningsUseCase>(
             builder: (context, useCase, _) {
               return OpeningsList(
                 openings: useCase.openings,
                 onRefresh: _fetch
               );
             }
-        )
-        : FiringsList(),
+          ),
+          FiringsList()
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _onFabPressed,
         icon: Icon(Icons.add),
