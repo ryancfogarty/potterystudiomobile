@@ -53,13 +53,15 @@ class _FiringListState extends State<FiringsList> {
                         );
                       },
                     );
+                  } else if (interactor.firings.length == 0) {
+                    return Center(child: Text("No firings to show"));
                   } else {
                     var firing = interactor.firings.elementAt(index - 1);
 
                     return _firingCard(firing);
                   }
                 },
-                itemCount: interactor.firings.length + 1
+                itemCount: interactor.firings.length == 0 ? 2 : interactor.firings.length + 1
             )
         );
       },

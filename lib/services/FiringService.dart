@@ -57,12 +57,15 @@ class FiringService {
       "cooldownSeconds": firingDto.cooldownSeconds,
       "type": firingDto.type
     });
+
     var response = await http.post(url, body: requestBody, headers: {
       "Authorization": idToken.token,
       "Content-Type": "application/json"
     });
 
+    print(response.statusCode);
     if (response.statusCode >= 400) throw Exception("Error");
+
 
     dynamic firingJson = json.decode(response.body);
     return _jsonToDto(firingJson);

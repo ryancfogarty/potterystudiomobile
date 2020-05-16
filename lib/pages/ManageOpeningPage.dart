@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/pages/DateTimeView.dart';
 import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
 
@@ -110,7 +111,19 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
                 Container(height: 24.0),
                 _end(),
                 Container(height: 24.0),
-                _size()
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Capacity:",
+                      style: TextStyles().mediumRegularStyle
+                    ),
+                    Container(
+                      width: 100,
+                      child: _size()
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -160,7 +173,10 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
 
         return TextField(
           controller: _capacityTextController,
-          decoration: new InputDecoration(labelText: "Capacity"),
+          decoration: new InputDecoration(
+            labelText: null,
+            isDense: true,
+          ),
           keyboardType: TextInputType.number,
           inputFormatters: <TextInputFormatter>[
             WhitelistingTextInputFormatter.digitsOnly

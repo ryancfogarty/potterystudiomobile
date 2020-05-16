@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>138929793965-h5fijopjp7b1cah8lrq3ric5dfge6svd.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.138929793965-h5fijopjp7b1cah8lrq3ric5dfge6svd</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>138929793965-3smjqmlpkdt93u74qblc31mr4tqrj599.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAcQGXJbQsSRyVTvk6xg97l1NZheSBZtd4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>138929793965</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.sevenSpotMobile</string>
+	<key>PROJECT_ID</key>
+	<string>spot-629a6</string>
+	<key>STORAGE_BUCKET</key>
+	<string>spot-629a6.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:138929793965:ios:dfbeacf47c4dda12cc8f24</string>
+	<key>DATABASE_URL</key>
+	<string>https://spot-629a6.firebaseio.com</string>
+</dict>
+</plist>

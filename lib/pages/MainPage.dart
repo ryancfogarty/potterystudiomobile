@@ -125,7 +125,7 @@ class _MainPageState extends State<MainPage> {
             builder: (context, useCase, _) {
               return OpeningsList(
                 openings: useCase.openings,
-                onRefresh: _fetch
+                onRefresh: Provider.of<GetAllOpeningsUseCase>(context, listen: false).invoke
               );
             }
           ),
@@ -144,7 +144,7 @@ class _MainPageState extends State<MainPage> {
     if (_currentIndex == 0) {
       var shouldRefreshList = await Navigator.push(context, MaterialPageRoute(builder: (context) => ManageOpeningPage()));
 
-      if (shouldRefreshList ?? false) _fetch();
+      if (shouldRefreshList ?? false) Provider.of<GetAllOpeningsUseCase>(context, listen: false).invoke();
     } else {
       var shouldRefreshList = await Navigator.push(context, MaterialPageRoute(builder: (context) => ManageFiringPage()));
 
@@ -173,9 +173,5 @@ class _MainPageState extends State<MainPage> {
       },
       selectedItemColor: Colors.lightBlue
     );
-  }
-
-  Future<void> _fetch() async {
-    await Provider.of<GetAllOpeningsUseCase>(context, listen: false).invoke();
   }
 }
