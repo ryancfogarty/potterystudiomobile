@@ -7,12 +7,15 @@ class ManageFiringUseCase extends ChangeNotifier {
   FiringRepository _repo;
 
   bool _loading = false;
+
   bool get loading => _loading;
 
   bool _saving = false;
+
   bool get saving => _saving;
 
   Firing _firing = Firing.empty();
+
   Firing get firing => _firing;
 
   ManageFiringUseCase(FiringRepository repo) {
@@ -59,7 +62,8 @@ class ManageFiringUseCase extends ChangeNotifier {
     var initialHours = (_firing.durationSeconds / 3600).floor();
     var initialMinutes = (_firing.durationSeconds / 60 % 60).floor();
 
-    _firing.durationSeconds = (hours ?? initialHours) * 3600 + (minutes ?? initialMinutes) * 60;
+    _firing.durationSeconds =
+        (hours ?? initialHours) * 3600 + (minutes ?? initialMinutes) * 60;
 
     notifyListeners();
   }
@@ -68,7 +72,8 @@ class ManageFiringUseCase extends ChangeNotifier {
     var initialHours = (_firing.cooldownSeconds / 3600).floor();
     var initialMinutes = (_firing.cooldownSeconds / 60 % 60).floor();
 
-    _firing.cooldownSeconds = (hours ?? initialHours) * 3600 + (minutes ?? initialMinutes) * 60;
+    _firing.cooldownSeconds =
+        (hours ?? initialHours) * 3600 + (minutes ?? initialMinutes) * 60;
 
     notifyListeners();
   }

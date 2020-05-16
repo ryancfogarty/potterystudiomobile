@@ -7,7 +7,8 @@ class FiringDto {
   int cooldownSeconds;
   String type;
 
-  FiringDto(String id, String start, int durationSeconds, int cooldownSeconds, String type) {
+  FiringDto(String id, String start, int durationSeconds, int cooldownSeconds,
+      String type) {
     this.id = id;
     this.start = start;
     this.durationSeconds = durationSeconds;

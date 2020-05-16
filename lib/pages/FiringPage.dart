@@ -6,10 +6,7 @@ import 'package:seven_spot_mobile/usecases/DeleteFiringUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetFiringUseCase.dart';
 
 class FiringPage extends StatefulWidget {
-  FiringPage({
-    Key key,
-    @required this.firingId
-  }) : super(key: key);
+  FiringPage({Key key, @required this.firingId}) : super(key: key);
 
   final String firingId;
 
@@ -18,7 +15,6 @@ class FiringPage extends StatefulWidget {
 }
 
 class _FiringPageState extends State<FiringPage> {
-
   bool _edited = false;
 
   @override
@@ -56,11 +52,10 @@ class _FiringPageState extends State<FiringPage> {
       builder: (context, useCase, _) {
         return Column(
           children: [
-            Consumer<GetFiringUseCase>(
-              builder: (context, useCase, _) {
-                return Text(useCase.firing?.start?.toIso8601String() ?? "Loading...");
-              }
-            ),
+            Consumer<GetFiringUseCase>(builder: (context, useCase, _) {
+              return Text(
+                  useCase.firing?.start?.toIso8601String() ?? "Loading...");
+            }),
             _delete(),
             _edit()
           ],
@@ -103,13 +98,17 @@ class _FiringPageState extends State<FiringPage> {
 
   void _deleteFiring() async {
     try {
-      await Provider.of<DeleteFiringUseCase>(context, listen: false).deleteFiring(widget.firingId);
+      await Provider.of<DeleteFiringUseCase>(context, listen: false)
+          .deleteFiring(widget.firingId);
       Navigator.of(context).pop(true);
     } catch (e) {}
   }
 
   void _editFiring() async {
-    var edited = await Navigator.push(context, MaterialPageRoute(builder: (context) => ManageFiringPage(firingId: widget.firingId)));
+    var edited = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ManageFiringPage(firingId: widget.firingId)));
 
     if (edited == true) {
       _getFiring();

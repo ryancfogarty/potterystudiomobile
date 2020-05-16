@@ -8,9 +8,11 @@ class FiringListInteractor extends ChangeNotifier {
   bool _loading = false;
 
   List<Firing> get firings => _firings;
+
   bool get loading => _loading;
 
   bool _includePast = false;
+
   bool get includePast => _includePast;
 
   FiringListInteractor(GetAllFiringsUseCase getAllFiringsUseCase) {

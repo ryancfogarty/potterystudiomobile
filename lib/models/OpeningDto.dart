@@ -11,7 +11,14 @@ class OpeningDto {
   List<UserDto> reservedUsers;
   bool loggedInUserReserved;
 
-  OpeningDto(String id, String start, int lengthSeconds, int size, List<String> reservedUserIds, bool loggedInUserReserved, List<UserDto> reservedUsers) {
+  OpeningDto(
+      String id,
+      String start,
+      int lengthSeconds,
+      int size,
+      List<String> reservedUserIds,
+      bool loggedInUserReserved,
+      List<UserDto> reservedUsers) {
     this.id = id;
     this.start = start;
     this.lengthSeconds = lengthSeconds;
@@ -24,8 +31,13 @@ class OpeningDto {
   Opening toModel() {
     var startDateTime = DateTime.parse(start);
 
-    return Opening(id, startDateTime, startDateTime.add(Duration(seconds: lengthSeconds)),
-        size, reservedUserIds, loggedInUserReserved,
+    return Opening(
+        id,
+        startDateTime,
+        startDateTime.add(Duration(seconds: lengthSeconds)),
+        size,
+        reservedUserIds,
+        loggedInUserReserved,
         reservedUsers.map((UserDto dto) => dto.toModel()).toList());
   }
 }

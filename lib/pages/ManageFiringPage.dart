@@ -10,10 +10,7 @@ import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
 import 'package:seven_spot_mobile/views/DurationPicker.dart';
 
 class ManageFiringPage extends StatefulWidget {
-  ManageFiringPage({
-    Key key,
-    this.firingId
-  }) : super(key: key);
+  ManageFiringPage({Key key, this.firingId}) : super(key: key);
 
   final String firingId;
 
@@ -39,7 +36,8 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
 
     if (!_isNewFiring) {
       try {
-        Provider.of<ManageFiringUseCase>(context, listen: false).getFiring(widget.firingId);
+        Provider.of<ManageFiringUseCase>(context, listen: false)
+            .getFiring(widget.firingId);
       } catch (e) {
         // todo: throw error and prompt refresh instead
         Navigator.pop(context);
@@ -63,10 +61,7 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
             );
           } else {
             return FloatingActionButton.extended(
-                onPressed: _save,
-                icon: Icon(Icons.save),
-                label: Text("Save")
-            );
+                onPressed: _save, icon: Icon(Icons.save), label: Text("Save"));
           }
         },
       ),
@@ -81,31 +76,26 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
   }
 
   Widget _body() {
-    return Consumer<ManageFiringUseCase>(
-        builder: (context, useCase, _) {
-          return Visibility(
-              visible: !useCase.loading,
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Container(height: 12.0),
-                    _start(),
-                    Container(height: 24.0),
-                    _firingDuration(),
-                    Container(height: 24.0),
-                    _cooldownDuration(),
-                    Container(height: 24.0),
-                    _type()
-                  ],
-                ),
-              ),
-              replacement: Center(
-                child: CircularProgressIndicator()
-              )
-          );
-        }
-    );
+    return Consumer<ManageFiringUseCase>(builder: (context, useCase, _) {
+      return Visibility(
+          visible: !useCase.loading,
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Container(height: 12.0),
+                _start(),
+                Container(height: 24.0),
+                _firingDuration(),
+                Container(height: 24.0),
+                _cooldownDuration(),
+                Container(height: 24.0),
+                _type()
+              ],
+            ),
+          ),
+          replacement: Center(child: CircularProgressIndicator()));
+    });
   }
 
   Widget _start() {
@@ -132,8 +122,10 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
           title: "Firing duration:",
           hours: hours,
           minutes: minutes,
-          onHoursChanged: (newHours) => useCase.updateDuration(newHours, minutes),
-          onMinutesChanged: (newMinutes) => useCase.updateDuration(hours, newMinutes % 60),
+          onHoursChanged: (newHours) =>
+              useCase.updateDuration(newHours, minutes),
+          onMinutesChanged: (newMinutes) =>
+              useCase.updateDuration(hours, newMinutes % 60),
         );
       },
     );
@@ -149,8 +141,10 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
           title: "Cooldown duration:",
           hours: hours,
           minutes: minutes,
-          onHoursChanged: (newHours) => useCase.updateCooldown(newHours, minutes),
-          onMinutesChanged: (newMinutes) => useCase.updateCooldown(hours, newMinutes % 60),
+          onHoursChanged: (newHours) =>
+              useCase.updateCooldown(newHours, minutes),
+          onMinutesChanged: (newMinutes) =>
+              useCase.updateCooldown(hours, newMinutes % 60),
         );
       },
     );
@@ -160,50 +154,49 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
     return Consumer<ManageFiringUseCase>(
       builder: (context, useCase, _) {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Type: ",
-              style: TextStyles().mediumRegularStyle,
-            ),
-            Row(
-              children: [
-                InkWell(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 12.0),
-                    child: Row(
-                      children: [
-                        Text("Bisque"),
-                        Radio(
-                          value: "BISQUE",
-                          groupValue: useCase.firing.type,
-                          onChanged: useCase.updateType,
-                        ),
-                      ],
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Type: ",
+                style: TextStyles().mediumRegularStyle,
+              ),
+              Row(
+                children: [
+                  InkWell(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Row(
+                        children: [
+                          Text("Bisque"),
+                          Radio(
+                            value: "BISQUE",
+                            groupValue: useCase.firing.type,
+                            onChanged: useCase.updateType,
+                          ),
+                        ],
+                      ),
                     ),
+                    onTap: () => useCase.updateType("BISQUE"),
                   ),
-                  onTap: () => useCase.updateType("BISQUE"),
-                ),
-                InkWell(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 12.0),
-                    child: Row(
-                      children: [
-                        Text("Glaze"),
-                        Radio(
-                          value: "GLAZE",
-                          groupValue: useCase.firing.type,
-                          onChanged: useCase.updateType,
-                        ),
-                      ],
+                  InkWell(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Row(
+                        children: [
+                          Text("Glaze"),
+                          Radio(
+                            value: "GLAZE",
+                            groupValue: useCase.firing.type,
+                            onChanged: useCase.updateType,
+                          ),
+                        ],
+                      ),
                     ),
+                    onTap: () => useCase.updateType("GLAZE"),
                   ),
-                  onTap: () => useCase.updateType("GLAZE"),
-                ),
-              ],
-            )
-          ]
-        );
+                ],
+              )
+            ]);
       },
     );
   }

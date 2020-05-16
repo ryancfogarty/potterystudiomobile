@@ -10,11 +10,8 @@ import 'package:seven_spot_mobile/usecases/ToggleReservationUseCase.dart';
 import 'package:seven_spot_mobile/views/ToggleButtonView.dart';
 
 class OpeningsList extends StatefulWidget {
-  OpeningsList({
-    Key key,
-    @required this.openings,
-    this.onRefresh
-  }) : super(key: key);
+  OpeningsList({Key key, @required this.openings, this.onRefresh})
+      : super(key: key);
 
   final Iterable<Opening> openings;
   final AsyncCallback onRefresh;
@@ -24,7 +21,8 @@ class OpeningsList extends StatefulWidget {
 }
 
 class _OpeningsListState extends State<OpeningsList> {
-  RefreshController _refreshController = RefreshController(initialRefresh: true);
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: true);
 
   void _onRefresh() async {
     try {
@@ -37,15 +35,13 @@ class _OpeningsListState extends State<OpeningsList> {
   }
 
   Widget _toggleButton() {
-    return Consumer<GetAllOpeningsUseCase>(
-      builder: (context, useCase, _) {
-        return ToggleButtonView(
-          title: "openings",
-          toggleOn: useCase.includePast,
-          onToggle: _togglePastOpeningsShown,
-        );
-      }
-    );
+    return Consumer<GetAllOpeningsUseCase>(builder: (context, useCase, _) {
+      return ToggleButtonView(
+        title: "openings",
+        toggleOn: useCase.includePast,
+        onToggle: _togglePastOpeningsShown,
+      );
+    });
   }
 
   void _togglePastOpeningsShown() {
@@ -58,23 +54,22 @@ class _OpeningsListState extends State<OpeningsList> {
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
-      onRefresh: _onRefresh,
-      controller: _refreshController,
-      child: ListView.builder(
-        itemBuilder: (buildContext, index) {
-          if (index == 0) {
-            return _toggleButton();
-          } else if (widget.openings.length == 0) {
-            return Center(child: Text("No openings to show"));
-          } else {
-            var opening = widget.openings.elementAt(index - 1);
+        onRefresh: _onRefresh,
+        controller: _refreshController,
+        child: ListView.builder(
+            itemBuilder: (buildContext, index) {
+              if (index == 0) {
+                return _toggleButton();
+              } else if (widget.openings.length == 0) {
+                return Center(child: Text("No openings to show"));
+              } else {
+                var opening = widget.openings.elementAt(index - 1);
 
-            return _openingCard(opening);
-          }
-        },
-        itemCount: widget.openings.length == 0 ? 2 : widget.openings.length + 1
-      )
-    );
+                return _openingCard(opening);
+              }
+            },
+            itemCount:
+                widget.openings.length == 0 ? 2 : widget.openings.length + 1));
   }
 
   Widget _openingCard(Opening opening) {
@@ -83,7 +78,9 @@ class _OpeningsListState extends State<OpeningsList> {
       color: Colors.white,
       child: InkWell(
         onTap: () async {
-          var shouldRefreshList = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => OpeningPage(openingId: opening.id)));
+          var shouldRefreshList = await Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) => OpeningPage(openingId: opening.id)));
 
           if (shouldRefreshList ?? false) {
             _refreshController.requestRefresh();
@@ -98,9 +95,8 @@ class _OpeningsListState extends State<OpeningsList> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "${DateFormatter().dd_MMMM.format(opening.start)} ${DateFormatter().HH_mm.format(opening.start)} - ${DateFormatter().HH_mm.format(opening.end)}",
-                    style: TextStyle(fontSize: 16.0)
-                  ),
+                      "${DateFormatter().dd_MMMM.format(opening.start)} ${DateFormatter().HH_mm.format(opening.start)} - ${DateFormatter().HH_mm.format(opening.end)}",
+                      style: TextStyle(fontSize: 16.0)),
                   Padding(
                     padding: const EdgeInsets.only(top: 4.0),
                     child: Text(
@@ -112,7 +108,8 @@ class _OpeningsListState extends State<OpeningsList> {
               ),
             ),
             Visibility(
-              visible: opening.loggedInUserReserved || opening.size > opening.reservedUserIds.length,
+              visible: opening.loggedInUserReserved ||
+                  opening.size > opening.reservedUserIds.length,
               child: InkResponse(
                 onTap: () => _toggleReservation(opening),
                 child: Consumer<ToggleReservationUseCase>(
@@ -120,17 +117,23 @@ class _OpeningsListState extends State<OpeningsList> {
                     return Padding(
                       padding: const EdgeInsets.only(left: 24.0, right: 24.0),
                       child: Visibility(
-                        visible: !useCase.openingLoadingIds.contains(opening.id),
+                        visible:
+                            !useCase.openingLoadingIds.contains(opening.id),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Column(
                               children: [
                                 Icon(
-                                    opening.loggedInUserReserved ? Icons.remove_circle : Icons.check_circle,
-                                    color: opening.loggedInUserReserved ? Colors.red : Colors.green
-                                ),
-                                Text(opening.loggedInUserReserved ? "Leave" : "Join")
+                                    opening.loggedInUserReserved
+                                        ? Icons.remove_circle
+                                        : Icons.check_circle,
+                                    color: opening.loggedInUserReserved
+                                        ? Colors.red
+                                        : Colors.green),
+                                Text(opening.loggedInUserReserved
+                                    ? "Leave"
+                                    : "Join")
                               ],
                             )
                           ],
@@ -149,7 +152,8 @@ class _OpeningsListState extends State<OpeningsList> {
   }
 
   void _toggleReservation(Opening opening) async {
-    ToggleReservationUseCase useCase = Provider.of<ToggleReservationUseCase>(context);
+    ToggleReservationUseCase useCase =
+        Provider.of<ToggleReservationUseCase>(context);
 
     try {
       await useCase.toggleReservationForOpening(opening);

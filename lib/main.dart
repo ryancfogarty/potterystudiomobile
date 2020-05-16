@@ -27,7 +27,6 @@ import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ToggleReservationUseCase.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
 
   var publicKeyString = await rootBundle.loadString('assets/public.pem');
@@ -39,7 +38,8 @@ void main() async {
   var createUserUseCase = CreateUserUseCase(authService, encrypter);
   var openingRepository = OpeningRepository();
   var userRepository = UserRepository();
-  var toggleReservationUseCase = ToggleReservationUseCaseImpl(openingRepository);
+  var toggleReservationUseCase =
+      ToggleReservationUseCaseImpl(openingRepository);
   var getUserUseCase = GetUserUseCaseImpl(userRepository);
   var getAllOpeningsUseCase = GetAllOpeningsUseCase();
   var getOpeningUseCase = GetOpeningUseCase(openingRepository);
@@ -56,56 +56,46 @@ void main() async {
 
   authService.autoSignIn();
 
-  return await runZoned<Future<Null>>(
-    () async {
-      runApp(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<AuthService>(
-              create: (_) => authService,
-            ),
-            Provider<CreateUserUseCase>(
-              create: (_) => createUserUseCase,
-            ),
-            ChangeNotifierProvider<ToggleReservationUseCase>(
-              create: (_) => toggleReservationUseCase
-            ),
-            ChangeNotifierProvider<GetUserUseCase>(
-              create: (_) => getUserUseCase
-            ),
-            ChangeNotifierProvider<GetOpeningUseCase>(
-              create: (_) => getOpeningUseCase,
-            ),
-            ChangeNotifierProvider<ManageOpeningUseCase>(
-              create: (_) => manageOpeningUseCase,
-            ),
-            ChangeNotifierProvider<DeleteOpeningUseCase>(
-              create: (_) => deleteOpeningUseCase,
-            ),
-            ChangeNotifierProvider<FiringListInteractor>(
-              create: (_) => firingListInteractor,
-            ),
-            Provider<DeleteUserUseCase>(
-              create: (_) => deleteUserUseCase
-            ),
-            ChangeNotifierProvider<GetFiringUseCase>(
-              create: (_) => getFiringUseCase,
-            ),
-            ChangeNotifierProvider<ManageFiringUseCase>(
-              create: (_) => manageFiringUseCase,
-            ),
-            ChangeNotifierProvider<DeleteFiringUseCase>(
-              create: (_) => deleteFiringUseCase,
-            ),
-            ChangeNotifierProvider<GetAllOpeningsUseCase>(
-              create: (_) => getAllOpeningsUseCase,
-            )
-          ],
-          child: MyApp()
+  return await runZoned<Future<Null>>(() async {
+    runApp(
+      MultiProvider(providers: [
+        ChangeNotifierProvider<AuthService>(
+          create: (_) => authService,
         ),
-      );
-    }
-  );
+        Provider<CreateUserUseCase>(
+          create: (_) => createUserUseCase,
+        ),
+        ChangeNotifierProvider<ToggleReservationUseCase>(
+            create: (_) => toggleReservationUseCase),
+        ChangeNotifierProvider<GetUserUseCase>(create: (_) => getUserUseCase),
+        ChangeNotifierProvider<GetOpeningUseCase>(
+          create: (_) => getOpeningUseCase,
+        ),
+        ChangeNotifierProvider<ManageOpeningUseCase>(
+          create: (_) => manageOpeningUseCase,
+        ),
+        ChangeNotifierProvider<DeleteOpeningUseCase>(
+          create: (_) => deleteOpeningUseCase,
+        ),
+        ChangeNotifierProvider<FiringListInteractor>(
+          create: (_) => firingListInteractor,
+        ),
+        Provider<DeleteUserUseCase>(create: (_) => deleteUserUseCase),
+        ChangeNotifierProvider<GetFiringUseCase>(
+          create: (_) => getFiringUseCase,
+        ),
+        ChangeNotifierProvider<ManageFiringUseCase>(
+          create: (_) => manageFiringUseCase,
+        ),
+        ChangeNotifierProvider<DeleteFiringUseCase>(
+          create: (_) => deleteFiringUseCase,
+        ),
+        ChangeNotifierProvider<GetAllOpeningsUseCase>(
+          create: (_) => getAllOpeningsUseCase,
+        )
+      ], child: MyApp()),
+    );
+  });
 }
 
 class MyApp extends StatefulWidget {
@@ -117,22 +107,18 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.lightBlue,
-        fontFamily: "Lato"
-      ),
-      home: Consumer<AuthService>(
-        builder: (context, auth, child) {
-          switch(auth.state) {
-            case AppState.REGISTERED:
-              return MainPage();
-            case AppState.AUTHENTICATED:
-              return CreateUserPage();
-            default:
-              return LoginPage();
-          }
-        },
-      )
-    );
+        theme: ThemeData(primarySwatch: Colors.lightBlue, fontFamily: "Lato"),
+        home: Consumer<AuthService>(
+          builder: (context, auth, child) {
+            switch (auth.state) {
+              case AppState.REGISTERED:
+                return MainPage();
+              case AppState.AUTHENTICATED:
+                return CreateUserPage();
+              default:
+                return LoginPage();
+            }
+          },
+        ));
   }
 }

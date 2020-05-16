@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
@@ -9,7 +11,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,27 +38,43 @@ class _LoginPageState extends State<LoginPage> {
               color: Colors.amber,
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 64.0),
-              child: Consumer<AuthService>(
-                builder: (context, service, _) {
-                  return Center(
-                    child: service.signingIn
-                        ? Text("Loading...")
-                        : FlatButton(
-                          color: Colors.white,
-                          onPressed: () => _loginWithGoogle(context),
-                          child: Text("Sign in with Google")),
-                  );
-                }
-              ),
-            ),
+                padding: const EdgeInsets.only(
+                    left: 16.0, right: 16.0, bottom: 64.0),
+                child: _googleSignInButton()),
           ],
         ),
       ),
     );
   }
 
-  Future<void> _loginWithGoogle(BuildContext context) async {
+  Widget _googleSignInButton() {
+    return RaisedButton(
+      onPressed: _loginWithGoogle,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      highlightElevation: 0,
+      child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+          child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image(
+                    image: AssetImage("assets/google_logo.png"), height: 35.0),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Consumer<AuthService>(builder: (context, service, _) {
+                    return Text(
+                        service.signingIn
+                            ? "Signing in..."
+                            : 'Sign in with Google',
+                        style: TextStyles().bigRegularStyle);
+                  }),
+                )
+              ])),
+    );
+  }
+
+  Future<void> _loginWithGoogle() async {
     try {
       final authService = Provider.of<AuthService>(context);
       await authService.signInWithGoogle();

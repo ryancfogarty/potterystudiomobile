@@ -5,6 +5,7 @@ class DeleteOpeningUseCase extends ChangeNotifier {
   OpeningRepository _repo;
 
   bool _deleting = false;
+
   bool get deleting => _deleting;
 
   DeleteOpeningUseCase(OpeningRepository repo) {

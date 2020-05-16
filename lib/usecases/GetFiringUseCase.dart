@@ -4,6 +4,7 @@ import 'package:seven_spot_mobile/repositories/FiringRepository.dart';
 
 class GetFiringUseCase extends ChangeNotifier {
   Firing _firing;
+
   Firing get firing => _firing;
 
   FiringRepository _repo;

@@ -15,7 +15,8 @@ class FiringsList extends StatefulWidget {
 }
 
 class _FiringListState extends State<FiringsList> {
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -61,9 +62,9 @@ class _FiringListState extends State<FiringsList> {
                     return _firingCard(firing);
                   }
                 },
-                itemCount: interactor.firings.length == 0 ? 2 : interactor.firings.length + 1
-            )
-        );
+                itemCount: interactor.firings.length == 0
+                    ? 2
+                    : interactor.firings.length + 1));
       },
     );
   }
@@ -81,7 +82,9 @@ class _FiringListState extends State<FiringsList> {
       color: Colors.white,
       child: InkWell(
         onTap: () async {
-          var shouldRefreshList = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => FiringPage(firingId: firing.id)));
+          var shouldRefreshList = await Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) => FiringPage(firingId: firing.id)));
 
           if (shouldRefreshList ?? false) {
             _refreshController.requestRefresh();
@@ -96,22 +99,18 @@ class _FiringListState extends State<FiringsList> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "${DateFormatter().dd_MMMM_HH_mm.format(firing.start)} - ${DateFormatter().dd_MMMM_HH_mm.format(firing.end)}",
-                    style: TextStyles().mediumRegularStyle
-                  ),
+                      "${DateFormatter().dd_MMMM_HH_mm.format(firing.start)} - ${DateFormatter().dd_MMMM_HH_mm.format(firing.end)}",
+                      style: TextStyles().mediumRegularStyle),
                   Text(
-                    "Done cooling down: ${DateFormatter().dd_MMMM.format(firing.cooldownEnd)} ${DateFormatter().HH_mm.format(firing.cooldownEnd)}",
-                    style: TextStyles().mediumRegularStyle
-                  ),
+                      "Done cooling down: ${DateFormatter().dd_MMMM.format(firing.cooldownEnd)} ${DateFormatter().HH_mm.format(firing.cooldownEnd)}",
+                      style: TextStyles().mediumRegularStyle),
                 ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                FiringTypeFormatter().format(firing.type),
-                style: TextStyles().mediumBoldStyle
-              ),
+              child: Text(FiringTypeFormatter().format(firing.type),
+                  style: TextStyles().mediumBoldStyle),
             ),
           ],
         ),

@@ -8,9 +8,11 @@ class Firing {
   String type;
 
   DateTime get end => start.add(Duration(seconds: durationSeconds));
+
   DateTime get cooldownEnd => end.add(Duration(seconds: cooldownSeconds));
 
-  Firing(String id, DateTime start, int durationSeconds, int cooldownSeconds, String type) {
+  Firing(String id, DateTime start, int durationSeconds, int cooldownSeconds,
+      String type) {
     this.id = id;
     this.start = start;
     this.durationSeconds = durationSeconds;
@@ -27,6 +29,7 @@ class Firing {
   }
 
   FiringDto toDto() {
-    return FiringDto(id, start.toIso8601String(), durationSeconds, cooldownSeconds, type);
+    return FiringDto(
+        id, start.toIso8601String(), durationSeconds, cooldownSeconds, type);
   }
 }

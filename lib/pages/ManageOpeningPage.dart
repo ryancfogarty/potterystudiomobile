@@ -9,10 +9,7 @@ import 'package:seven_spot_mobile/pages/DateTimeView.dart';
 import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
 
 class ManageOpeningPage extends StatefulWidget {
-  ManageOpeningPage({
-    Key key,
-    this.openingId
-  }) : super(key: key);
+  ManageOpeningPage({Key key, this.openingId}) : super(key: key);
 
   final String openingId;
 
@@ -37,7 +34,8 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
 
     if (!_isNewOpening) {
       try {
-        Provider.of<ManageOpeningUseCase>(context, listen: false).getOpening(widget.openingId);
+        Provider.of<ManageOpeningUseCase>(context, listen: false)
+            .getOpening(widget.openingId);
       } catch (e) {
         // todo: throw error and prompt refresh instead
         Navigator.pop(context);
@@ -60,11 +58,8 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
               child: CircularProgressIndicator(),
             );
           } else {
-           return FloatingActionButton.extended(
-             onPressed: _save,
-             icon: Icon(Icons.save),
-             label: Text("Save")
-           );
+            return FloatingActionButton.extended(
+                onPressed: _save, icon: Icon(Icons.save), label: Text("Save"));
           }
         },
       ),
@@ -72,12 +67,15 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
   }
 
   _save() async {
-    var response = await Provider.of<ManageOpeningUseCase>(context, listen: false).save();
+    var response =
+        await Provider.of<ManageOpeningUseCase>(context, listen: false).save();
 
     if (response == SaveResponse.SUCCESS) {
       Navigator.pop(context, true);
     } else if (response == SaveResponse.INVALID) {
-      var dialogDisplayer = defaultTargetPlatform == TargetPlatform.android ? showDialog : showCupertinoDialog;
+      var dialogDisplayer = defaultTargetPlatform == TargetPlatform.android
+          ? showDialog
+          : showCupertinoDialog;
 
       dialogDisplayer(
           context: context,
@@ -92,15 +90,13 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
                 )
               ],
             );
-          }
-      );
+          });
     }
   }
 
   Widget _body() {
-    return Consumer<ManageOpeningUseCase>(
-      builder: (context, useCase, _) {
-        return Visibility(
+    return Consumer<ManageOpeningUseCase>(builder: (context, useCase, _) {
+      return Visibility(
           visible: !useCase.loading,
           child: Padding(
             padding: EdgeInsets.all(8.0),
@@ -114,80 +110,73 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                      "Capacity:",
-                      style: TextStyles().mediumRegularStyle
-                    ),
-                    Container(
-                      width: 100,
-                      child: _size()
-                    ),
+                    Text("Capacity:", style: TextStyles().mediumRegularStyle),
+                    Container(width: 100, child: _size()),
                   ],
                 )
               ],
             ),
           ),
-          replacement: Center(child: CircularProgressIndicator())
-        );
-      }
-    );
+          replacement: Center(child: CircularProgressIndicator()));
+    });
   }
 
   Widget _start() {
-    return Consumer<ManageOpeningUseCase>(
-      builder: (context, useCase, _) {
-        return DateTimeView(
-          title: "Start:",
-          onDateChanged: useCase.updateStartDate,
-          onTimeChanged: useCase.updateStartTime,
-          dateTime: useCase.opening.start,
-          isValid: useCase.opening.start.difference(useCase.opening.end).inMilliseconds < 0,
-        );
-      }
-    );
+    return Consumer<ManageOpeningUseCase>(builder: (context, useCase, _) {
+      return DateTimeView(
+        title: "Start:",
+        onDateChanged: useCase.updateStartDate,
+        onTimeChanged: useCase.updateStartTime,
+        dateTime: useCase.opening.start,
+        isValid: useCase.opening.start
+                .difference(useCase.opening.end)
+                .inMilliseconds <
+            0,
+      );
+    });
   }
 
   Widget _end() {
-    return Consumer<ManageOpeningUseCase>(
-      builder: (context, useCase, _) {
-        return DateTimeView(
-          title: "End:",
-          onDateChanged: useCase.updateEndDate,
-          onTimeChanged: useCase.updateEndTime,
-          dateTime: useCase.opening.end,
-          isValid: useCase.opening.start.difference(useCase.opening.end).inMilliseconds < 0,
-        );
-      }
-    );
+    return Consumer<ManageOpeningUseCase>(builder: (context, useCase, _) {
+      return DateTimeView(
+        title: "End:",
+        onDateChanged: useCase.updateEndDate,
+        onTimeChanged: useCase.updateEndTime,
+        dateTime: useCase.opening.end,
+        isValid: useCase.opening.start
+                .difference(useCase.opening.end)
+                .inMilliseconds <
+            0,
+      );
+    });
   }
 
   Widget _size() {
-    return Consumer<ManageOpeningUseCase>(
-      builder: (context, useCase, _) {
-        if (_capacityTextController.text != useCase.opening.size.toString()) {
-          _capacityTextController.text = useCase.opening.size.toString();
-        }
-
-        _capacityTextController.selection = TextSelection.fromPosition(
-            TextPosition(offset: _capacityTextController.text.length));
-
-        return TextField(
-          controller: _capacityTextController,
-          decoration: new InputDecoration(
-            labelText: null,
-            isDense: true,
-          ),
-          keyboardType: TextInputType.number,
-          inputFormatters: <TextInputFormatter>[
-            WhitelistingTextInputFormatter.digitsOnly
-          ], // Only numbers can be entered
-          onChanged: (input) {
-            var capacity = num.tryParse(input) ?? 0;
-
-            useCase.updateSize(capacity);
-          },
-        );
+    return Consumer<ManageOpeningUseCase>(builder: (context, useCase, _) {
+      if (_capacityTextController.text != useCase.opening.size.toString()) {
+        _capacityTextController.text = useCase.opening.size.toString();
       }
-    );
+
+      _capacityTextController.selection = TextSelection.fromPosition(
+          TextPosition(offset: _capacityTextController.text.length));
+
+      return TextField(
+        controller: _capacityTextController,
+        decoration: new InputDecoration(
+          labelText: null,
+          isDense: true,
+        ),
+        keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          WhitelistingTextInputFormatter.digitsOnly
+        ],
+        // Only numbers can be entered
+        onChanged: (input) {
+          var capacity = num.tryParse(input) ?? 0;
+
+          useCase.updateSize(capacity);
+        },
+      );
+    });
   }
 }

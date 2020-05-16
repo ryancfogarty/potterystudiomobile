@@ -3,8 +3,8 @@ import 'package:seven_spot_mobile/models/Opening.dart';
 import 'package:seven_spot_mobile/repositories/OpeningRepository.dart';
 
 class GetOpeningUseCase extends ChangeNotifier {
-
   Opening _opening;
+
   Opening get opening => _opening;
 
   OpeningRepository _repo;

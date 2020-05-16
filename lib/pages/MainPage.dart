@@ -39,139 +39,129 @@ class _MainPageState extends State<MainPage> {
     var authService = Provider.of<AuthService>(context, listen: false);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Consumer<GetUserUseCase>(
+        appBar: AppBar(title: Consumer<GetUserUseCase>(
           builder: (context, useCase, child) {
             return Text(useCase.user?.companyName ?? "Loading...");
           },
-        )
-      ),
-      drawer: Drawer(
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
+        )),
+        drawer: Drawer(
+          child: ListView(
+            // Important: Remove any padding from the ListView.
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                child: Text('Pottery studio'),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+              ),
+              ListTile(
+                  leading: Icon(Icons.exit_to_app, color: Colors.black),
+                  title: Text("Sign out"),
+                  onTap: authService.signOutOfGoogle),
+              ListTile(
+                  leading: Icon(Icons.delete, color: Colors.black),
+                  title: Text("Delete my account"),
+                  onTap: () async {
+                    Navigator.of(context).pop();
+
+                    var dialogDisplayer =
+                        defaultTargetPlatform == TargetPlatform.android
+                            ? showDialog
+                            : showCupertinoDialog;
+
+                    dialogDisplayer(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text("Delete account"),
+                            content: Text(
+                                "Deleting your account will remove you from all reservations."),
+                            actions: [
+                              FlatButton(
+                                child: Text("Cancel"),
+                                onPressed: () => Navigator.of(context).pop(),
+                              ),
+                              FlatButton(
+                                color: Colors.red,
+                                child: Text("Delete"),
+                                onPressed: () async {
+                                  Navigator.of(context).pop();
+                                  var success =
+                                      await Provider.of<DeleteUserUseCase>(
+                                              context,
+                                              listen: false)
+                                          .invoke();
+
+                                  if (success) {
+                                    authService.signOutOfGoogle();
+                                  } else {
+                                    // todo: show error message asking user to contact admin
+                                  }
+                                },
+                              )
+                            ],
+                          );
+                        });
+                  }),
+              ListTile(title: Text("Become an admin (coming soon...)")),
+              ListTile(title: Text("Make a user an admin (coming soon...)"))
+            ],
+          ),
+        ),
+        bottomNavigationBar: _bottomNavBar(),
+        backgroundColor: Colors.white,
+        body: IndexedStack(
+          index: _currentIndex,
           children: <Widget>[
-            DrawerHeader(
-              child: Text('Pottery studio'),
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.exit_to_app,
-                color: Colors.black
-              ),
-              title: Text("Sign out"),
-              onTap: authService.signOutOfGoogle
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.delete,
-                color: Colors.black
-              ),
-              title: Text("Delete my account"),
-              onTap: () async {
-                Navigator.of(context).pop();
-
-                var dialogDisplayer = defaultTargetPlatform == TargetPlatform.android ? showDialog : showCupertinoDialog;
-
-                dialogDisplayer(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text("Delete account"),
-                        content: Text("Deleting your account will remove you from all reservations."),
-                        actions: [
-                          FlatButton(
-                            child: Text("Cancel"),
-                            onPressed: () => Navigator.of(context).pop(),
-                          ),
-                          FlatButton(
-                            color: Colors.red,
-                            child: Text("Delete"),
-                            onPressed: () async {
-                              Navigator.of(context).pop();
-                              var success = await Provider.of<DeleteUserUseCase>(context, listen: false).invoke();
-
-                              if (success) {
-                                authService.signOutOfGoogle();
-                              } else {
-                                // todo: show error message asking user to contact admin
-                              }
-                            },
-                          )
-                        ],
-                      );
-                    }
-                );
-              }
-            ),
-            ListTile(
-              title: Text("Become an admin (coming soon...)")
-            ),
-            ListTile(
-              title: Text("Make a user an admin (coming soon...)")
-            )
+            Consumer<GetAllOpeningsUseCase>(builder: (context, useCase, _) {
+              return OpeningsList(
+                  openings: useCase.openings,
+                  onRefresh:
+                      Provider.of<GetAllOpeningsUseCase>(context, listen: false)
+                          .invoke);
+            }),
+            FiringsList()
           ],
         ),
-      ),
-      bottomNavigationBar: _bottomNavBar(),
-      backgroundColor: Colors.white,
-      body: IndexedStack(
-        index: _currentIndex,
-        children: <Widget>[
-          Consumer<GetAllOpeningsUseCase>(
-            builder: (context, useCase, _) {
-              return OpeningsList(
-                openings: useCase.openings,
-                onRefresh: Provider.of<GetAllOpeningsUseCase>(context, listen: false).invoke
-              );
-            }
-          ),
-          FiringsList()
-        ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _onFabPressed,
-        icon: Icon(Icons.add),
-        label: Text("Add ${_currentIndex == 0 ? "Opening" : "Firing"}"),
-      )
-    );
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: _onFabPressed,
+          icon: Icon(Icons.add),
+          label: Text("Add ${_currentIndex == 0 ? "Opening" : "Firing"}"),
+        ));
   }
 
   void _onFabPressed() async {
     if (_currentIndex == 0) {
-      var shouldRefreshList = await Navigator.push(context, MaterialPageRoute(builder: (context) => ManageOpeningPage()));
+      var shouldRefreshList = await Navigator.push(context,
+          MaterialPageRoute(builder: (context) => ManageOpeningPage()));
 
-      if (shouldRefreshList ?? false) Provider.of<GetAllOpeningsUseCase>(context, listen: false).invoke();
+      if (shouldRefreshList ?? false)
+        Provider.of<GetAllOpeningsUseCase>(context, listen: false).invoke();
     } else {
-      var shouldRefreshList = await Navigator.push(context, MaterialPageRoute(builder: (context) => ManageFiringPage()));
+      var shouldRefreshList = await Navigator.push(
+          context, MaterialPageRoute(builder: (context) => ManageFiringPage()));
 
-      if (shouldRefreshList ?? false) Provider.of<FiringListInteractor>(context, listen: false).getAll();
+      if (shouldRefreshList ?? false)
+        Provider.of<FiringListInteractor>(context, listen: false).getAll();
     }
   }
 
   Widget _bottomNavBar() {
     return BottomNavigationBar(
-      items: [
-        BottomNavigationBarItem(
-          title: Text("Openings"),
-          icon: Icon(Icons.event_available)
-        ),
-        BottomNavigationBarItem(
-          title: Text("Firings"),
-          icon: Icon(Icons.whatshot)
-        )
-      ],
-      currentIndex: _currentIndex,
-      onTap: (idx) {
-        // todo: move to interactor: ChangeNotifier
-        setState(() {
-          _currentIndex = idx;
-        });
-      },
-      selectedItemColor: Colors.lightBlue
-    );
+        items: [
+          BottomNavigationBarItem(
+              title: Text("Openings"), icon: Icon(Icons.event_available)),
+          BottomNavigationBarItem(
+              title: Text("Firings"), icon: Icon(Icons.whatshot))
+        ],
+        currentIndex: _currentIndex,
+        onTap: (idx) {
+          // todo: move to interactor: ChangeNotifier
+          setState(() {
+            _currentIndex = idx;
+          });
+        },
+        selectedItemColor: Colors.lightBlue);
   }
 }

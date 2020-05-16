@@ -8,6 +8,7 @@ import 'package:seven_spot_mobile/services/AuthService.dart';
 
 class OpeningService {
   String _baseUrl = "https://us-central1-spot-629a6.cloudfunctions.net";
+
 //  String _baseUrl = "http://10.0.2.2:5001/spot-629a6/us-central1";
 
   Future<Iterable<OpeningDto>> getAll(bool includePast) async {
@@ -15,26 +16,33 @@ class OpeningService {
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/opening?includePast=$includePast";
-    var response = await http.get(url, headers: {
-      "Authorization": idToken.token
-    });
+    var response =
+        await http.get(url, headers: {"Authorization": idToken.token});
 
     printLongString(idToken.token);
     if (response.statusCode >= 400) throw Exception("Error");
 
     List openingsJson = json.decode(response.body);
-    return openingsJson.map((openingJson) => _jsonToDto(openingJson, currentUser.uid));
+    return openingsJson
+        .map((openingJson) => _jsonToDto(openingJson, currentUser.uid));
   }
 
   OpeningDto _jsonToDto(dynamic openingJson, String currentUserId) {
-    List<String> reservedUserIds = openingJson["reservedUserIds"].cast<String>();
+    List<String> reservedUserIds =
+        openingJson["reservedUserIds"].cast<String>();
     List<UserDto> reservedUserDtos = [
       for (var userJson in (openingJson["reservedUsers"] ?? []))
         UserDto(userJson["id"], userJson["companyName"], userJson["name"])
     ];
 
-    return OpeningDto(openingJson["id"], openingJson["start"], openingJson["lengthSeconds"],
-        openingJson["size"], reservedUserIds, reservedUserIds.contains(currentUserId), reservedUserDtos);
+    return OpeningDto(
+        openingJson["id"],
+        openingJson["start"],
+        openingJson["lengthSeconds"],
+        openingJson["size"],
+        reservedUserIds,
+        reservedUserIds.contains(currentUserId),
+        reservedUserDtos);
   }
 
   Future<OpeningDto> reserveOpening(String openingId) async {
@@ -42,9 +50,8 @@ class OpeningService {
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/opening/$openingId/reserve";
-    var response = await http.put(url, headers: {
-      "Authorization": idToken.token
-    });
+    var response =
+        await http.put(url, headers: {"Authorization": idToken.token});
 
     if (response.statusCode >= 400) throw Exception("Error");
 
@@ -57,9 +64,8 @@ class OpeningService {
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/opening/$openingId/reserve";
-    var response = await http.delete(url, headers: {
-      "Authorization": idToken.token
-    });
+    var response =
+        await http.delete(url, headers: {"Authorization": idToken.token});
 
     if (response.statusCode >= 400) throw Exception("Error");
 
@@ -72,9 +78,8 @@ class OpeningService {
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/opening/$openingId";
-    var response = await http.get(url, headers: {
-      "Authorization": idToken.token
-    });
+    var response =
+        await http.get(url, headers: {"Authorization": idToken.token});
 
     if (response.statusCode >= 400) throw Exception("Error");
 

@@ -8,10 +8,7 @@ import 'package:seven_spot_mobile/usecases/DeleteOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetOpeningUseCase.dart';
 
 class OpeningPage extends StatefulWidget {
-  OpeningPage({
-    Key key,
-    @required this.openingId
-  }) : super(key: key);
+  OpeningPage({Key key, @required this.openingId}) : super(key: key);
 
   final String openingId;
 
@@ -20,7 +17,6 @@ class OpeningPage extends StatefulWidget {
 }
 
 class _OpeningPageState extends State<OpeningPage> {
-
   bool _edited = false;
 
   @override
@@ -46,9 +42,7 @@ class _OpeningPageState extends State<OpeningPage> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Text("Opening")
-        ),
+        appBar: AppBar(title: Text("Opening")),
         body: _body(),
       ),
     );
@@ -72,41 +66,39 @@ class _OpeningPageState extends State<OpeningPage> {
             Row(
               children: [
                 Text("Start: ", style: TextStyles().mediumBoldStyle),
-                Text(opening != null ? DateFormatter().dd_MMMM_HH_mm.format(opening.start) : "Loading...")
+                Text(opening != null
+                    ? DateFormatter().dd_MMMM_HH_mm.format(opening.start)
+                    : "Loading...")
               ],
             ),
             Row(
               children: [
                 Text("End: ", style: TextStyles().mediumBoldStyle),
-                Text(opening != null ? DateFormatter().dd_MMMM_HH_mm.format(opening.end) : "Loading...")
+                Text(opening != null
+                    ? DateFormatter().dd_MMMM_HH_mm.format(opening.end)
+                    : "Loading...")
               ],
             ),
-            Text(
-              "Reserved users ($reserved)",
-              style: TextStyles().mediumBoldStyle
-            ),
+            Text("Reserved users ($reserved)",
+                style: TextStyles().mediumBoldStyle),
             Expanded(
               child: ListView.builder(
                   itemBuilder: (buildContext, index) {
                     var user = useCase.opening.reservedUsers.elementAt(index);
 
-                    return Card(child: Padding(
+                    return Card(
+                        child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(user.name),
                     ));
                   },
-                  itemCount: useCase.opening != null ? useCase.opening.reservedUsers.length : 0
-              ),
-              
+                  itemCount: useCase.opening != null
+                      ? useCase.opening.reservedUsers.length
+                      : 0),
             ),
             RaisedButton(
-              child: Text("Delete opening"),
-              onPressed: _deleteOpening
-            ),
-            RaisedButton(
-              child: Text("Edit opening"),
-              onPressed: _editOpening
-            )
+                child: Text("Delete opening"), onPressed: _deleteOpening),
+            RaisedButton(child: Text("Edit opening"), onPressed: _editOpening)
           ],
         );
       },
@@ -115,7 +107,8 @@ class _OpeningPageState extends State<OpeningPage> {
 
   void _deleteOpening() async {
     try {
-      await Provider.of<DeleteOpeningUseCase>(context, listen: false).deleteOpening(widget.openingId);
+      await Provider.of<DeleteOpeningUseCase>(context, listen: false)
+          .deleteOpening(widget.openingId);
       Navigator.pop(context, true);
     } catch (e) {
       // todo: show error
@@ -123,7 +116,11 @@ class _OpeningPageState extends State<OpeningPage> {
   }
 
   void _editOpening() async {
-    var edited = await Navigator.push(context, MaterialPageRoute(builder: (context) => ManageOpeningPage(openingId: widget.openingId)));
+    var edited = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                ManageOpeningPage(openingId: widget.openingId)));
 
     if (edited == true) {
       _getOpening();

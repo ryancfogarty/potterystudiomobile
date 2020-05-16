@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 class UserService {
   String _baseUrl = "https://us-central1-spot-629a6.cloudfunctions.net";
+
 //  String _baseUrl = "http://10.0.2.2:5001/spot-629a6/us-central1";
 
   Future<bool> createUser(String companyName, String companySecret) async {
@@ -21,12 +22,10 @@ class UserService {
     });
 
     var url = "$_baseUrl/api/user";
-    var response = await http.post(url, body: requestBody,
-      headers: {
-        "Authorization": idToken.token,
-        "Content-Type": "application/json"
-      }
-    );
+    var response = await http.post(url, body: requestBody, headers: {
+      "Authorization": idToken.token,
+      "Content-Type": "application/json"
+    });
 
     return response.statusCode >= 200 && response.statusCode < 300;
   }
@@ -36,8 +35,8 @@ class UserService {
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/user";
-    var response = await http.get(url,
-        headers: { "Authorization": idToken.token });
+    var response =
+        await http.get(url, headers: {"Authorization": idToken.token});
 
     if (response.statusCode != 200) throw Exception("Error");
 
@@ -50,8 +49,8 @@ class UserService {
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/user";
-    var response = await http.delete(url,
-        headers: { "Authorization": idToken.token });
+    var response =
+        await http.delete(url, headers: {"Authorization": idToken.token});
 
     if (response.statusCode != 204) throw Exception("Error");
   }

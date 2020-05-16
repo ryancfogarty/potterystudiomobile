@@ -4,6 +4,7 @@ import 'package:seven_spot_mobile/repositories/UserRepository.dart';
 
 abstract class GetUserUseCase extends ChangeNotifier {
   Future<void> getUser();
+
   User get user;
 }
 
@@ -11,6 +12,7 @@ class GetUserUseCaseImpl extends GetUserUseCase {
   UserRepository _repo;
 
   User _user;
+
   User get user => _user;
 
   GetUserUseCaseImpl(UserRepository repo) {

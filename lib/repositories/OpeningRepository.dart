@@ -19,7 +19,7 @@ class OpeningRepository {
 
     return openingDto.toModel();
   }
-  
+
   Future<Opening> reserveOpening(Opening opening) async {
     var openingDto = await _service.reserveOpening(opening.id);
 

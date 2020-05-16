@@ -4,14 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 
 class DurationPicker extends StatefulWidget {
-  DurationPicker({
-    Key key,
-    this.title,
-    this.hours,
-    this.minutes,
-    this.onHoursChanged,
-    this.onMinutesChanged
-  }) : super(key: key);
+  DurationPicker(
+      {Key key,
+      this.title,
+      this.hours,
+      this.minutes,
+      this.onHoursChanged,
+      this.onMinutesChanged})
+      : super(key: key);
 
   final String title;
   final int hours;
@@ -56,7 +56,8 @@ class _DurationPickerState extends State<DurationPicker> {
   }
 
   Widget _hoursWidget() {
-    if (widget.hours != null && _hoursController.text != widget.hours.toString()) {
+    if (widget.hours != null &&
+        _hoursController.text != widget.hours.toString()) {
       _hoursController.text = widget.hours.toString();
     }
 
@@ -68,10 +69,7 @@ class _DurationPickerState extends State<DurationPicker> {
       child: TextField(
         controller: _hoursController,
         decoration: new InputDecoration(
-            labelText: "hh",
-            isDense: true,
-            border: InputBorder.none
-        ),
+            labelText: "hh", isDense: true, border: InputBorder.none),
         keyboardType: TextInputType.number,
         inputFormatters: [
           WhitelistingTextInputFormatter.digitsOnly,
@@ -79,8 +77,8 @@ class _DurationPickerState extends State<DurationPicker> {
             if (newValue.text.length == 3) {
               return newValue.copyWith(
                   text: newValue.text.substring(1, 3),
-                  selection: TextSelection.fromPosition(TextPosition(offset: 2))
-              );
+                  selection:
+                      TextSelection.fromPosition(TextPosition(offset: 2)));
             }
 
             return newValue;
@@ -92,7 +90,8 @@ class _DurationPickerState extends State<DurationPicker> {
   }
 
   Widget _minutesWidget() {
-    if (widget.minutes != null && _minutesController.text != widget.minutes.toString()) {
+    if (widget.minutes != null &&
+        _minutesController.text != widget.minutes.toString()) {
       _minutesController.text = widget.minutes.toString();
     }
 
@@ -104,19 +103,16 @@ class _DurationPickerState extends State<DurationPicker> {
       child: TextField(
         controller: _minutesController,
         decoration: new InputDecoration(
-          labelText: "mm",
-          isDense: true,
-          border: InputBorder.none
-        ),
+            labelText: "mm", isDense: true, border: InputBorder.none),
         keyboardType: TextInputType.number,
         inputFormatters: [
           WhitelistingTextInputFormatter.digitsOnly,
           TextInputFormatter.withFunction((oldValue, newValue) {
             if (newValue.text.length == 3) {
               return newValue.copyWith(
-                text: newValue.text.substring(1, 3),
-                selection: TextSelection.fromPosition(TextPosition(offset: 2))
-              );
+                  text: newValue.text.substring(1, 3),
+                  selection:
+                      TextSelection.fromPosition(TextPosition(offset: 2)));
             }
 
             return newValue;

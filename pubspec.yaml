@@ -33,6 +33,7 @@ flutter:
 
   assets:
     - assets/public.pem
+    - assets/google_logo.png
   fonts:
     - family: Lato
       fonts:

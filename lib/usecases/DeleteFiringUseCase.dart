@@ -5,6 +5,7 @@ class DeleteFiringUseCase extends ChangeNotifier {
   FiringRepository _repo;
 
   bool _loading = false;
+
   bool get loading => _loading;
 
   DeleteFiringUseCase(FiringRepository repo) {

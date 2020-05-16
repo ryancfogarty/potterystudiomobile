@@ -3,12 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 
-
-enum AppState {
-  UNAUTHENTICATED,
-  AUTHENTICATED,
-  REGISTERED
-}
+enum AppState { UNAUTHENTICATED, AUTHENTICATED, REGISTERED }
 
 class AuthService extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -19,6 +14,7 @@ class AuthService extends ChangeNotifier {
   Future<FirebaseUser> get currentUser => _auth.currentUser();
 
   bool _signingIn = false;
+
   bool get signingIn => _signingIn;
 
   Future<void> autoSignIn() async {
@@ -43,7 +39,8 @@ class AuthService extends ChangeNotifier {
 
     try {
       final account = await _googleSignIn.signIn();
-      final GoogleSignInAuthentication authentication = await account.authentication;
+      final GoogleSignInAuthentication authentication =
+          await account.authentication;
 
       final AuthCredential creds = GoogleAuthProvider.getCredential(
         idToken: authentication.idToken,
@@ -57,7 +54,8 @@ class AuthService extends ChangeNotifier {
         throw Exception("Invalid user");
       }
 
-      state = await _isRegistered() ? AppState.REGISTERED : AppState.AUTHENTICATED;
+      state =
+          await _isRegistered() ? AppState.REGISTERED : AppState.AUTHENTICATED;
     } catch (e) {
       print(e);
     } finally {
@@ -80,6 +78,7 @@ class AuthService extends ChangeNotifier {
   }
 
   String _baseUrl = "https://us-central1-spot-629a6.cloudfunctions.net";
+
 //  String _baseUrl = "http://10.0.2.2:5001/spot-629a6/us-central1";
   Future<bool> _isRegistered() async {
     var idToken = await (await currentUser)?.getIdToken(refresh: true);
@@ -87,8 +86,8 @@ class AuthService extends ChangeNotifier {
     if (idToken == null) return false;
 
     var url = "$_baseUrl/api/user/valid";
-    var response = await http.get(url,
-        headers: { "Authorization": idToken.token });
+    var response =
+        await http.get(url, headers: {"Authorization": idToken.token});
 
     return response.statusCode == 200;
   }

@@ -6,6 +6,7 @@ abstract class ToggleReservationUseCase extends ChangeNotifier {
   Future<void> toggleReservationForOpening(Opening opening);
 
   String get openingLoadingId;
+
   Iterable<String> get openingLoadingIds;
 }
 
@@ -15,6 +16,7 @@ class ToggleReservationUseCaseImpl extends ToggleReservationUseCase {
   Set<String> _openingLoadingIds = new Set.of([]);
 
   String get openingLoadingId => _openingLoadingId;
+
   Iterable<String> get openingLoadingIds => _openingLoadingIds;
 
   ToggleReservationUseCaseImpl(OpeningRepository openingRepository) {

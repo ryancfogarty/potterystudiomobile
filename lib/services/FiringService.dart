@@ -6,6 +6,7 @@ import 'package:seven_spot_mobile/services/AuthService.dart';
 
 class FiringService {
   String _baseUrl = "https://us-central1-spot-629a6.cloudfunctions.net";
+
 //  String _baseUrl = "http://10.0.2.2:5001/spot-629a6/us-central1";
 
   Future<Iterable<FiringDto>> getAll(bool includePast) async {
@@ -13,21 +14,25 @@ class FiringService {
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/firing?includePast=$includePast";
-    var response = await http.get(url, headers: {
-      "Authorization": idToken.token
-    });
+    var response =
+        await http.get(url, headers: {"Authorization": idToken.token});
 
     print(response.statusCode);
 
-    if (response.statusCode >= 400) throw Exception("Error getAll firingService");
+    if (response.statusCode >= 400)
+      throw Exception("Error getAll firingService");
 
     List firingsJson = json.decode(response.body);
     return firingsJson.map((firingJson) => _jsonToDto(firingJson));
   }
 
   FiringDto _jsonToDto(dynamic firingJson) {
-    return FiringDto(firingJson["id"], firingJson["start"], firingJson["durationSeconds"],
-        firingJson["cooldownSeconds"], firingJson["type"]);
+    return FiringDto(
+        firingJson["id"],
+        firingJson["start"],
+        firingJson["durationSeconds"],
+        firingJson["cooldownSeconds"],
+        firingJson["type"]);
   }
 
   Future<FiringDto> getFiring(String firingId) async {
@@ -35,9 +40,8 @@ class FiringService {
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/firing/$firingId";
-    var response = await http.get(url, headers: {
-      "Authorization": idToken.token
-    });
+    var response =
+        await http.get(url, headers: {"Authorization": idToken.token});
 
     if (response.statusCode >= 400) throw Exception("Error");
 
@@ -65,7 +69,6 @@ class FiringService {
 
     print(response.statusCode);
     if (response.statusCode >= 400) throw Exception("Error");
-
 
     dynamic firingJson = json.decode(response.body);
     return _jsonToDto(firingJson);

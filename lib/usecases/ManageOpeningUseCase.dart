@@ -3,23 +3,21 @@ import 'package:flutter/widgets.dart';
 import 'package:seven_spot_mobile/models/Opening.dart';
 import 'package:seven_spot_mobile/repositories/OpeningRepository.dart';
 
-enum SaveResponse {
-  SUCCESS,
-  ERROR,
-  INVALID
-}
+enum SaveResponse { SUCCESS, ERROR, INVALID }
 
 class ManageOpeningUseCase extends ChangeNotifier {
-
   OpeningRepository _repo;
 
   Opening _opening = Opening.empty();
+
   Opening get opening => _opening;
 
   bool _saving = false;
+
   bool get saving => _saving;
 
   bool _loading = false;
+
   bool get loading => _loading;
 
   ManageOpeningUseCase(OpeningRepository repo) {
@@ -47,8 +45,8 @@ class ManageOpeningUseCase extends ChangeNotifier {
   }
 
   void updateStartDate(DateTime startDate) {
-    _opening.start = DateTime.utc(startDate.year, startDate.month, startDate.day,
-        _opening.start.hour, _opening.start.minute);
+    _opening.start = DateTime.utc(startDate.year, startDate.month,
+        startDate.day, _opening.start.hour, _opening.start.minute);
 
     notifyListeners();
   }

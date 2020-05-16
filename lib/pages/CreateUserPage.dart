@@ -26,29 +26,24 @@ class _CreateUserPageState extends State<CreateUserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(_usersName),
-            TextField(
-              controller: _companyNameController,
-              decoration: InputDecoration(
-                  hintText: "Enter your studio name"
-              ),
-            ),
-            TextField(
-              controller: _companySecretController,
-              decoration: InputDecoration(
-                hintText: "Enter your studio secret"
-              ),
-            ),
-            RaisedButton(
-              onPressed: () => _createUser(),
-              child: Text("Submit"),
-            )
-          ],
-        )
-      ),
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(_usersName),
+          TextField(
+            controller: _companyNameController,
+            decoration: InputDecoration(hintText: "Enter your studio name"),
+          ),
+          TextField(
+            controller: _companySecretController,
+            decoration: InputDecoration(hintText: "Enter your studio secret"),
+          ),
+          RaisedButton(
+            onPressed: () => _createUser(),
+            child: Text("Submit"),
+          )
+        ],
+      )),
     );
   }
 
@@ -68,6 +63,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
     print(_companySecretController.text);
     print(_companyNameController.text);
 
-    await useCase.createUser(_companySecretController.text, _companyNameController.text);
+    await useCase.createUser(
+        _companySecretController.text, _companyNameController.text);
   }
 }
