@@ -10,6 +10,9 @@ class OpeningDto {
   List<String> reservedUserIds;
   List<UserDto> reservedUsers;
   bool loggedInUserReserved;
+  bool recurring;
+  String recurrenceType;
+  int numberOfOccurrences;
 
   OpeningDto(
       String id,
@@ -18,7 +21,10 @@ class OpeningDto {
       int size,
       List<String> reservedUserIds,
       bool loggedInUserReserved,
-      List<UserDto> reservedUsers) {
+      List<UserDto> reservedUsers,
+      {bool recurring = false,
+      String recurrenceType = "DAILY",
+      int numberOfOccurrences = 1}) {
     this.id = id;
     this.start = start;
     this.lengthSeconds = lengthSeconds;
@@ -26,6 +32,9 @@ class OpeningDto {
     this.reservedUserIds = reservedUserIds;
     this.loggedInUserReserved = loggedInUserReserved;
     this.reservedUsers = reservedUsers;
+    this.recurring = recurring;
+    this.recurrenceType = recurrenceType;
+    this.numberOfOccurrences = numberOfOccurrences;
   }
 
   Opening toModel() {

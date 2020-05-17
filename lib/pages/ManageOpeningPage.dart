@@ -19,6 +19,8 @@ class ManageOpeningPage extends StatefulWidget {
 
 class _ManageOpeningPageState extends State<ManageOpeningPage> {
   TextEditingController _capacityTextController = new TextEditingController();
+  TextEditingController _occurrencesTextController =
+      new TextEditingController();
 
   bool get _isNewOpening => widget.openingId == null;
 
@@ -94,23 +96,27 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
     return Consumer<ManageOpeningUseCase>(builder: (context, useCase, _) {
       return Visibility(
           visible: !useCase.loading,
-          child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Container(height: 12.0),
-                _start(),
-                Container(height: 24.0),
-                _end(),
-                Container(height: 24.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text("Capacity:", style: TextStyles().mediumRegularStyle),
-                    Container(width: 100, child: _size()),
-                  ],
-                )
-              ],
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Container(height: 12.0),
+                  _start(),
+                  Container(height: 24.0),
+                  _end(),
+                  Container(height: 24.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Capacity:", style: TextStyles().mediumRegularStyle),
+                      Container(width: 100, child: _size()),
+                    ],
+                  ),
+                  Container(height: 24.0),
+                  _recurring(),
+                ],
+              ),
             ),
           ),
           replacement: Center(child: CircularProgressIndicator()));
@@ -174,5 +180,149 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
         },
       );
     });
+  }
+
+  Widget _recurring() {
+    if (!_isNewOpening) {
+      return SizedBox.shrink();
+    }
+
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text("Recurring:", style: TextStyles().mediumRegularStyle),
+            Consumer<ManageOpeningUseCase>(
+              builder: (context, useCase, _) {
+                return Checkbox(
+                    value: useCase.opening.recurring,
+                    onChanged: useCase.updateRecurring);
+              },
+            )
+          ],
+        ),
+        Consumer<ManageOpeningUseCase>(
+          builder: (context, useCase, _) {
+            return Visibility(
+              visible: useCase.opening.recurring,
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text("Recurrence pattern:",
+                          style: TextStyles().mediumRegularStyle),
+                    ],
+                  ),
+                  _recurrencePattern(),
+                  _numberOfOccurrences()
+                ],
+              ),
+            );
+          },
+        )
+      ],
+    );
+  }
+
+  Widget _recurrencePattern() {
+    return Consumer<ManageOpeningUseCase>(
+      builder: (context, useCase, _) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            InkWell(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Row(
+                  children: [
+                    Text("Daily"),
+                    Radio(
+                      value: "DAILY",
+                      groupValue: useCase.opening.recurrenceType,
+                      onChanged: useCase.updateRecurrenceType,
+                    ),
+                  ],
+                ),
+              ),
+              onTap: () => useCase.updateRecurrenceType("DAILY"),
+            ),
+            InkWell(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Row(
+                  children: [
+                    Text("Weekly"),
+                    Radio(
+                      value: "WEEKLY",
+                      groupValue: useCase.opening.recurrenceType,
+                      onChanged: useCase.updateRecurrenceType,
+                    ),
+                  ],
+                ),
+              ),
+              onTap: () => useCase.updateRecurrenceType("WEEKLY"),
+            ),
+            InkWell(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Row(
+                  children: [
+                    Text("Monthly"),
+                    Radio(
+                      value: "MONTHLY",
+                      groupValue: useCase.opening.recurrenceType,
+                      onChanged: useCase.updateRecurrenceType,
+                    ),
+                  ],
+                ),
+              ),
+              onTap: () => useCase.updateRecurrenceType("MONTHLY"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _numberOfOccurrences() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text("Number of occurrences:", style: TextStyles().mediumRegularStyle),
+        Container(
+            width: 100,
+            child:
+                Consumer<ManageOpeningUseCase>(builder: (context, useCase, _) {
+              if (_occurrencesTextController.text !=
+                  useCase.opening.numberOfOccurrences.toString()) {
+                _occurrencesTextController.text =
+                    useCase.opening.numberOfOccurrences.toString();
+              }
+
+              _occurrencesTextController.selection = TextSelection.fromPosition(
+                  TextPosition(offset: _occurrencesTextController.text.length));
+
+              return TextField(
+                controller: _occurrencesTextController,
+                decoration: new InputDecoration(
+                  labelText: null,
+                  isDense: true,
+                ),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  WhitelistingTextInputFormatter.digitsOnly
+                ],
+                // Only numbers can be entered
+                onChanged: (input) {
+                  var occurrences = num.tryParse(input) ?? 0;
+
+                  useCase.updateNumberOfOccurrences(occurrences);
+                },
+              );
+            })),
+      ],
+    );
   }
 }

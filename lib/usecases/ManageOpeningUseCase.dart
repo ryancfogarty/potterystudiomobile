@@ -103,4 +103,19 @@ class ManageOpeningUseCase extends ChangeNotifier {
 
     return response;
   }
+
+  void updateRecurrenceType(String newType) {
+    _opening.recurrenceType = newType;
+    notifyListeners();
+  }
+
+  void updateRecurring(bool recurring) {
+    _opening.recurring = recurring;
+    notifyListeners();
+  }
+
+  void updateNumberOfOccurrences(int occurrences) {
+    _opening.numberOfOccurrences = occurrences;
+    notifyListeners();
+  }
 }

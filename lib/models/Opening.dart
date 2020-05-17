@@ -10,6 +10,9 @@ class Opening {
   List<String> reservedUserIds;
   bool loggedInUserReserved;
   List<User> reservedUsers;
+  bool recurring = false;
+  String recurrenceType = "DAILY";
+  int numberOfOccurrences = 1;
 
   Opening.empty() {
     var now = DateTime.now();
@@ -43,6 +46,9 @@ class Opening {
         size,
         reservedUserIds,
         loggedInUserReserved,
-        [for (User user in (reservedUsers ?? [])) user.toDto()]);
+        [for (User user in (reservedUsers ?? [])) user.toDto()],
+        numberOfOccurrences: numberOfOccurrences,
+        recurring: recurring,
+        recurrenceType: recurrenceType);
   }
 }

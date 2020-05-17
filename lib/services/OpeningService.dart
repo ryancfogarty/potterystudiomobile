@@ -91,11 +91,17 @@ class OpeningService {
     var currentUser = await AuthService().currentUser;
     var idToken = await currentUser.getIdToken(refresh: true);
 
+    var occurrences = {
+      "numberOfOccurrences": openingDto.numberOfOccurrences,
+      "type": openingDto.recurrenceType
+    };
+
     var url = "$_baseUrl/api/opening";
     var requestBody = json.encode({
       "start": openingDto.start,
       "lengthSeconds": openingDto.lengthSeconds,
-      "size": openingDto.size
+      "size": openingDto.size,
+      "recurrence": openingDto.recurring ? occurrences : null
     });
     var response = await http.post(url, body: requestBody, headers: {
       "Authorization": idToken.token,
