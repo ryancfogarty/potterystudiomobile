@@ -14,34 +14,34 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).accentColor,
+      backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Text(
-                    "Pottery Studio",
-                    style: TextStyles().bigBoldStyle,
-                  ),
-                  Text("v1.0.0")
-                ],
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      "Pottery Studio",
+                      style: TextStyles().bigBoldStyle,
+                    ),
+                    Text("(Beta)")
+                  ],
+                ),
               ),
-            ),
-            Icon(
-              Icons.whatshot,
-              size: 200,
-              color: Colors.amber,
-            ),
-            Padding(
-                padding: const EdgeInsets.only(
-                    left: 16.0, right: 16.0, bottom: 64.0),
-                child: _googleSignInButton()),
-          ],
+              Image(
+                  image: AssetImage("assets/ic_launcher.png"),
+                  width: 128.0,
+                  color: Theme.of(context).primaryColor),
+              Padding(
+                  padding: const EdgeInsets.only(
+                      left: 16.0, right: 16.0, bottom: 64.0),
+                  child: _googleSignInButton()),
+            ],
+          ),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
 import 'package:seven_spot_mobile/models/Opening.dart';
 import 'package:seven_spot_mobile/pages/FiringsList.dart';
@@ -50,7 +51,15 @@ class _MainPageState extends State<MainPage> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               DrawerHeader(
-                child: Text('Pottery studio'),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Image(
+                        image: AssetImage("assets/ic_launcher.png"), width: 32),
+                    Text("Pottery studio", style: TextStyles().bigRegularStyle),
+                    Text("Beta", style: TextStyles().smallRegularStyle),
+                  ],
+                ),
                 decoration: BoxDecoration(
                   color: Colors.blue,
                 ),
