@@ -73,11 +73,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
     if (response == SaveResponse.SUCCESS) {
       Navigator.pop(context, true);
     } else if (response == SaveResponse.INVALID) {
-      var dialogDisplayer = defaultTargetPlatform == TargetPlatform.android
-          ? showDialog
-          : showCupertinoDialog;
-
-      dialogDisplayer(
+      showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(

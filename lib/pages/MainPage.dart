@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
@@ -74,12 +73,7 @@ class _MainPageState extends State<MainPage> {
                   onTap: () async {
                     Navigator.of(context).pop();
 
-                    var dialogDisplayer =
-                        defaultTargetPlatform == TargetPlatform.android
-                            ? showDialog
-                            : showCupertinoDialog;
-
-                    dialogDisplayer(
+                    showDialog(
                         context: context,
                         builder: (context) {
                           return AlertDialog(
