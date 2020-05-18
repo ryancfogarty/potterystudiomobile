@@ -62,7 +62,7 @@ void main() async {
         ChangeNotifierProvider<AuthService>(
           create: (_) => authService,
         ),
-        Provider<CreateUserUseCase>(
+        ChangeNotifierProvider<CreateUserUseCase>(
           create: (_) => createUserUseCase,
         ),
         ChangeNotifierProvider<ToggleReservationUseCase>(
