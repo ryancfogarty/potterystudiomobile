@@ -20,11 +20,14 @@ class GetUserUseCaseImpl extends GetUserUseCase {
   }
 
   Future<void> getUser() async {
-    try {
-      _user = await _repo.getUser();
-      notifyListeners();
-    } catch (e) {
-      print(e);
-    }
+    _clear();
+
+    _user = await _repo.getUser();
+    notifyListeners();
+  }
+
+  void _clear() {
+    _user = null;
+    notifyListeners();
   }
 }

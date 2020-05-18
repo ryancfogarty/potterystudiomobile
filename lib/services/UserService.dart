@@ -41,7 +41,8 @@ class UserService {
     if (response.statusCode != 200) throw Exception("Error");
 
     var userJson = json.decode(response.body);
-    return UserDto(userJson["id"], userJson["companyName"], userJson["name"]);
+    return UserDto(userJson["id"], userJson["companyName"], userJson["name"],
+        userJson["isAdmin"] ?? false);
   }
 
   Future<void> deleteUser() async {

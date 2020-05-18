@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
-import 'package:seven_spot_mobile/models/Opening.dart';
 import 'package:seven_spot_mobile/pages/FiringsList.dart';
 import 'package:seven_spot_mobile/pages/ManageFiringPage.dart';
 import 'package:seven_spot_mobile/pages/ManageOpeningPage.dart';
@@ -20,7 +19,6 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
-  Iterable<Opening> _openings = Iterable.empty();
 
   @override
   void initState() {
@@ -29,9 +27,36 @@ class _MainPageState extends State<MainPage> {
     Future.delayed(Duration.zero, _getUser);
   }
 
-  _getUser() {
-    var useCase = Provider.of<GetUserUseCase>(context, listen: false);
-    useCase.getUser();
+  _getUser() async {
+    try {
+      await Provider.of<GetUserUseCase>(context, listen: false).getUser();
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("Error"),
+              content: Text("An error occurred while fetching your details."),
+              actions: [
+                FlatButton(
+                  child: Text("Sign out"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Provider.of<AuthService>(context, listen: false)
+                        .signOutOfGoogle();
+                  },
+                ),
+                FlatButton(
+                  child: Text("Retry"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _getUser();
+                  },
+                ),
+              ],
+            );
+          });
+    }
   }
 
   @override
@@ -127,11 +152,17 @@ class _MainPageState extends State<MainPage> {
             FiringsList()
           ],
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: _onFabPressed,
-          icon: Icon(Icons.add),
-          label: Text("Add ${_currentIndex == 0 ? "Opening" : "Firing"}"),
-        ));
+        floatingActionButton:
+            Consumer<GetUserUseCase>(builder: (context, useCase, _) {
+          return Visibility(
+            visible: useCase.user?.isAdmin ?? false,
+            child: FloatingActionButton.extended(
+              onPressed: _onFabPressed,
+              icon: Icon(Icons.add),
+              label: Text("Add ${_currentIndex == 0 ? "Opening" : "Firing"}"),
+            ),
+          );
+        }));
   }
 
   void _onFabPressed() async {
