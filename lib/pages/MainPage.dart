@@ -79,7 +79,9 @@ class _MainPageState extends State<MainPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Image(
-                        image: AssetImage("assets/ic_launcher.png"), width: 32),
+                        image: AssetImage("assets/ic_launcher.png"),
+                        width: 32,
+                        color: Colors.black),
                     Text("Pottery studio", style: TextStyles().bigRegularStyle),
                     Text("Beta", style: TextStyles().smallRegularStyle),
                   ],
