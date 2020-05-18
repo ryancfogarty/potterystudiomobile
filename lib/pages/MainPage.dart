@@ -133,7 +133,6 @@ class _MainPageState extends State<MainPage> {
                         });
                   }),
               ListTile(title: Text("Become an admin (coming soon...)")),
-              ListTile(title: Text("Make a user an admin (coming soon...)"))
             ],
           ),
         ),
