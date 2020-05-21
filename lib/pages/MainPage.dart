@@ -7,6 +7,7 @@ import 'package:seven_spot_mobile/pages/FiringsList.dart';
 import 'package:seven_spot_mobile/pages/ManageFiringPage.dart';
 import 'package:seven_spot_mobile/pages/ManageOpeningPage.dart';
 import 'package:seven_spot_mobile/pages/OpeningsList.dart';
+import 'package:seven_spot_mobile/pages/RegisterAsAdminPage.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/usecases/DeleteUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetAllOpeningsUseCase.dart';
@@ -134,7 +135,13 @@ class _MainPageState extends State<MainPage> {
                           );
                         });
                   }),
-              ListTile(title: Text("Become an admin (coming soon...)")),
+              ListTile(
+                  leading: Icon(Icons.person, color: Colors.black),
+                  title: Text("Register as admin"),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RegisterAsAdminPage()))),
             ],
           ),
         ),

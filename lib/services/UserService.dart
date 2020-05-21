@@ -51,4 +51,19 @@ class UserService {
 
     if (response.statusCode != 204) throw Exception("Error");
   }
+
+  Future<void> registerAsAdmin(String adminCode) async {
+    var currentUser = await AuthService().currentUser;
+    var idToken = await currentUser.getIdToken(refresh: true);
+
+    var requestBody = json.encode({"adminCode": adminCode});
+    var url = "$_baseUrl/api/user/admin";
+
+    var response = await http.put(url, body: requestBody, headers: {
+      "Authorization": idToken.token,
+      "Content-Type": "application/json"
+    });
+
+    if (response.statusCode != 200) throw Exception("Error");
+  }
 }

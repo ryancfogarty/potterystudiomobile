@@ -24,6 +24,7 @@ import 'package:seven_spot_mobile/usecases/GetOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ManageFiringUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
+import 'package:seven_spot_mobile/usecases/RegisterAsAdminUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ToggleReservationUseCase.dart';
 
 void main() async {
@@ -53,6 +54,7 @@ void main() async {
   var getFiringUseCase = GetFiringUseCase(firingRepository);
   var manageFiringUseCase = ManageFiringUseCase(firingRepository);
   var deleteFiringUseCase = DeleteFiringUseCase(firingRepository);
+  var registerAsAdminUseCase = RegisterAsAdminUseCase(userRepository, getUserUseCase);
 
   authService.autoSignIn();
 
@@ -92,6 +94,9 @@ void main() async {
         ),
         ChangeNotifierProvider<GetAllOpeningsUseCase>(
           create: (_) => getAllOpeningsUseCase,
+        ),
+        ChangeNotifierProvider<RegisterAsAdminUseCase>(
+          create: (_) => registerAsAdminUseCase
         )
       ], child: MyApp()),
     );

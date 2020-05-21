@@ -21,4 +21,8 @@ class UserRepository {
   Future<void> deleteUser() async {
     return await _service.deleteUser();
   }
+
+  Future<void> registerAsAdmin(String adminCode) async {
+    return await _service.registerAsAdmin(adminCode);
+  }
 }
