@@ -21,9 +21,6 @@ class _FiringStatusState extends State<FiringStatus> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text("${FiringTypeFormatter().format(widget.firing.type)} firing",
-            style: TextStyles().bigRegularStyle),
-        Divider(height: 16.0, thickness: 1.0, color: Colors.black12),
         _row("Start", widget.firing.start),
         Divider(height: 16.0, thickness: 1.0, color: Colors.black12),
         _row("End", widget.firing.end),

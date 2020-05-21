@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/common/FiringTypeFormatter.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/pages/ManageFiringPage.dart';
 import 'package:seven_spot_mobile/usecases/DeleteFiringUseCase.dart';
@@ -42,7 +43,11 @@ class _FiringPageState extends State<FiringPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Firing"),
+          title: Consumer<GetFiringUseCase>(builder: (context, useCase, _) {
+            return Text(useCase.firing != null
+                ? "${FiringTypeFormatter().format(useCase.firing.type)} firing"
+                : "Loading...");
+          }),
         ),
         body: _body(),
       ),
