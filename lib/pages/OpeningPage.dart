@@ -41,7 +41,6 @@ class _OpeningPageState extends State<OpeningPage> {
         return Future(() => false);
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(title: Text("Opening")),
         body: _body(),
       ),
@@ -49,60 +48,114 @@ class _OpeningPageState extends State<OpeningPage> {
   }
 
   Widget _body() {
-    return Consumer<GetOpeningUseCase>(
-      builder: (context, useCase, child) {
-        var opening = useCase.opening;
-        var reserved;
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Consumer<GetOpeningUseCase>(
+        builder: (context, useCase, child) {
+          var opening = useCase.opening;
+          var reserved;
 
-        if (opening != null) {
-          reserved = "${opening.reservedUserIds.length}/${opening.size}";
-        } else {
-          reserved = "loading...";
-        }
+          if (opening != null) {
+            reserved = "${opening.reservedUserIds.length}/${opening.size}";
+          } else {
+            reserved = "loading...";
+          }
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text("Start: ", style: TextStyles().mediumBoldStyle),
-                Text(opening != null
-                    ? DateFormatter().dd_MMMM_HH_mm.format(opening.start)
-                    : "Loading...")
-              ],
-            ),
-            Row(
-              children: [
-                Text("End: ", style: TextStyles().mediumBoldStyle),
-                Text(opening != null
-                    ? DateFormatter().dd_MMMM_HH_mm.format(opening.end)
-                    : "Loading...")
-              ],
-            ),
-            Text("Reserved users ($reserved)",
-                style: TextStyles().mediumBoldStyle),
-            Expanded(
-              child: ListView.builder(
-                  itemBuilder: (buildContext, index) {
-                    var user = useCase.opening.reservedUsers.elementAt(index);
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                      opening != null
+                          ? DateFormatter()
+                              .formatDateTimeRange(opening.start, opening.end)
+                          : "Loading...",
+                      style: TextStyles().bigRegularStyle)
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text("Reserved users ($reserved)",
+                    style: TextStyles().bigRegularStyle),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(height: 1.0, color: Colors.black12),
+              ),
+              Expanded(
+                child: ListView.separated(
+                    separatorBuilder: (context, i) =>
+                        Divider(height: 1, color: Colors.black12),
+                    itemBuilder: (buildContext, index) {
+                      var user = useCase.opening.reservedUsers.elementAt(index);
 
-                    return Card(
+                      return Container(
                         child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(user.name),
-                    ));
-                  },
-                  itemCount: useCase.opening != null
-                      ? useCase.opening.reservedUsers.length
-                      : 0),
-            ),
-            RaisedButton(
-                child: Text("Delete opening"), onPressed: _deleteOpening),
-            RaisedButton(child: Text("Edit opening"), onPressed: _editOpening)
-          ],
-        );
-      },
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(
+                            user.name,
+                            style: TextStyles().mediumRegularStyle,
+                          ),
+                        ),
+                      );
+                    },
+                    itemCount: useCase.opening != null
+                        ? useCase.opening.reservedUsers.length
+                        : 0),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  FlatButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                        side: BorderSide(color: Theme.of(context).accentColor)),
+                    onPressed: _editOpening,
+                    child: Text(
+                      "Edit opening",
+                      style: TextStyles()
+                          .mediumRegularStyle
+                          .copyWith(color: Theme.of(context).accentColor),
+                    ),
+                  ),
+                  _deleteButton()
+                ],
+              )
+            ],
+          );
+        },
+      ),
     );
+  }
+
+  Widget _deleteButton() {
+    return Consumer<DeleteOpeningUseCase>(
+        builder: (context, deleteOpeningUseCase, _) {
+      return Visibility(
+        visible: !deleteOpeningUseCase.deleting,
+        replacement: Column(
+          children: <Widget>[
+            CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).errorColor)),
+          ],
+        ),
+        child: FlatButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+                side: BorderSide(color: Theme.of(context).errorColor)),
+            onPressed: _deleteOpening,
+            child: Text(
+              "Delete opening",
+              style: TextStyles()
+                  .mediumRegularStyle
+                  .copyWith(color: Theme.of(context).errorColor),
+            )),
+      );
+    });
   }
 
   void _deleteOpening() async {

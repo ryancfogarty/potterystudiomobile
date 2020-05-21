@@ -21,6 +21,7 @@ dependencies:
   numberpicker: ^1.2.0
   encrypt: ^4.0.0
   pointycastle: ^1.0.2
+  flutter_countdown_timer: ^1.1.0
 
 dev_dependencies:
   flutter_test:

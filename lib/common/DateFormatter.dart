@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DateFormatter {
@@ -20,4 +21,20 @@ class DateFormatter {
 
   // ignore: non_constant_identifier_names
   final EEE_dd_MMMM_y = DateFormat("EEE dd MMMM y");
+
+  String formatDateTimeRange(DateTime start, DateTime end) {
+    if (start.day == end.day && start.month == end.month && start.year == end.year) {
+      return "${dd_MMMM.format(start)} ${HH_mm.format(start)} - ${HH_mm.format(end)}";
+    } else {
+      return "${dd_MMMM_HH_mm.format(start)} - ${dd_MMMM_HH_mm.format(end)}";
+    }
+  }
+
+  String formatTimeRange(DateTime start, DateTime end) {
+    return "${HH_mm.format(start)} - ${HH_mm.format(end)}";
+  }
+
+  String formatDateRange(DateTime start, DateTime end) {
+    return "${dd_MMMM.format(start)} - ${dd_MMMM.format(end)}";
+  }
 }

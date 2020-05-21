@@ -54,7 +54,8 @@ void main() async {
   var getFiringUseCase = GetFiringUseCase(firingRepository);
   var manageFiringUseCase = ManageFiringUseCase(firingRepository);
   var deleteFiringUseCase = DeleteFiringUseCase(firingRepository);
-  var registerAsAdminUseCase = RegisterAsAdminUseCase(userRepository, getUserUseCase);
+  var registerAsAdminUseCase =
+      RegisterAsAdminUseCase(userRepository, getUserUseCase);
 
   authService.autoSignIn();
 
@@ -96,8 +97,7 @@ void main() async {
           create: (_) => getAllOpeningsUseCase,
         ),
         ChangeNotifierProvider<RegisterAsAdminUseCase>(
-          create: (_) => registerAsAdminUseCase
-        )
+            create: (_) => registerAsAdminUseCase)
       ], child: MyApp()),
     );
   });
@@ -112,7 +112,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData(primarySwatch: Colors.lightBlue, fontFamily: "Lato"),
+        theme: ThemeData(
+            primarySwatch: Colors.lightBlue,
+            fontFamily: "Lato",
+            backgroundColor: Color.fromARGB(0xff, 0xf8, 0xf8, 0xf8)),
         home: Consumer<AuthService>(
           builder: (context, auth, child) {
             switch (auth.state) {

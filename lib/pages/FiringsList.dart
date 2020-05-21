@@ -37,9 +37,10 @@ class _FiringListState extends State<FiringsList> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<FiringListInteractor>(
-      builder: (context, interactor, _) {
-        return SmartRefresher(
+    return Scaffold(
+      body: Consumer<FiringListInteractor>(
+        builder: (context, interactor, _) {
+          return SmartRefresher(
             onRefresh: _onRefresh,
             controller: _refreshController,
             child: ListView.builder(
@@ -64,8 +65,10 @@ class _FiringListState extends State<FiringsList> {
                 },
                 itemCount: interactor.firings.length == 0
                     ? 2
-                    : interactor.firings.length + 1));
-      },
+                    : interactor.firings.length + 1),
+          );
+        },
+      ),
     );
   }
 
@@ -99,7 +102,8 @@ class _FiringListState extends State<FiringsList> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                      "${DateFormatter().dd_MMMM_HH_mm.format(firing.start)} - ${DateFormatter().dd_MMMM_HH_mm.format(firing.end)}",
+                      DateFormatter()
+                          .formatDateTimeRange(firing.start, firing.end),
                       style: TextStyles().mediumRegularStyle),
                   Text(
                       "Done cooling down: ${DateFormatter().dd_MMMM.format(firing.cooldownEnd)} ${DateFormatter().HH_mm.format(firing.cooldownEnd)}",

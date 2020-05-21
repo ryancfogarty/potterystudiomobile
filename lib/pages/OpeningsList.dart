@@ -53,23 +53,26 @@ class _OpeningsListState extends State<OpeningsList> {
 
   @override
   Widget build(BuildContext context) {
-    return SmartRefresher(
-        onRefresh: _onRefresh,
-        controller: _refreshController,
-        child: ListView.builder(
-            itemBuilder: (buildContext, index) {
-              if (index == 0) {
-                return _toggleButton();
-              } else if (widget.openings.length == 0) {
-                return Center(child: Text("No openings to show"));
-              } else {
-                var opening = widget.openings.elementAt(index - 1);
+    return Scaffold(
+      body: SmartRefresher(
+          onRefresh: _onRefresh,
+          controller: _refreshController,
+          child: ListView.builder(
+              itemBuilder: (buildContext, index) {
+                if (index == 0) {
+                  return _toggleButton();
+                } else if (widget.openings.length == 0) {
+                  return Center(child: Text("No openings to show"));
+                } else {
+                  var opening = widget.openings.elementAt(index - 1);
 
-                return _openingCard(opening);
-              }
-            },
-            itemCount:
-                widget.openings.length == 0 ? 2 : widget.openings.length + 1));
+                  return _openingCard(opening);
+                }
+              },
+              itemCount: widget.openings.length == 0
+                  ? 2
+                  : widget.openings.length + 1)),
+    );
   }
 
   Widget _openingCard(Opening opening) {

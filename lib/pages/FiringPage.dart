@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/pages/ManageFiringPage.dart';
 import 'package:seven_spot_mobile/usecases/DeleteFiringUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetFiringUseCase.dart';
+import 'package:seven_spot_mobile/views/FiringStatus.dart';
 
 class FiringPage extends StatefulWidget {
   FiringPage({Key key, @required this.firingId}) : super(key: key);
@@ -48,19 +50,30 @@ class _FiringPageState extends State<FiringPage> {
   }
 
   Widget _body() {
-    return Consumer<GetFiringUseCase>(
-      builder: (context, useCase, _) {
-        return Column(
-          children: [
-            Consumer<GetFiringUseCase>(builder: (context, useCase, _) {
-              return Text(
-                  useCase.firing?.start?.toIso8601String() ?? "Loading...");
-            }),
-            _delete(),
-            _edit()
-          ],
-        );
-      },
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Consumer<GetFiringUseCase>(
+        builder: (context, useCase, _) {
+          return Column(
+            children: [
+              Expanded(
+                child:
+                    Consumer<GetFiringUseCase>(builder: (context, useCase, _) {
+                  var firing = useCase.firing;
+
+                  if (firing == null) {
+                    return Center(child: CircularProgressIndicator());
+                  } else {
+                    return FiringStatus(firing: firing);
+                  }
+                }),
+              ),
+              _edit(),
+              _delete()
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -68,31 +81,52 @@ class _FiringPageState extends State<FiringPage> {
     return Consumer<DeleteFiringUseCase>(
       builder: (context, useCase, _) {
         return Visibility(
-          visible: useCase.loading,
-          child: CircularProgressIndicator(),
-          replacement: Card(
-            child: InkWell(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text("Delete"),
-              ),
-              onTap: _deleteFiring,
+            visible: !useCase.loading,
+            replacement: Column(
+              children: <Widget>[
+                CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).errorColor)),
+              ],
             ),
-          ),
-        );
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                FlatButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4.0),
+                      side: BorderSide(color: Theme.of(context).errorColor)),
+                  onPressed: _deleteFiring,
+                  child: Text(
+                    "Delete firing",
+                    style: TextStyles()
+                        .mediumRegularStyle
+                        .copyWith(color: Theme.of(context).errorColor),
+                  ),
+                ),
+              ],
+            ));
       },
     );
   }
 
   Widget _edit() {
-    return Card(
-      child: InkWell(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text("Edit"),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        FlatButton(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              side: BorderSide(color: Theme.of(context).accentColor)),
+          onPressed: _editFiring,
+          child: Text(
+            "Edit firing",
+            style: TextStyles()
+                .mediumRegularStyle
+                .copyWith(color: Theme.of(context).accentColor),
+          ),
         ),
-        onTap: _editFiring,
-      ),
+      ],
     );
   }
 
