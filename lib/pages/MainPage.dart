@@ -83,8 +83,17 @@ class _MainPageState extends State<MainPage> {
                         image: AssetImage("assets/ic_launcher.png"),
                         width: 32,
                         color: Colors.black),
-                    Text("Pottery studio", style: TextStyles().bigRegularStyle),
-                    Text("Beta", style: TextStyles().smallRegularStyle),
+                    Text("Pottery studio (beta)",
+                        style: TextStyles().bigRegularStyle),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Consumer<GetUserUseCase>(
+                        builder: (context, useCase, _) {
+                          return Text(useCase.user?.name ?? "Loading...",
+                              style: TextStyles().mediumRegularStyle);
+                        },
+                      ),
+                    )
                   ],
                 ),
                 decoration: BoxDecoration(

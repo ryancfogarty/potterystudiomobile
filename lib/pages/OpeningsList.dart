@@ -61,17 +61,19 @@ class _OpeningsListState extends State<OpeningsList> {
               itemBuilder: (buildContext, index) {
                 if (index == 0) {
                   return _toggleButton();
-                } else if (widget.openings.length == 0) {
+                } else if (widget.openings.length == 0 && index == 1) {
                   return Center(child: Text("No openings to show"));
-                } else {
+                } else if (index < widget.openings.length + 1) {
                   var opening = widget.openings.elementAt(index - 1);
 
                   return _openingCard(opening);
+                } else {
+                  return Container(height: 72.0); // padding bottom of list
                 }
               },
               itemCount: widget.openings.length == 0
-                  ? 2
-                  : widget.openings.length + 1)),
+                  ? 3
+                  : widget.openings.length + 2)),
     );
   }
 

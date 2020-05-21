@@ -55,17 +55,19 @@ class _FiringListState extends State<FiringsList> {
                         );
                       },
                     );
-                  } else if (interactor.firings.length == 0) {
+                  } else if (interactor.firings.length == 0 && index == 1) {
                     return Center(child: Text("No firings to show"));
-                  } else {
+                  } else if (index < interactor.firings.length + 1) {
                     var firing = interactor.firings.elementAt(index - 1);
 
                     return _firingCard(firing);
+                  } else {
+                    return Container(height: 72.0); // padding for bottom of list
                   }
                 },
                 itemCount: interactor.firings.length == 0
-                    ? 2
-                    : interactor.firings.length + 1),
+                    ? 3
+                    : interactor.firings.length + 2),
           );
         },
       ),
