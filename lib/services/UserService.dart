@@ -10,16 +10,12 @@ class UserService {
 
 //  String _baseUrl = "http://10.0.2.2:5001/spot-629a6/us-central1";
 
-  Future<bool> createUser(
-      String companyName, String companySecret, String displayName) async {
+  Future<bool> createUser(String studioCode, String displayName) async {
     var currentUser = await AuthService().currentUser;
     var idToken = await currentUser.getIdToken(refresh: true);
 
-    var requestBody = json.encode({
-      "name": displayName,
-      "companySecret": companySecret,
-      "companyName": companyName
-    });
+    var requestBody =
+        json.encode({"name": displayName, "studioCode": studioCode});
 
     var url = "$_baseUrl/api/user";
     var response = await http.post(url, body: requestBody, headers: {
@@ -41,7 +37,7 @@ class UserService {
     if (response.statusCode != 200) throw Exception("Error");
 
     var userJson = json.decode(response.body);
-    return UserDto(userJson["id"], userJson["companyName"], userJson["name"],
+    return UserDto(userJson["id"], userJson["studioName"], userJson["name"],
         userJson["isAdmin"] ?? false);
   }
 

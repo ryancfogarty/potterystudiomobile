@@ -66,7 +66,7 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
         appBar: AppBar(title: Consumer<GetUserUseCase>(
           builder: (context, useCase, child) {
-            return Text(useCase.user?.companyName ?? "Loading...");
+            return Text(useCase.user?.studioName ?? "Loading...");
           },
         )),
         drawer: Drawer(

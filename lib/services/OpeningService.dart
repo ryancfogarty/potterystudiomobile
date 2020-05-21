@@ -32,7 +32,7 @@ class OpeningService {
         openingJson["reservedUserIds"].cast<String>();
     List<UserDto> reservedUserDtos = [
       for (var userJson in (openingJson["reservedUsers"] ?? []))
-        UserDto(userJson["id"], userJson["companyName"], userJson["name"],
+        UserDto(userJson["id"], userJson["studioName"], userJson["name"],
             userJson["isAdmin"] ?? false)
     ];
 

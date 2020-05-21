@@ -11,8 +11,7 @@ class CreateUserPage extends StatefulWidget {
 
 class _CreateUserPageState extends State<CreateUserPage> {
   final _usersNameController = TextEditingController();
-  final _companyNameController = TextEditingController();
-  final _companySecretController = TextEditingController();
+  final _studioCodeController = TextEditingController();
 
   @override
   void initState() {
@@ -42,19 +41,13 @@ class _CreateUserPageState extends State<CreateUserPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                        "To register with a studio, enter the studio name and secret code."),
+                        "To register with your studio, enter the studio code."),
                     TextField(
                         controller: _usersNameController,
-                        decoration: InputDecoration(hintText: "Display name")),
+                        decoration: InputDecoration(labelText: "Display name")),
                     TextField(
-                      controller: _companyNameController,
-                      decoration:
-                          InputDecoration(hintText: "Enter your studio name"),
-                    ),
-                    TextField(
-                      controller: _companySecretController,
-                      decoration:
-                          InputDecoration(hintText: "Enter your studio secret"),
+                      controller: _studioCodeController,
+                      decoration: InputDecoration(labelText: "Studio code"),
                     ),
                     _submitButton()
                   ],
@@ -100,7 +93,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
   void _createUser() async {
     var useCase = Provider.of<CreateUserUseCase>(context);
 
-    await useCase.createUser(_companySecretController.text,
-        _companyNameController.text, _usersNameController.text);
+    await useCase.createUser(
+        _studioCodeController.text, _usersNameController.text);
   }
 }

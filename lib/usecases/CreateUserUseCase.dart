@@ -18,16 +18,12 @@ class CreateUserUseCase extends ChangeNotifier {
     _encrypter = encrypter;
   }
 
-  Future<void> createUser(
-      String companySecret, String companyName, String displayName) async {
+  Future<void> createUser(String studioCode, String displayName) async {
     _loading = true;
     notifyListeners();
 
     try {
-      var encryptedCompanySecret = _encrypter.encrypt(companySecret).base64;
-
-      var success = await _repo.createUser(
-          encryptedCompanySecret, companyName, displayName);
+      var success = await _repo.createUser(studioCode, displayName);
 
       if (success) {
         _authService.updateState(AppState.REGISTERED);
