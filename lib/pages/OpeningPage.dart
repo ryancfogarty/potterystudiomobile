@@ -6,6 +6,7 @@ import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/pages/ManageOpeningPage.dart';
 import 'package:seven_spot_mobile/usecases/DeleteOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetOpeningUseCase.dart';
+import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
 
 class OpeningPage extends StatefulWidget {
   OpeningPage({Key key, @required this.openingId}) : super(key: key);
@@ -85,9 +86,7 @@ class _OpeningPageState extends State<OpeningPage> {
                 child: Container(height: 1.0, color: Colors.black12),
               ),
               Expanded(
-                child: ListView.separated(
-                    separatorBuilder: (context, i) =>
-                        Divider(height: 1, color: Colors.black12),
+                child: ListView.builder(
                     itemBuilder: (buildContext, index) {
                       var user = useCase.opening.reservedUsers.elementAt(index);
 
@@ -109,18 +108,7 @@ class _OpeningPageState extends State<OpeningPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  FlatButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4.0),
-                        side: BorderSide(color: Theme.of(context).accentColor)),
-                    onPressed: _editOpening,
-                    child: Text(
-                      "Edit opening",
-                      style: TextStyles()
-                          .mediumRegularStyle
-                          .copyWith(color: Theme.of(context).accentColor),
-                    ),
-                  ),
+                  _editButton(),
                   _deleteButton()
                 ],
               )
@@ -131,31 +119,56 @@ class _OpeningPageState extends State<OpeningPage> {
     );
   }
 
-  Widget _deleteButton() {
-    return Consumer<DeleteOpeningUseCase>(
-        builder: (context, deleteOpeningUseCase, _) {
-      return Visibility(
-        visible: !deleteOpeningUseCase.deleting,
-        replacement: Column(
-          children: <Widget>[
-            CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                    Theme.of(context).errorColor)),
-          ],
+  Widget _editButton() {
+    var getUserUseCase = Provider.of<GetUserUseCase>(context);
+
+    return Visibility(
+      visible: getUserUseCase.user?.isAdmin ?? true,
+      child: FlatButton(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4.0),
+            side: BorderSide(color: Theme.of(context).accentColor)),
+        onPressed: _editOpening,
+        child: Text(
+          "Edit opening",
+          style: TextStyles()
+              .mediumRegularStyle
+              .copyWith(color: Theme.of(context).accentColor),
         ),
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4.0),
-                side: BorderSide(color: Theme.of(context).errorColor)),
-            onPressed: _deleteOpening,
-            child: Text(
-              "Delete opening",
-              style: TextStyles()
-                  .mediumRegularStyle
-                  .copyWith(color: Theme.of(context).errorColor),
-            )),
-      );
-    });
+      ),
+    );
+  }
+
+  Widget _deleteButton() {
+    var getUserUseCase = Provider.of<GetUserUseCase>(context);
+
+    return Visibility(
+      visible: getUserUseCase.user?.isAdmin ?? true,
+      child: Consumer<DeleteOpeningUseCase>(
+          builder: (context, deleteOpeningUseCase, _) {
+        return Visibility(
+          visible: !deleteOpeningUseCase.deleting,
+          replacement: Column(
+            children: <Widget>[
+              CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).errorColor)),
+            ],
+          ),
+          child: FlatButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                  side: BorderSide(color: Theme.of(context).errorColor)),
+              onPressed: _deleteOpening,
+              child: Text(
+                "Delete opening",
+                style: TextStyles()
+                    .mediumRegularStyle
+                    .copyWith(color: Theme.of(context).errorColor),
+              )),
+        );
+      }),
+    );
   }
 
   void _deleteOpening() async {

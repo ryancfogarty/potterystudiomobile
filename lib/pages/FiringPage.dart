@@ -6,6 +6,7 @@ import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/pages/ManageFiringPage.dart';
 import 'package:seven_spot_mobile/usecases/DeleteFiringUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetFiringUseCase.dart';
+import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
 import 'package:seven_spot_mobile/views/FiringStatus.dart';
 
 class FiringPage extends StatefulWidget {
@@ -46,7 +47,7 @@ class _FiringPageState extends State<FiringPage> {
           title: Consumer<GetFiringUseCase>(builder: (context, useCase, _) {
             return Text(useCase.firing != null
                 ? "${FiringTypeFormatter().format(useCase.firing.type)} firing"
-                : "Loading...");
+                : "");
           }),
         ),
         body: _body(),
@@ -83,55 +84,65 @@ class _FiringPageState extends State<FiringPage> {
   }
 
   Widget _delete() {
-    return Consumer<DeleteFiringUseCase>(
-      builder: (context, useCase, _) {
-        return Visibility(
-            visible: !useCase.loading,
-            replacement: Column(
-              children: <Widget>[
-                CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                        Theme.of(context).errorColor)),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                FlatButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4.0),
-                      side: BorderSide(color: Theme.of(context).errorColor)),
-                  onPressed: _deleteFiring,
-                  child: Text(
-                    "Delete firing",
-                    style: TextStyles()
-                        .mediumRegularStyle
-                        .copyWith(color: Theme.of(context).errorColor),
+    var getUserUseCase = Provider.of<GetUserUseCase>(context);
+
+    return Visibility(
+      visible: getUserUseCase.user?.isAdmin ?? true,
+      child: Consumer<DeleteFiringUseCase>(
+        builder: (context, useCase, _) {
+          return Visibility(
+              visible: !useCase.loading,
+              replacement: Column(
+                children: <Widget>[
+                  CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).errorColor)),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  FlatButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                        side: BorderSide(color: Theme.of(context).errorColor)),
+                    onPressed: _deleteFiring,
+                    child: Text(
+                      "Delete firing",
+                      style: TextStyles()
+                          .mediumRegularStyle
+                          .copyWith(color: Theme.of(context).errorColor),
+                    ),
                   ),
-                ),
-              ],
-            ));
-      },
+                ],
+              ));
+        },
+      ),
     );
   }
 
   Widget _edit() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        FlatButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4.0),
-              side: BorderSide(color: Theme.of(context).accentColor)),
-          onPressed: _editFiring,
-          child: Text(
-            "Edit firing",
-            style: TextStyles()
-                .mediumRegularStyle
-                .copyWith(color: Theme.of(context).accentColor),
+    var getUserUseCase = Provider.of<GetUserUseCase>(context);
+
+    return Visibility(
+      visible: getUserUseCase.user?.isAdmin ?? true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          FlatButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+                side: BorderSide(color: Theme.of(context).accentColor)),
+            onPressed: _editFiring,
+            child: Text(
+              "Edit firing",
+              style: TextStyles()
+                  .mediumRegularStyle
+                  .copyWith(color: Theme.of(context).accentColor),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
