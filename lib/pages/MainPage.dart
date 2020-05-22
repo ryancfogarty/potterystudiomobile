@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
@@ -151,6 +152,46 @@ class _MainPageState extends State<MainPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => RegisterAsAdminPage()))),
+              Consumer<GetUserUseCase>(builder: (context, getUserUseCase, _) {
+                return Visibility(
+                  visible: getUserUseCase.user?.isAdmin ?? false,
+                  child: ListTile(
+                      leading: Icon(Icons.home, color: Colors.black),
+                      title: Text(
+                          "Studio code: ${getUserUseCase.user?.studioCode} (tap to copy)"),
+                      onTap: () async {
+                        Navigator.of(context).pop();
+
+                        await Clipboard.setData(ClipboardData(
+                            text: getUserUseCase.user?.studioCode));
+
+                        final snackBar =
+                            SnackBar(content: Text('Copied to Clipboard'));
+
+                        Scaffold.of(context).showSnackBar(snackBar);
+                      }),
+                );
+              }),
+              Consumer<GetUserUseCase>(builder: (context, getUserUseCase, _) {
+                return Visibility(
+                  visible: getUserUseCase.user?.isAdmin ?? false,
+                  child: ListTile(
+                      leading: Icon(Icons.book, color: Colors.black),
+                      title: Text(
+                          "Admin code: ${getUserUseCase.user?.studioAdminCode} (tap to copy)"),
+                      onTap: () async {
+                        Navigator.of(context).pop();
+
+                        await Clipboard.setData(ClipboardData(
+                            text: getUserUseCase.user?.studioAdminCode));
+
+                        final snackBar =
+                            SnackBar(content: Text('Copied to Clipboard'));
+
+                        Scaffold.of(context).showSnackBar(snackBar);
+                      }),
+                );
+              })
             ],
           ),
         ),
