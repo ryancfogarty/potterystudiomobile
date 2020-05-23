@@ -5,14 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
-import 'package:seven_spot_mobile/pages/CreateUserPage.dart';
+import 'package:seven_spot_mobile/pages/CreateAccountPage.dart';
 import 'package:seven_spot_mobile/pages/LoginPage.dart';
 import 'package:seven_spot_mobile/pages/MainPage.dart';
 import 'package:seven_spot_mobile/repositories/FiringRepository.dart';
 import 'package:seven_spot_mobile/repositories/OpeningRepository.dart';
+import 'package:seven_spot_mobile/repositories/StudioRepository.dart';
 import 'package:seven_spot_mobile/repositories/UserRepository.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/services/FiringService.dart';
+import 'package:seven_spot_mobile/services/StudioService.dart';
+import 'package:seven_spot_mobile/usecases/CreateStudioUseCase.dart';
 import 'package:seven_spot_mobile/usecases/CreateUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/DeleteFiringUseCase.dart';
 import 'package:seven_spot_mobile/usecases/DeleteOpeningUseCase.dart';
@@ -56,6 +59,9 @@ void main() async {
   var deleteFiringUseCase = DeleteFiringUseCase(firingRepository);
   var registerAsAdminUseCase =
       RegisterAsAdminUseCase(userRepository, getUserUseCase);
+  var studioService = StudioService();
+  var studioRepository = StudioRepository(studioService);
+  var createStudioUseCase = CreateStudioUseCase(studioRepository, authService);
 
   authService.autoSignIn();
 
@@ -97,7 +103,10 @@ void main() async {
           create: (_) => getAllOpeningsUseCase,
         ),
         ChangeNotifierProvider<RegisterAsAdminUseCase>(
-            create: (_) => registerAsAdminUseCase)
+            create: (_) => registerAsAdminUseCase),
+        ChangeNotifierProvider<CreateStudioUseCase>(
+          create: (_) => createStudioUseCase,
+        )
       ], child: MyApp()),
     );
   });
@@ -122,7 +131,7 @@ class _MyAppState extends State<MyApp> {
               case AppState.REGISTERED:
                 return MainPage();
               case AppState.AUTHENTICATED:
-                return CreateUserPage();
+                return CreateAccountPage();
               default:
                 return LoginPage();
             }

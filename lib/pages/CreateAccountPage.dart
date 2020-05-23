@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
+import 'package:seven_spot_mobile/usecases/CreateStudioUseCase.dart';
 import 'package:seven_spot_mobile/usecases/CreateUserUseCase.dart';
 
-class CreateUserPage extends StatefulWidget {
+class CreateAccountPage extends StatefulWidget {
   @override
-  _CreateUserPageState createState() => _CreateUserPageState();
+  _CreateAccountPageState createState() => _CreateAccountPageState();
 }
 
-class _CreateUserPageState extends State<CreateUserPage> {
+class _CreateAccountPageState extends State<CreateAccountPage> {
   final _usersNameController = TextEditingController();
   final _studioCodeController = TextEditingController();
+  final _studioNameController = TextEditingController();
 
   @override
   void initState() {
@@ -34,27 +36,36 @@ class _CreateUserPageState extends State<CreateUserPage> {
               )),
           title: Text("Create account"),
         ),
-        body: Center(
+        body: SingleChildScrollView(
             child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                        "To register with your studio, enter the studio code."),
                     TextField(
                         controller: _usersNameController,
                         decoration: InputDecoration(labelText: "Display name")),
+                    Container(height: 96.0),
+                    Text(
+                        "To register with an existing studio, enter the studio code."),
                     TextField(
                       controller: _studioCodeController,
                       decoration: InputDecoration(labelText: "Studio code"),
                     ),
-                    _submitButton()
+                    _createUserButton(),
+                    Container(height: 48.0),
+                    Text(
+                        "Or, to create a new studio, enter your desired studio name."),
+                    TextField(
+                      controller: _studioNameController,
+                      decoration: InputDecoration(labelText: "Studio name"),
+                    ),
+                    _createStudioButton()
                   ],
                 ))));
   }
 
-  Widget _submitButton() {
+  Widget _createUserButton() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Consumer<CreateUserUseCase>(builder: (context, useCase, _) {
@@ -64,9 +75,33 @@ class _CreateUserPageState extends State<CreateUserPage> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4.0),
                 side: BorderSide(color: Theme.of(context).accentColor)),
-            onPressed: () => _createUser(),
+            onPressed: _createUser,
             child: Text(
-              "Submit",
+              "Create account",
+              style: TextStyles()
+                  .mediumRegularStyle
+                  .copyWith(color: Theme.of(context).accentColor),
+            ),
+          ),
+          replacement: CircularProgressIndicator(),
+        );
+      }),
+    );
+  }
+
+  Widget _createStudioButton() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Consumer<CreateStudioUseCase>(builder: (context, useCase, _) {
+        return Visibility(
+          visible: !useCase.loading,
+          child: FlatButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+                side: BorderSide(color: Theme.of(context).accentColor)),
+            onPressed: _createStudio,
+            child: Text(
+              "Create studio",
               style: TextStyles()
                   .mediumRegularStyle
                   .copyWith(color: Theme.of(context).accentColor),
@@ -95,5 +130,12 @@ class _CreateUserPageState extends State<CreateUserPage> {
 
     await useCase.createUser(
         _studioCodeController.text, _usersNameController.text);
+  }
+
+  void _createStudio() async {
+    var useCase = Provider.of<CreateStudioUseCase>(context);
+
+    await useCase.createStudio(
+        _usersNameController.text, _studioNameController.text);
   }
 }
