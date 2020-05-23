@@ -47,15 +47,30 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                         decoration: InputDecoration(labelText: "Display name")),
                     Container(height: 96.0),
                     Text(
-                        "To register with an existing studio, enter the studio code."),
+                      "To register with an existing studio, enter the studio code and click \"Create account\".",
+                      style: TextStyles().mediumRegularStyle,
+                    ),
                     TextField(
                       controller: _studioCodeController,
                       decoration: InputDecoration(labelText: "Studio code"),
                     ),
                     _createUserButton(),
                     Container(height: 48.0),
-                    Text(
-                        "Or, to create a new studio, enter your desired studio name."),
+                    RichText(
+                      text: TextSpan(
+                          style: TextStyles()
+                              .bigRegularStyle
+                              .apply(color: Colors.black),
+                          text: "OR, ",
+                          children: [
+                            TextSpan(
+                                style: TextStyles()
+                                    .mediumRegularStyle
+                                    .apply(color: Colors.black),
+                                text:
+                                    "to create a new studio, enter your desired studio name and click \"Create studio\".")
+                          ]),
+                    ),
                     TextField(
                       controller: _studioNameController,
                       decoration: InputDecoration(labelText: "Studio name"),
