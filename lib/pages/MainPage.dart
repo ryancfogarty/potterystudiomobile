@@ -84,13 +84,17 @@ class _MainPageState extends State<MainPage> {
                         image: AssetImage("assets/ic_launcher.png"),
                         width: 32,
                         color: Colors.black),
-                    Text("Pottery studio (beta)",
-                        style: TextStyles().bigRegularStyle),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text("Pottery studio",
+                          style: TextStyles().bigRegularStyle),
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Consumer<GetUserUseCase>(
                         builder: (context, useCase, _) {
-                          return Text(useCase.user?.name ?? "Loading...",
+                          return Text(
+                              "${useCase.user?.name ?? "Loading..."} ${useCase.user?.isAdmin == true ? "(admin)" : ""}",
                               style: TextStyles().mediumRegularStyle);
                         },
                       ),
@@ -137,7 +141,22 @@ class _MainPageState extends State<MainPage> {
                                   if (success) {
                                     authService.signOutOfGoogle();
                                   } else {
-                                    // todo: show error message asking user to contact admin
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text("Error"),
+                                            content: Text(
+                                                "An error occurred while deleting your account. Please contact the developer."),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                child: Text("Dismiss"),
+                                                onPressed: () =>
+                                                    Navigator.of(context).pop(),
+                                              ),
+                                            ],
+                                          );
+                                        });
                                   }
                                 },
                               )
