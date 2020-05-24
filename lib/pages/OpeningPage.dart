@@ -78,7 +78,7 @@ class _OpeningPageState extends State<OpeningPage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
-                child: Text("Reserved users ($reserved)",
+                child: Text("Reserved slots ($reserved)",
                     style: TextStyles().bigRegularStyle),
               ),
               Padding(
