@@ -1,7 +1,9 @@
+import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/common/SupportsAppleLogin.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 
@@ -52,7 +54,9 @@ class _LoginPageState extends State<LoginPage> {
         return Visibility(
           visible: authService.autoLogIn,
           child: CircularProgressIndicator(),
-          replacement: _googleSignInButton(),
+          replacement: Column(
+            children: <Widget>[_googleSignInButton(), _appleSignInButton()],
+          ),
         );
       },
     );
@@ -61,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _googleSignInButton() {
     return RaisedButton(
       color: Colors.white,
-      onPressed: _loginWithGoogle,
+      onPressed: _continueWithGoogle,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(40),
           side: BorderSide(color: Theme.of(context).accentColor)),
@@ -87,10 +91,33 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<void> _loginWithGoogle() async {
+  Widget _appleSignInButton() {
+    return Visibility(
+      visible: SupportsAppleLogin().supported,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: AppleSignInButton(
+          style: ButtonStyle.whiteOutline,
+          type: ButtonType.continueButton,
+          onPressed: _continueWithApple,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _continueWithGoogle() async {
     try {
       final authService = Provider.of<AuthService>(context);
-      await authService.signInWithGoogle();
+      await authService.continueWithGoogle();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> _continueWithApple() async {
+    try {
+      final authService = Provider.of<AuthService>(context);
+      await authService.continueWithApple();
     } catch (e) {
       print(e.toString());
     }

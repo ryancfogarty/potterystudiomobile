@@ -4,6 +4,7 @@ import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/common/SupportsAppleLogin.dart';
 import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
 import 'package:seven_spot_mobile/pages/CreateAccountPage.dart';
 import 'package:seven_spot_mobile/pages/LoginPage.dart';
@@ -63,6 +64,7 @@ void main() async {
   var studioRepository = StudioRepository(studioService);
   var createStudioUseCase = CreateStudioUseCase(studioRepository, authService);
 
+  await SupportsAppleLogin.init();
   authService.autoSignIn();
 
   return await runZoned<Future<Null>>(() async {

@@ -1,3 +1,4 @@
+import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -13,9 +14,13 @@ class AuthService extends ChangeNotifier {
 
   Future<FirebaseUser> get currentUser => _auth.currentUser();
 
-  bool _signingInGoogle = false;
+  bool _continuingWithApple = false;
 
-  bool get signingInGoogle => _signingInGoogle;
+  bool get continuingWithApple => _continuingWithApple;
+
+  bool _continuingWithGoogle = false;
+
+  bool get signingInGoogle => _continuingWithGoogle;
 
   bool _autoLogIn = false;
 
@@ -37,8 +42,62 @@ class AuthService extends ChangeNotifier {
     }
   }
 
-  Future<void> signInWithGoogle() async {
-    _signingInGoogle = true;
+  Future<void> continueWithApple() async {
+    _continuingWithApple = true;
+    notifyListeners();
+
+    try {
+      final AuthorizationResult result = await AppleSignIn.performRequests([
+        AppleIdRequest(requestedScopes: [Scope.fullName])
+      ]);
+
+      switch (result.status) {
+        case AuthorizationStatus.authorized:
+          try {
+            print("successfull sign in");
+            final AppleIdCredential appleIdCredential = result.credential;
+
+            OAuthProvider oAuthProvider =
+                new OAuthProvider(providerId: "apple.com");
+
+            final AuthCredential credential = oAuthProvider.getCredential(
+              idToken: String.fromCharCodes(appleIdCredential.identityToken),
+              accessToken:
+                  String.fromCharCodes(appleIdCredential.authorizationCode),
+            );
+
+            final FirebaseUser user =
+                (await _auth.signInWithCredential(credential)).user;
+
+            if (user.isAnonymous || await user.getIdToken() == null) {
+              throw Exception("Invalid user");
+            }
+
+            state = await _isRegistered()
+                ? AppState.REGISTERED
+                : AppState.AUTHENTICATED;
+          } catch (e) {
+            print("error");
+          }
+          break;
+        case AuthorizationStatus.error:
+          print("apple error ${result.error.localizedDescription}");
+          break;
+
+        case AuthorizationStatus.cancelled:
+          print("User cancelled");
+          break;
+      }
+    } catch (error) {
+      print("error with apple sign in");
+    }
+
+    _continuingWithApple = false;
+    notifyListeners();
+  }
+
+  Future<void> continueWithGoogle() async {
+    _continuingWithGoogle = true;
     notifyListeners();
 
     try {
@@ -46,12 +105,12 @@ class AuthService extends ChangeNotifier {
       final GoogleSignInAuthentication authentication =
           await account.authentication;
 
-      final AuthCredential creds = GoogleAuthProvider.getCredential(
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
         idToken: authentication.idToken,
         accessToken: authentication.accessToken,
       );
 
-      final AuthResult result = await _auth.signInWithCredential(creds);
+      final AuthResult result = await _auth.signInWithCredential(credential);
       final FirebaseUser user = result.user;
 
       if (user.isAnonymous || await user.getIdToken() == null) {
@@ -63,7 +122,7 @@ class AuthService extends ChangeNotifier {
     } catch (e) {
       print(e);
     } finally {
-      _signingInGoogle = false;
+      _continuingWithGoogle = false;
       notifyListeners();
     }
   }
