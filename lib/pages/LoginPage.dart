@@ -1,4 +1,3 @@
-import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -6,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/SupportsAppleLogin.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
+import 'package:seven_spot_mobile/views/ThirdPartySignInButton.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -18,32 +18,35 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "Pottery Studio",
-                      style: TextStyles().bigBoldStyle,
-                    ),
-                    Text("(Beta)")
-                  ],
-                ),
+            child: Stack(
+          children: <Widget>[
+            Positioned(
+              top: 32,
+              left: 0,
+              right: 0,
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    "Pottery Studio",
+                    style: TextStyles().bigBoldStyle.copyWith(fontSize: 24.0),
+                  ),
+                  Text("(Beta)", style: TextStyles().smallRegularStyle)
+                ],
               ),
-              Image(
-                  image: AssetImage("assets/ic_launcher.png"),
-                  width: 128.0,
-                  color: Theme.of(context).primaryColor),
-              Padding(
-                  padding: const EdgeInsets.only(
-                      left: 16.0, right: 16.0, bottom: 64.0),
-                  child: _loginOrAutoLogin()),
-            ],
-          ),
-        ),
+            ),
+            Positioned(
+                top: 0,
+                bottom: 0,
+                left: 64,
+                right: 64,
+                child: Image(
+                    image: AssetImage("assets/ic_launcher.png"),
+                    width: 128.0,
+                    color: Theme.of(context).primaryColor)),
+            Positioned(
+                bottom: 32, left: 16, right: 16, child: _loginOrAutoLogin())
+          ],
+        )),
       ),
     );
   }
@@ -52,57 +55,41 @@ class _LoginPageState extends State<LoginPage> {
     return Consumer<AuthService>(
       builder: (context, authService, _) {
         return Visibility(
-          visible: authService.autoLogIn,
-          child: CircularProgressIndicator(),
+          visible: authService.authenticating,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CircularProgressIndicator(),
+            ],
+          ),
           replacement: Column(
-            children: <Widget>[_googleSignInButton(), _appleSignInButton()],
+            children: <Widget>[
+              ThirdPartySignInButton(
+                logoUri: "assets/google_logo.png",
+                thirdPartyProvider: "Google",
+                onPressed: _continueWithGoogle,
+                borderColor: Theme.of(context).accentColor,
+              ),
+              _appleSignInButton()
+            ],
           ),
         );
       },
     );
   }
 
-  Widget _googleSignInButton() {
-    return RaisedButton(
-      color: Colors.white,
-      onPressed: _continueWithGoogle,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(40),
-          side: BorderSide(color: Theme.of(context).accentColor)),
-      child: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-          child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image(
-                    image: AssetImage("assets/google_logo.png"), height: 32.0),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Consumer<AuthService>(builder: (context, service, _) {
-                    return Text(
-                        service.signingInGoogle
-                            ? "Authenicating..."
-                            : 'Continue with Google',
-                        style: TextStyles().bigRegularStyle);
-                  }),
-                )
-              ])),
-    );
-  }
-
   Widget _appleSignInButton() {
     return Visibility(
-      visible: SupportsAppleLogin().supported,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 8.0),
-        child: AppleSignInButton(
-          style: ButtonStyle.whiteOutline,
-          type: ButtonType.continueButton,
-          onPressed: _continueWithApple,
-        ),
-      ),
-    );
+        visible: SupportsAppleLogin().supported,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 16.0),
+          child: ThirdPartySignInButton(
+            logoUri: "assets/apple_logo.png",
+            thirdPartyProvider: "Apple",
+            onPressed: _continueWithApple,
+            borderColor: Colors.black,
+          ),
+        ));
   }
 
   Future<void> _continueWithGoogle() async {

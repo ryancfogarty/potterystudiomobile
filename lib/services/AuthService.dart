@@ -14,20 +14,12 @@ class AuthService extends ChangeNotifier {
 
   Future<FirebaseUser> get currentUser => _auth.currentUser();
 
-  bool _continuingWithApple = false;
+  bool _authenticating = false;
 
-  bool get continuingWithApple => _continuingWithApple;
-
-  bool _continuingWithGoogle = false;
-
-  bool get signingInGoogle => _continuingWithGoogle;
-
-  bool _autoLogIn = false;
-
-  bool get autoLogIn => _autoLogIn;
+  bool get authenticating => _authenticating;
 
   Future<void> autoSignIn() async {
-    _autoLogIn = true;
+    _authenticating = true;
     notifyListeners();
 
     try {
@@ -37,13 +29,13 @@ class AuthService extends ChangeNotifier {
     } catch (e) {
       print(e);
     } finally {
-      _autoLogIn = false;
+      _authenticating = false;
       notifyListeners();
     }
   }
 
   Future<void> continueWithApple() async {
-    _continuingWithApple = true;
+    _authenticating = true;
     notifyListeners();
 
     try {
@@ -73,11 +65,16 @@ class AuthService extends ChangeNotifier {
               throw Exception("Invalid user");
             }
 
+            UserUpdateInfo userUpdateInfo = UserUpdateInfo();
+            userUpdateInfo.displayName =
+                "${appleIdCredential.fullName.givenName} ${appleIdCredential.fullName.familyName}";
+            await user.updateProfile(userUpdateInfo);
+
             state = await _isRegistered()
                 ? AppState.REGISTERED
                 : AppState.AUTHENTICATED;
           } catch (e) {
-            print("error");
+            print("error $e");
           }
           break;
         case AuthorizationStatus.error:
@@ -92,12 +89,12 @@ class AuthService extends ChangeNotifier {
       print("error with apple sign in");
     }
 
-    _continuingWithApple = false;
+    _authenticating = false;
     notifyListeners();
   }
 
   Future<void> continueWithGoogle() async {
-    _continuingWithGoogle = true;
+    _authenticating = true;
     notifyListeners();
 
     try {
@@ -122,7 +119,7 @@ class AuthService extends ChangeNotifier {
     } catch (e) {
       print(e);
     } finally {
-      _continuingWithGoogle = false;
+      _authenticating = false;
       notifyListeners();
     }
   }
