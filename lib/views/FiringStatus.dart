@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/countdown_timer.dart';
 import 'package:seven_spot_mobile/common/DateFormatter.dart';
-import 'package:seven_spot_mobile/common/FiringTypeFormatter.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/models/Firing.dart';
 
@@ -44,7 +43,7 @@ class _FiringStatusState extends State<FiringStatus> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Text("$title:", style: TextStyles().bigRegularStyle),
+                    Text("$title", style: TextStyles().bigRegularStyle),
                   ],
                 ),
                 Column(
