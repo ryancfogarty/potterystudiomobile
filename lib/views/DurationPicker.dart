@@ -35,7 +35,7 @@ class _DurationPickerState extends State<DurationPicker> {
       children: [
         Text(
           widget.title,
-          style: TextStyles().mediumRegularStyle,
+          style: TextStyles().bigRegularStyle,
         ),
         Container(
           width: 110,

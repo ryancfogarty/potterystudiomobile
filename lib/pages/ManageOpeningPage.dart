@@ -109,7 +109,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("Capacity:", style: TextStyles().mediumRegularStyle),
+                      Text("Capacity", style: TextStyles().bigRegularStyle),
                       Container(width: 100, child: _size()),
                     ],
                   ),
@@ -126,7 +126,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
   Widget _start() {
     return Consumer<ManageOpeningUseCase>(builder: (context, useCase, _) {
       return DateTimeView(
-        title: "Start:",
+        title: "Start",
         onDateChanged: useCase.updateStartDate,
         onTimeChanged: useCase.updateStartTime,
         dateTime: useCase.opening.start,
@@ -141,7 +141,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
   Widget _end() {
     return Consumer<ManageOpeningUseCase>(builder: (context, useCase, _) {
       return DateTimeView(
-        title: "End:",
+        title: "End",
         onDateChanged: useCase.updateEndDate,
         onTimeChanged: useCase.updateEndTime,
         dateTime: useCase.opening.end,
@@ -189,19 +189,38 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
 
     return Column(
       children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text("Recurring:", style: TextStyles().mediumRegularStyle),
-            Consumer<ManageOpeningUseCase>(
-              builder: (context, useCase, _) {
-                return Checkbox(
-                    value: useCase.opening.recurring,
-                    onChanged: useCase.updateRecurring);
-              },
-            )
-          ],
-        ),
+        Consumer<ManageOpeningUseCase>(builder: (context, useCase, _) {
+          return FlatButton(
+            padding: EdgeInsets.all(0.0),
+            onPressed: () =>
+                useCase.updateRecurring(!useCase.opening.recurring),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Flexible(
+                  flex: 8,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text("Recurring",
+                          style: TextStyles().bigRegularStyle),
+                      Text(
+                          "Creates additional openings with the same details based on the pattern chosen.",
+                          style: TextStyles().smallRegularStyle)
+                    ],
+                  ),
+                ),
+                Flexible(
+                  flex: 2,
+                  child: Checkbox(
+                      value: useCase.opening.recurring,
+                      onChanged: useCase.updateRecurring),
+                )
+              ],
+            ),
+          );
+        }),
+        Container(height: 12.0),
         Consumer<ManageOpeningUseCase>(
           builder: (context, useCase, _) {
             return Visibility(
@@ -211,8 +230,8 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Text("Recurrence pattern:",
-                          style: TextStyles().mediumRegularStyle),
+                      Text("Recurrence pattern",
+                          style: TextStyles().bigRegularStyle),
                     ],
                   ),
                   _recurrencePattern(),
@@ -221,7 +240,8 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
               ),
             );
           },
-        )
+        ),
+        Container(height: 200.0),
       ],
     );
   }
@@ -290,7 +310,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text("Number of occurrences:", style: TextStyles().mediumRegularStyle),
+        Text("Number of occurrences", style: TextStyles().bigRegularStyle),
         Container(
             width: 100,
             child:

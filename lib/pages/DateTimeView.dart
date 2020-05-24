@@ -28,7 +28,7 @@ class DateTimeView extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(
         title,
-        style: TextStyles().mediumRegularStyle,
+        style: TextStyles().bigRegularStyle,
       ),
       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Container(),

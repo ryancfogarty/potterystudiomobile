@@ -14,11 +14,10 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -49,11 +48,13 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _googleSignInButton() {
     return RaisedButton(
+      color: Colors.white,
       onPressed: _loginWithGoogle,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-      highlightElevation: 0,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(40),
+          side: BorderSide(color: Theme.of(context).accentColor)),
       child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
           child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,

@@ -102,7 +102,7 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
     return Consumer<ManageFiringUseCase>(
       builder: (context, useCase, _) {
         return DateTimeView(
-          title: "Start:",
+          title: "Start",
           onDateChanged: useCase.updateStartDate,
           onTimeChanged: useCase.updateStartTime,
           dateTime: useCase.firing.start,
@@ -119,7 +119,7 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
         var minutes = (useCase.firing.durationSeconds / 60 % 60).floor();
 
         return DurationPicker(
-          title: "Firing duration:",
+          title: "Firing duration",
           hours: hours,
           minutes: minutes,
           onHoursChanged: (newHours) =>
@@ -138,7 +138,7 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
         var minutes = (useCase.firing.cooldownSeconds / 60 % 60).floor();
 
         return DurationPicker(
-          title: "Cooldown duration:",
+          title: "Cooldown duration",
           hours: hours,
           minutes: minutes,
           onHoursChanged: (newHours) =>
@@ -157,8 +157,8 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Type: ",
-                style: TextStyles().mediumRegularStyle,
+                "Type",
+                style: TextStyles().bigRegularStyle,
               ),
               Row(
                 children: [
