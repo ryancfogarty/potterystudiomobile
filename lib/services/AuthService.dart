@@ -13,12 +13,16 @@ class AuthService extends ChangeNotifier {
 
   Future<FirebaseUser> get currentUser => _auth.currentUser();
 
-  bool _signingIn = false;
+  bool _signingInGoogle = false;
 
-  bool get signingIn => _signingIn;
+  bool get signingInGoogle => _signingInGoogle;
+
+  bool _autoLogIn = false;
+
+  bool get autoLogIn => _autoLogIn;
 
   Future<void> autoSignIn() async {
-    _signingIn = true;
+    _autoLogIn = true;
     notifyListeners();
 
     try {
@@ -28,13 +32,13 @@ class AuthService extends ChangeNotifier {
     } catch (e) {
       print(e);
     } finally {
-      _signingIn = false;
+      _autoLogIn = false;
       notifyListeners();
     }
   }
 
   Future<void> signInWithGoogle() async {
-    _signingIn = true;
+    _signingInGoogle = true;
     notifyListeners();
 
     try {
@@ -59,7 +63,7 @@ class AuthService extends ChangeNotifier {
     } catch (e) {
       print(e);
     } finally {
-      _signingIn = false;
+      _signingInGoogle = false;
       notifyListeners();
     }
   }

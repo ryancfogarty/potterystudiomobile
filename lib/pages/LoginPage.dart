@@ -38,11 +38,23 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                   padding: const EdgeInsets.only(
                       left: 16.0, right: 16.0, bottom: 64.0),
-                  child: _googleSignInButton()),
+                  child: _loginOrAutoLogin()),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _loginOrAutoLogin() {
+    return Consumer<AuthService>(
+      builder: (context, authService, _) {
+        return Visibility(
+          visible: authService.autoLogIn,
+          child: CircularProgressIndicator(),
+          replacement: _googleSignInButton(),
+        );
+      },
     );
   }
 
@@ -60,14 +72,14 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image(
-                    image: AssetImage("assets/google_logo.png"), height: 35.0),
+                    image: AssetImage("assets/google_logo.png"), height: 32.0),
                 Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Consumer<AuthService>(builder: (context, service, _) {
                     return Text(
-                        service.signingIn
-                            ? "Signing in..."
-                            : 'Sign in with Google',
+                        service.signingInGoogle
+                            ? "Authenicating..."
+                            : 'Continue with Google',
                         style: TextStyles().bigRegularStyle);
                   }),
                 )
