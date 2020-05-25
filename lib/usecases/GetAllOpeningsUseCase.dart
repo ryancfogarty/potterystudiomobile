@@ -1,10 +1,8 @@
-import 'dart:io';
-
+import "package:collection/collection.dart";
 import 'package:flutter/widgets.dart';
 import 'package:seven_spot_mobile/models/Opening.dart';
 import 'package:seven_spot_mobile/models/OpeningGroup.dart';
 import 'package:seven_spot_mobile/repositories/OpeningRepository.dart';
-import "package:collection/collection.dart";
 
 class GetAllOpeningsUseCase extends ChangeNotifier {
   Iterable<Opening> _openings = Iterable.empty();
@@ -14,6 +12,10 @@ class GetAllOpeningsUseCase extends ChangeNotifier {
   bool _includePast = false;
 
   bool get includePast => _includePast;
+
+  bool _loading = false;
+
+  bool get loading => _loading;
 
   void setIncludePast(bool i) {
     _includePast = i;
@@ -27,9 +29,17 @@ class GetAllOpeningsUseCase extends ChangeNotifier {
   }
 
   Future<void> invoke() async {
-    _openings = await _repo.getAll(_includePast);
-
+    _loading = true;
     notifyListeners();
+
+    try {
+      _openings = await _repo.getAll(_includePast);
+    } catch (e) {
+      print(e);
+    } finally {
+      _loading = false;
+      notifyListeners();
+    }
   }
 
   Future<Iterable<OpeningGroup>> invoke2() async {

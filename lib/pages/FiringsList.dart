@@ -16,14 +16,7 @@ class FiringsList extends StatefulWidget {
 
 class _FiringListState extends State<FiringsList> {
   RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
-
-  @override
-  void initState() {
-    super.initState();
-
-    Future.delayed(Duration.zero, _refreshController.requestRefresh);
-  }
+      RefreshController(initialRefresh: true);
 
   void _onRefresh() async {
     try {
@@ -38,6 +31,10 @@ class _FiringListState extends State<FiringsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Firings"),
+        backgroundColor: Colors.white,
+      ),
       body: Consumer<FiringListInteractor>(
         builder: (context, interactor, _) {
           return SmartRefresher(

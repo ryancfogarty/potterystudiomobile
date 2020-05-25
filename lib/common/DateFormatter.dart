@@ -22,6 +22,12 @@ class DateFormatter {
   // ignore: non_constant_identifier_names
   final EEE_dd_MMMM_y = DateFormat("EEE dd MMMM y");
 
+  // ignore: non_constant_identifier_names
+  final EEEE = DateFormat("EEEE");
+
+  // ignore: non_constant_identifier_names
+  final dd = DateFormat("dd");
+
   String formatDateTimeRange(DateTime start, DateTime end) {
     if (start.day == end.day && start.month == end.month && start.year == end.year) {
       return "${dd_MMMM.format(start)} ${HH_mm.format(start)} - ${HH_mm.format(end)}";

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/common/DateFormatter.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/pages/DateTimeView.dart';
 import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
@@ -110,7 +111,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text("Capacity", style: TextStyles().bigRegularStyle),
-                      Container(width: 100, child: _size()),
+                      Container(width: 64, child: _size()),
                     ],
                   ),
                   Container(height: 24.0),
@@ -202,8 +203,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("Recurring",
-                          style: TextStyles().bigRegularStyle),
+                      Text("Recurring", style: TextStyles().bigRegularStyle),
                       Text(
                           "Creates additional openings with the same details based on the pattern chosen.",
                           style: TextStyles().smallRegularStyle)
@@ -249,15 +249,18 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
   Widget _recurrencePattern() {
     return Consumer<ManageOpeningUseCase>(
       builder: (context, useCase, _) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+        return Wrap(
+          alignment: WrapAlignment.end,
+          runAlignment: WrapAlignment.end,
+          direction: Axis.horizontal,
           children: <Widget>[
             InkWell(
               child: Padding(
                 padding: const EdgeInsets.only(left: 12.0),
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text("Daily"),
+                    Text("Every day"),
                     Radio(
                       value: "DAILY",
                       groupValue: useCase.opening.recurrenceType,
@@ -272,8 +275,10 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 12.0),
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text("Weekly"),
+                    Text(
+                        "Every ${DateFormatter().EEEE.format(useCase.opening.start)}"),
                     Radio(
                       value: "WEEKLY",
                       groupValue: useCase.opening.recurrenceType,
@@ -288,8 +293,9 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 12.0),
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text("Monthly"),
+                    Text("Monthly on the ${DateFormatter().dd.format(useCase.opening.start)}"),
                     Radio(
                       value: "MONTHLY",
                       groupValue: useCase.opening.recurrenceType,
@@ -312,7 +318,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
       children: <Widget>[
         Text("Number of occurrences", style: TextStyles().bigRegularStyle),
         Container(
-            width: 100,
+            width: 64,
             child:
                 Consumer<ManageOpeningUseCase>(builder: (context, useCase, _) {
               if (_occurrencesTextController.text !=

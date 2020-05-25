@@ -8,7 +8,7 @@ import 'package:seven_spot_mobile/common/SupportsAppleLogin.dart';
 import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
 import 'package:seven_spot_mobile/pages/CreateAccountPage.dart';
 import 'package:seven_spot_mobile/pages/LoginPage.dart';
-import 'package:seven_spot_mobile/pages/MainPage.dart';
+import 'package:seven_spot_mobile/pages/HomePage.dart';
 import 'package:seven_spot_mobile/repositories/FiringRepository.dart';
 import 'package:seven_spot_mobile/repositories/OpeningRepository.dart';
 import 'package:seven_spot_mobile/repositories/StudioRepository.dart';
@@ -131,7 +131,7 @@ class _MyAppState extends State<MyApp> {
           builder: (context, auth, child) {
             switch (auth.state) {
               case AppState.REGISTERED:
-                return MainPage();
+                return HomePage();
               case AppState.AUTHENTICATED:
                 return CreateAccountPage();
               default:

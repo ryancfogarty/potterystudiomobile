@@ -107,10 +107,7 @@ class _OpeningPageState extends State<OpeningPage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  _editButton(),
-                  _deleteButton()
-                ],
+                children: <Widget>[_editButton(), _deleteButton()],
               )
             ],
           );

@@ -87,7 +87,7 @@ class OpeningService {
     var response =
         await http.get(url, headers: {"Authorization": idToken.token});
 
-    if (response.statusCode >= 400) throw Exception("Error");
+    if (response.statusCode >= 400) throw Exception("Error ${response.statusCode}");
 
     var openingJson = json.decode(response.body);
     return _jsonToDto(openingJson, currentUser.uid);
