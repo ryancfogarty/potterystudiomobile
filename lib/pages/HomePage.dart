@@ -102,10 +102,12 @@ class _HomePageState extends State<HomePage> {
                   return Visibility(
                     visible: snapshot.hasData,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0, right: 16.0),
+                      padding: const EdgeInsets.only(
+                          left: 16.0, top: 4.0, bottom: 4.0, right: 16.0),
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(30),
-                          child: Image.network(snapshot.data?.photoUrl ?? "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png")),
+                          child: Image.network(snapshot.data?.photoUrl ??
+                              "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png")),
                     ),
                     replacement: Row(
                       children: <Widget>[CircularProgressIndicator()],
