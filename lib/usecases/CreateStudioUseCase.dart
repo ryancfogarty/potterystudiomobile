@@ -1,12 +1,7 @@
-import 'package:flutter/widgets.dart';
 import 'package:seven_spot_mobile/repositories/StudioRepository.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 
-class CreateStudioUseCase extends ChangeNotifier {
-  bool _loading = false;
-
-  bool get loading => _loading;
-
+class CreateStudioUseCase {
   StudioRepository _repo;
   AuthService _authService;
 
@@ -15,21 +10,16 @@ class CreateStudioUseCase extends ChangeNotifier {
     _authService = authService;
   }
 
-  Future<void> createStudio(String userName, String studioName) async {
-    _loading = true;
-    notifyListeners();
-
+  Future<void> createStudio(
+      String userName, String studioName, String imageUrl) async {
     try {
-      var success = await _repo.createStudio(userName, studioName);
+      var success = await _repo.createStudio(userName, studioName, imageUrl);
 
       if (success) {
         _authService.updateState(AppState.REGISTERED);
       }
     } catch (e) {
       print(e);
-    } finally {
-      _loading = false;
-      notifyListeners();
     }
   }
 }

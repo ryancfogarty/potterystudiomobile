@@ -7,7 +7,8 @@ class StudioRepository {
     _service = service;
   }
 
-  Future<bool> createStudio(String userName, String studioName) async {
-    return await _service.createStudio(userName, studioName);
+  Future<bool> createStudio(
+      String userName, String studioName, String imageUrl) async {
+    return await _service.createStudio(userName, studioName, imageUrl);
   }
 }

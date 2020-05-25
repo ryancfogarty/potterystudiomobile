@@ -1,38 +1,26 @@
 import 'package:encrypt/encrypt.dart';
-import 'package:flutter/widgets.dart';
 import 'package:seven_spot_mobile/repositories/UserRepository.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 
-class CreateUserUseCase extends ChangeNotifier {
-  bool _loading = false;
-
-  bool get loading => _loading;
-
+class CreateUserUseCase {
   UserRepository _repo;
   AuthService _authService;
-  Encrypter _encrypter;
 
   CreateUserUseCase(AuthService authService, Encrypter encrypter) {
     _repo = UserRepository();
     _authService = authService;
-    _encrypter = encrypter;
   }
 
-  Future<void> createUser(String studioCode, String displayName) async {
-    _loading = true;
-    notifyListeners();
-
+  Future<void> createUser(
+      String studioCode, String displayName, String imageUrl) async {
     try {
-      var success = await _repo.createUser(studioCode, displayName);
+      var success = await _repo.createUser(studioCode, displayName, imageUrl);
 
       if (success) {
         _authService.updateState(AppState.REGISTERED);
       }
     } catch (e) {
       print(e);
-    } finally {
-      _loading = false;
-      notifyListeners();
     }
   }
 }

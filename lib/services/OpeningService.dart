@@ -32,13 +32,7 @@ class OpeningService {
         openingJson["reservedUserIds"].cast<String>();
     List<UserDto> reservedUserDtos = [
       for (var userJson in (openingJson["reservedUsers"] ?? []))
-        UserDto(
-            userJson["id"],
-            userJson["studioName"],
-            userJson["name"],
-            userJson["isAdmin"] ?? false,
-            userJson["studioCode"],
-            userJson["studioAdminCode"])
+        UserDto.fromJson(userJson)
     ];
 
     return OpeningDto(
@@ -87,7 +81,8 @@ class OpeningService {
     var response =
         await http.get(url, headers: {"Authorization": idToken.token});
 
-    if (response.statusCode >= 400) throw Exception("Error ${response.statusCode}");
+    if (response.statusCode >= 400)
+      throw Exception("Error ${response.statusCode}");
 
     var openingJson = json.decode(response.body);
     return _jsonToDto(openingJson, currentUser.uid);

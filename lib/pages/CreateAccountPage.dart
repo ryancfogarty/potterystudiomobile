@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
+import 'package:seven_spot_mobile/interactors/CreateAccountInteractor.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
-import 'package:seven_spot_mobile/usecases/CreateStudioUseCase.dart';
-import 'package:seven_spot_mobile/usecases/CreateUserUseCase.dart';
+import 'package:seven_spot_mobile/views/ProfileImage.dart';
 
 class CreateAccountPage extends StatefulWidget {
   @override
@@ -15,12 +15,15 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   final _studioCodeController = TextEditingController();
   final _studioNameController = TextEditingController();
 
+  bool _createUserSelected;
+
   @override
   void initState() {
     super.initState();
 
     Future.delayed(Duration.zero, () async {
       _fetchUsersName();
+      _initProfileImage();
     });
   }
 
@@ -28,6 +31,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.white,
           leading: InkResponse(
               onTap: _cancel,
               child: Icon(
@@ -42,50 +46,115 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    Consumer<CreateAccountInteractor>(
+                        builder: (context, interactor, _) {
+                      return ProfileImage(imageUrl: interactor.profileImageUrl);
+                    }),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        FlatButton(
+                          child: Text("Change photo",
+                              style: TextStyles().mediumRegularStyle),
+                          onPressed: () {},
+                        ),
+                        FlatButton(
+                          child: Text("Remove photo",
+                              style: TextStyles()
+                                  .mediumRegularStyle
+                                  .copyWith(color: Colors.red)),
+                          onPressed: Provider.of<CreateAccountInteractor>(context,
+                                  listen: false)
+                              .removePhoto,
+                        ),
+                      ],
+                    ),
                     TextField(
                         controller: _usersNameController,
                         decoration: InputDecoration(labelText: "Display name")),
-                    Container(height: 96.0),
-                    Text(
-                      "To register with an existing studio, enter the studio code and click \"Create account\".",
-                      style: TextStyles().mediumRegularStyle,
-                    ),
-                    TextField(
-                      controller: _studioCodeController,
-                      decoration: InputDecoration(labelText: "Studio code"),
-                    ),
-                    _createUserButton(),
+                    Container(height: 24.0),
+                    _toggle(),
                     Container(height: 48.0),
-                    RichText(
-                      text: TextSpan(
-                          style: TextStyles()
-                              .bigRegularStyle
-                              .apply(color: Colors.black),
-                          text: "OR, ",
-                          children: [
-                            TextSpan(
-                                style: TextStyles()
-                                    .mediumRegularStyle
-                                    .apply(color: Colors.black),
-                                text:
-                                    "to create a new studio, enter your desired studio name and click \"Create studio\".")
-                          ]),
-                    ),
-                    TextField(
-                      controller: _studioNameController,
-                      decoration: InputDecoration(labelText: "Studio name"),
-                    ),
-                    _createStudioButton()
+                    _createUserWidget(),
+                    _createStudioWidget()
                   ],
                 ))));
+  }
+
+  Widget _toggle() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        FlatButton(
+            color: _createUserSelected == true
+                ? Theme.of(context).accentColor.withAlpha(100)
+                : Colors.grey.withAlpha(100),
+            child: Text("Create account with an existing studio"),
+            onPressed: () {
+              setState(() {
+                _createUserSelected = true;
+              });
+            }),
+        FlatButton(
+            color: _createUserSelected == null
+                ? Colors.grey.withAlpha(100)
+                : (_createUserSelected == false
+                    ? Theme.of(context).accentColor.withAlpha(100)
+                    : Colors.grey.withAlpha(100)),
+            child: Text("Create a new studio"),
+            onPressed: () {
+              setState(() {
+                _createUserSelected = false;
+              });
+            }),
+      ],
+    );
+  }
+
+  Widget _createUserWidget() {
+    return Visibility(
+      visible: _createUserSelected == true,
+      child: Column(
+        children: <Widget>[
+          Text(
+            "To register with an existing studio, enter the studio code and click \"Create account\".",
+            style: TextStyles().mediumRegularStyle,
+          ),
+          TextField(
+            controller: _studioCodeController,
+            decoration: InputDecoration(labelText: "Studio code"),
+          ),
+          _createUserButton()
+        ],
+      ),
+    );
+  }
+
+  Widget _createStudioWidget() {
+    return Visibility(
+      visible: _createUserSelected == false,
+      child: Column(
+        children: <Widget>[
+          Text(
+              "To create a new studio, enter your desired studio name and click \"Create studio\".",
+              style: TextStyles().mediumRegularStyle),
+          TextField(
+            controller: _studioNameController,
+            decoration: InputDecoration(labelText: "Studio name"),
+          ),
+          _createStudioButton()
+        ],
+      ),
+    );
   }
 
   Widget _createUserButton() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Consumer<CreateUserUseCase>(builder: (context, useCase, _) {
+      child:
+          Consumer<CreateAccountInteractor>(builder: (context, interactor, _) {
         return Visibility(
-          visible: !useCase.loading,
+          visible: !interactor.loadingCreateUser,
           child: FlatButton(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4.0),
@@ -107,9 +176,10 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   Widget _createStudioButton() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Consumer<CreateStudioUseCase>(builder: (context, useCase, _) {
+      child:
+          Consumer<CreateAccountInteractor>(builder: (context, interactor, _) {
         return Visibility(
-          visible: !useCase.loading,
+          visible: !interactor.loadingCreateStudio,
           child: FlatButton(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4.0),
@@ -140,17 +210,23 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     _usersNameController.text = currentUser.displayName;
   }
 
-  void _createUser() async {
-    var useCase = Provider.of<CreateUserUseCase>(context);
+  void _initProfileImage() async {
+    var createAccountInteractor = Provider.of<CreateAccountInteractor>(context);
+    createAccountInteractor.clear();
+    createAccountInteractor.initFromFirebaseUser();
+  }
 
-    await useCase.createUser(
+  void _createUser() async {
+    var interactor = Provider.of<CreateAccountInteractor>(context);
+
+    await interactor.createUser(
         _studioCodeController.text, _usersNameController.text);
   }
 
   void _createStudio() async {
-    var useCase = Provider.of<CreateStudioUseCase>(context);
+    var interactor = Provider.of<CreateAccountInteractor>(context);
 
-    await useCase.createStudio(
+    await interactor.createStudio(
         _usersNameController.text, _studioNameController.text);
   }
 }

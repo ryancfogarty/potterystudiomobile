@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/SupportsAppleLogin.dart';
+import 'package:seven_spot_mobile/interactors/CreateAccountInteractor.dart';
 import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
 import 'package:seven_spot_mobile/pages/CreateAccountPage.dart';
-import 'package:seven_spot_mobile/pages/LoginPage.dart';
 import 'package:seven_spot_mobile/pages/HomePage.dart';
+import 'package:seven_spot_mobile/pages/LoginPage.dart';
 import 'package:seven_spot_mobile/repositories/FiringRepository.dart';
 import 'package:seven_spot_mobile/repositories/OpeningRepository.dart';
 import 'package:seven_spot_mobile/repositories/StudioRepository.dart';
@@ -63,6 +64,8 @@ void main() async {
   var studioService = StudioService();
   var studioRepository = StudioRepository(studioService);
   var createStudioUseCase = CreateStudioUseCase(studioRepository, authService);
+  var createAccountInteractor =
+      CreateAccountInteractor(createUserUseCase, createStudioUseCase);
 
   await SupportsAppleLogin.init();
   authService.autoSignIn();
@@ -72,9 +75,6 @@ void main() async {
       MultiProvider(providers: [
         ChangeNotifierProvider<AuthService>(
           create: (_) => authService,
-        ),
-        ChangeNotifierProvider<CreateUserUseCase>(
-          create: (_) => createUserUseCase,
         ),
         ChangeNotifierProvider<ToggleReservationUseCase>(
             create: (_) => toggleReservationUseCase),
@@ -106,8 +106,8 @@ void main() async {
         ),
         ChangeNotifierProvider<RegisterAsAdminUseCase>(
             create: (_) => registerAsAdminUseCase),
-        ChangeNotifierProvider<CreateStudioUseCase>(
-          create: (_) => createStudioUseCase,
+        ChangeNotifierProvider<CreateAccountInteractor>(
+          create: (_) => createAccountInteractor,
         )
       ], child: MyApp()),
     );
@@ -126,6 +126,7 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
             primarySwatch: Colors.lightBlue,
             fontFamily: "Lato",
+            appBarTheme: AppBarTheme(color: Colors.white),
             backgroundColor: Color.fromARGB(0xff, 0xf8, 0xf8, 0xf8)),
         home: Consumer<AuthService>(
           builder: (context, auth, child) {

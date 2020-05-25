@@ -8,8 +8,9 @@ class UserRepository {
     _service = UserService();
   }
 
-  Future<bool> createUser(String studioCode, String displayName) async {
-    return await _service.createUser(studioCode, displayName);
+  Future<bool> createUser(
+      String studioCode, String displayName, String imageUrl) async {
+    return await _service.createUser(studioCode, displayName, imageUrl);
   }
 
   Future<User> getUser() async {

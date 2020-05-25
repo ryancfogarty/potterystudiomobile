@@ -15,11 +15,11 @@ class HomePageSettings extends StatelessWidget {
     return Column(
       children: <Widget>[
         ListTile(
-            leading: Icon(Icons.exit_to_app),
+            leading: Icon(Icons.exit_to_app, color: Theme.of(context).accentColor),
             title: Text("Sign out"),
             onTap: authService.signOutOfGoogle),
         ListTile(
-            leading: Icon(Icons.delete),
+            leading: Icon(Icons.delete, color: Theme.of(context).accentColor),
             title: Text("Delete my account"),
             onTap: () async {
               showDialog(
@@ -71,7 +71,7 @@ class HomePageSettings extends StatelessWidget {
                   });
             }),
         ListTile(
-            leading: Icon(Icons.person),
+            leading: Icon(Icons.person, color: Theme.of(context).accentColor),
             title: Text("Register as admin"),
             onTap: () => Navigator.push(
                 context,
@@ -81,7 +81,7 @@ class HomePageSettings extends StatelessWidget {
           return Visibility(
             visible: getUserUseCase.user?.isAdmin ?? false,
             child: ListTile(
-                leading: Icon(Icons.home),
+                leading: Icon(Icons.home, color: Theme.of(context).accentColor),
                 title: Text(
                     "Studio code: ${getUserUseCase.user?.studioCode} (tap to copy)"),
                 onTap: () async {
@@ -99,7 +99,7 @@ class HomePageSettings extends StatelessWidget {
           return Visibility(
             visible: getUserUseCase.user?.isAdmin ?? false,
             child: ListTile(
-                leading: Icon(Icons.book),
+                leading: Icon(Icons.book, color: Theme.of(context).accentColor),
                 title: Text(
                     "Admin code: ${getUserUseCase.user?.studioAdminCode} (tap to copy)"),
                 onTap: () async {
@@ -117,7 +117,7 @@ class HomePageSettings extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 24.0),
           child: ListTile(
-            leading: Icon(Icons.info),
+            leading: Icon(Icons.info, color: Theme.of(context).accentColor),
             title: Text("About"),
             onTap: () => showAboutDialog(
                 context: context,

@@ -9,12 +9,16 @@ class StudioService {
 
 //  String _baseUrl = "http://10.0.2.2:5001/spot-629a6/us-central1";
 
-  Future<bool> createStudio(String userName, String studioName) async {
+  Future<bool> createStudio(
+      String userName, String studioName, String imageUrl) async {
     var currentUser = await AuthService().currentUser;
     var idToken = await currentUser.getIdToken(refresh: true);
 
-    var requestBody =
-        json.encode({"userName": userName, "studioName": studioName});
+    var requestBody = json.encode({
+      "userName": userName,
+      "studioName": studioName,
+      "profileImageUrl": imageUrl
+    });
 
     var url = "$_baseUrl/api/studio";
     var response = await http.post(url, body: requestBody, headers: {

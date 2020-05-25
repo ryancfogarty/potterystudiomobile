@@ -7,6 +7,7 @@ import 'package:seven_spot_mobile/pages/ManageOpeningPage.dart';
 import 'package:seven_spot_mobile/usecases/DeleteOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
+import 'package:seven_spot_mobile/views/ProfileImage.dart';
 
 class OpeningPage extends StatefulWidget {
   OpeningPage({Key key, @required this.openingId}) : super(key: key);
@@ -90,13 +91,23 @@ class _OpeningPageState extends State<OpeningPage> {
                     itemBuilder: (buildContext, index) {
                       var user = useCase.opening.reservedUsers.elementAt(index);
 
-                      return Container(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(
-                            user.name,
-                            style: TextStyles().mediumRegularStyle,
-                          ),
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Consumer<GetUserUseCase>(
+                              builder: (context, useCase, _) {
+                                return ProfileImage(
+                                    imageUrl: useCase.user?.imageUrl,
+                                    radius: 20.0);
+                              },
+                            ),
+                            Text(
+                              user.name,
+                              style: TextStyles().mediumRegularStyle,
+                            ),
+                          ],
                         ),
                       );
                     },
