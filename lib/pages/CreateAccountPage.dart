@@ -89,7 +89,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             color: _createUserSelected == true
                 ? Theme.of(context).accentColor.withAlpha(100)
                 : Colors.grey.withAlpha(100),
-            child: Text("Create account with an existing studio"),
+            child: Text("Join an existing studio"),
             onPressed: () {
               setState(() {
                 _createUserSelected = true;
