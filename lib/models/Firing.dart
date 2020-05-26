@@ -22,7 +22,7 @@ class Firing {
 
   Firing.empty() {
     var now = DateTime.now();
-    start = DateTime(now.year, now.month, now.day);
+    start = DateTime(now.year, now.month, now.day, 12);
     durationSeconds = 86400;
     cooldownSeconds = 86400;
     type = "BISQUE";

@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/pages/DateTimeView.dart';
 import 'package:seven_spot_mobile/usecases/ManageFiringUseCase.dart';
-import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
 import 'package:seven_spot_mobile/views/DurationPicker.dart';
 
 class ManageFiringPage extends StatefulWidget {
@@ -20,9 +18,6 @@ class ManageFiringPage extends StatefulWidget {
 
 class _ManageFiringPageState extends State<ManageFiringPage> {
   bool get _isNewFiring => widget.firingId == null;
-
-  var hours = "";
-  TextEditingController _controller = new TextEditingController();
 
   @override
   void initState() {
