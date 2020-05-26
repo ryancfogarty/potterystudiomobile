@@ -29,7 +29,9 @@ class _RegisterAsAdminPageState extends State<RegisterAsAdminPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                    "To register as an admin for your studio, enter the admin code."),
+                  "To register as an admin for your studio, enter the admin code.",
+                  style: TextStyles().mediumRegularStyle,
+                ),
                 TextField(
                     controller: _adminCodeController,
                     decoration: InputDecoration(labelText: "Admin code")),
@@ -47,17 +49,13 @@ class _RegisterAsAdminPageState extends State<RegisterAsAdminPage> {
           child: FlatButton(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4.0),
-                side: BorderSide(color: Theme
-                    .of(context)
-                    .accentColor)),
+                side: BorderSide(color: Theme.of(context).accentColor)),
             onPressed: _registerAsAdmin,
             child: Text(
               "Submit",
               style: TextStyles()
                   .mediumRegularStyle
-                  .copyWith(color: Theme
-                  .of(context)
-                  .accentColor),
+                  .copyWith(color: Theme.of(context).accentColor),
             ),
           ),
           replacement: CircularProgressIndicator(),
@@ -68,7 +66,8 @@ class _RegisterAsAdminPageState extends State<RegisterAsAdminPage> {
 
   void _registerAsAdmin() async {
     try {
-      await Provider.of<RegisterAsAdminUseCase>(context, listen: false).registerAsAdmin(_adminCodeController.text);
+      await Provider.of<RegisterAsAdminUseCase>(context, listen: false)
+          .registerAsAdmin(_adminCodeController.text);
       Navigator.of(context).pop();
     } catch (e) {
       print(e);

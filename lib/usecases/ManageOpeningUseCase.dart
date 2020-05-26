@@ -48,6 +48,11 @@ class ManageOpeningUseCase extends ChangeNotifier {
     _opening.start = DateTime.utc(startDate.year, startDate.month,
         startDate.day, _opening.start.hour, _opening.start.minute);
 
+    if (!_startBeforeEnd) {
+      _opening.end = DateTime.utc(startDate.year, startDate.month,
+          startDate.day, _opening.end.hour, _opening.end.minute);
+    }
+
     notifyListeners();
   }
 
@@ -62,8 +67,15 @@ class ManageOpeningUseCase extends ChangeNotifier {
     _opening.end = DateTime.utc(endDate.year, endDate.month, endDate.day,
         _opening.end.hour, _opening.end.minute);
 
+    if (!_startBeforeEnd) {
+      _opening.start = DateTime.utc(endDate.year, endDate.month, endDate.day,
+          _opening.start.hour, _opening.start.minute);
+    }
+
     notifyListeners();
   }
+
+  bool get _startBeforeEnd => _opening.start.difference(_opening.end).isNegative;
 
   void updateEndTime(TimeOfDay endTime) {
     _opening.end = DateTime.utc(_opening.end.year, _opening.end.month,
