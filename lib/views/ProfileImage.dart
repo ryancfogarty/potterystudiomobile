@@ -3,9 +3,16 @@ import 'package:flutter/material.dart';
 
 class ProfileImage extends StatefulWidget {
   final String imageUrl;
-  final double radius;
+  final double height;
+  final bool circular;
+  final String heroTag;
 
-  ProfileImage({Key key, this.imageUrl, this.radius = 40.0})
+  ProfileImage(
+      {Key key,
+      this.imageUrl,
+      this.height = 80.0,
+      this.circular = true,
+      this.heroTag = "profileimage"})
       : super(key: key);
 
   @override
@@ -15,15 +22,23 @@ class ProfileImage extends StatefulWidget {
 class _ProfileImageState extends State<ProfileImage> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding:
-          const EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0, right: 16.0),
-      child: ClipRRect(
-          borderRadius: BorderRadius.circular(1000),
-          child: Image.network(
-              widget.imageUrl ??
-                  "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png",
-              height: widget.radius * 2)),
-    );
+    if (widget.heroTag != null) {
+      return Hero(
+        tag: widget.heroTag,
+        child: _image(),
+      );
+    } else {
+      return _image();
+    }
+  }
+
+  Widget _image() {
+    return ClipRRect(
+        borderRadius: BorderRadius.circular(widget.circular ? 10000 : 0),
+        child: Image.network(
+            widget.imageUrl ??
+                "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png",
+            filterQuality: FilterQuality.high,
+            height: widget.height));
   }
 }

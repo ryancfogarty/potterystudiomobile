@@ -129,9 +129,11 @@ class AuthService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> signOutOfGoogle() async {
+  Future<void> signOut(BuildContext context) async {
     await _googleSignIn.signOut();
     await _auth.signOut();
+
+    Navigator.popUntil(context, ModalRoute.withName("/"));
 
     state = AppState.UNAUTHENTICATED;
     notifyListeners();

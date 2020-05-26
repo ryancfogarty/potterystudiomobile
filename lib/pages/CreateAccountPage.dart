@@ -48,7 +48,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   children: [
                     Consumer<CreateAccountInteractor>(
                         builder: (context, interactor, _) {
-                      return ProfileImage(imageUrl: interactor.profileImageUrl);
+                      return ProfileImage(
+                          heroTag: null,
+                          imageUrl: interactor.profileImageUrl);
                     }),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +65,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                               style: TextStyles()
                                   .mediumRegularStyle
                                   .copyWith(color: Colors.red)),
-                          onPressed: Provider.of<CreateAccountInteractor>(context,
+                          onPressed: Provider.of<CreateAccountInteractor>(
+                                  context,
                                   listen: false)
                               .removePhoto,
                         ),
@@ -200,7 +203,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
 
   void _cancel() async {
     var authService = Provider.of<AuthService>(context);
-    await authService.signOutOfGoogle();
+    await authService.signOut(context);
   }
 
   void _fetchUsersName() async {

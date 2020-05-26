@@ -15,68 +15,25 @@ class HomePageSettings extends StatelessWidget {
     return Column(
       children: <Widget>[
         ListTile(
-            leading: Icon(Icons.exit_to_app, color: Theme.of(context).accentColor),
+            leading:
+                Icon(Icons.exit_to_app, color: Theme.of(context).accentColor),
             title: Text("Sign out"),
-            onTap: authService.signOutOfGoogle),
-        ListTile(
-            leading: Icon(Icons.delete, color: Theme.of(context).accentColor),
-            title: Text("Delete my account"),
-            onTap: () async {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text("Delete account"),
-                      content: Text(
-                          "Deleting your account will remove you from all reservations."),
-                      actions: [
-                        FlatButton(
-                          child: Text("Cancel"),
-                          onPressed: () => Navigator.of(context).pop(),
-                        ),
-                        FlatButton(
-                          color: Colors.red,
-                          child: Text("Delete"),
-                          onPressed: () async {
-                            Navigator.of(context).pop();
-                            var success = await Provider.of<DeleteUserUseCase>(
-                                context,
-                                listen: false)
-                                .invoke();
-
-                            if (success) {
-                              authService.signOutOfGoogle();
-                            } else {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: Text("Error"),
-                                      content: Text(
-                                          "An error occurred while deleting your account. Please contact the developer."),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          child: Text("Dismiss"),
-                                          onPressed: () =>
-                                              Navigator.of(context).pop(),
-                                        ),
-                                      ],
-                                    );
-                                  });
-                            }
-                          },
-                        )
-                      ],
-                    );
-                  });
-            }),
-        ListTile(
-            leading: Icon(Icons.person, color: Theme.of(context).accentColor),
-            title: Text("Register as admin"),
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => RegisterAsAdminPage()))),
+            onTap: () => authService.signOut(context)),
+        Consumer<GetUserUseCase>(
+          builder: (context, useCase, _) {
+            return Visibility(
+              visible: useCase.user?.isAdmin != true,
+              child: ListTile(
+                  leading:
+                      Icon(Icons.person, color: Theme.of(context).accentColor),
+                  title: Text("Register as admin"),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RegisterAsAdminPage()))),
+            );
+          },
+        ),
         Consumer<GetUserUseCase>(builder: (context, getUserUseCase, _) {
           return Visibility(
             visible: getUserUseCase.user?.isAdmin ?? false,
@@ -89,7 +46,7 @@ class HomePageSettings extends StatelessWidget {
                       ClipboardData(text: getUserUseCase.user?.studioCode));
 
                   final snackBar =
-                  SnackBar(content: Text('Copied to Clipboard'));
+                      SnackBar(content: Text('Copied to Clipboard'));
 
                   Scaffold.of(context).showSnackBar(snackBar);
                 }),
@@ -107,7 +64,7 @@ class HomePageSettings extends StatelessWidget {
                       text: getUserUseCase.user?.studioAdminCode));
 
                   final snackBar =
-                  SnackBar(content: Text('Copied to Clipboard'));
+                      SnackBar(content: Text('Copied to Clipboard'));
 
                   Scaffold.of(context).showSnackBar(snackBar);
                 }),

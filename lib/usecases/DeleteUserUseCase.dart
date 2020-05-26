@@ -1,6 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:seven_spot_mobile/repositories/UserRepository.dart';
 
-class DeleteUserUseCase {
+class DeleteUserUseCase extends ChangeNotifier {
+  bool _loading = false;
+  bool get loading => _loading;
+
   UserRepository _repo;
 
   DeleteUserUseCase(UserRepository repo) {
@@ -8,6 +12,9 @@ class DeleteUserUseCase {
   }
 
   Future<bool> invoke() async {
+    _loading = true;
+    notifyListeners();
+
     var success;
 
     try {
@@ -16,6 +23,9 @@ class DeleteUserUseCase {
     } catch (e) {
       success = false;
       print(e);
+    } finally {
+      _loading = false;
+      notifyListeners();
     }
 
     return success;

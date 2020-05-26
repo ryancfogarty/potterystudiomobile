@@ -7,6 +7,7 @@ import 'package:seven_spot_mobile/pages/FiringsList.dart';
 import 'package:seven_spot_mobile/pages/ManageFiringPage.dart';
 import 'package:seven_spot_mobile/pages/ManageOpeningPage.dart';
 import 'package:seven_spot_mobile/pages/OpeningsList.dart';
+import 'package:seven_spot_mobile/pages/ProfilePage.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/usecases/GetAllOpeningsUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
@@ -26,11 +27,13 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration.zero, () async {
-      _getOpenings();
-      _getFirings();
-      _getUser();
-    });
+    Future.delayed(Duration.zero, _initWithContext);
+  }
+
+  _initWithContext() {
+    _getOpenings();
+    _getFirings();
+    _getUser();
   }
 
   _getOpenings() async {
@@ -63,9 +66,8 @@ class _HomePageState extends State<HomePage> {
                 FlatButton(
                   child: Text("Sign out"),
                   onPressed: () {
-                    Navigator.of(context).pop();
                     Provider.of<AuthService>(context, listen: false)
-                        .signOutOfGoogle();
+                        .signOut(context);
                   },
                 ),
                 FlatButton(
@@ -83,8 +85,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var authService = Provider.of<AuthService>(context, listen: false);
-
     return Scaffold(
       appBar: AppBar(
         elevation: 4.0,
@@ -95,9 +95,14 @@ class _HomePageState extends State<HomePage> {
         }),
         actions: <Widget>[
           InkWell(
-              onTap: () {},
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProfilePage())),
               child: Consumer<GetUserUseCase>(builder: (context, useCase, _) {
-                return ProfileImage(imageUrl: useCase.user?.imageUrl);
+                return Padding(
+                  padding: const EdgeInsets.only(
+                      left: 16.0, top: 4.0, right: 16.0, bottom: 4.0),
+                  child: ProfileImage(imageUrl: useCase.user?.imageUrl),
+                );
               })),
         ],
       ),

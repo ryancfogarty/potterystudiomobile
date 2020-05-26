@@ -91,7 +91,8 @@ void main() async {
         ChangeNotifierProvider<FiringListInteractor>(
           create: (_) => firingListInteractor,
         ),
-        Provider<DeleteUserUseCase>(create: (_) => deleteUserUseCase),
+        ChangeNotifierProvider<DeleteUserUseCase>(
+            create: (_) => deleteUserUseCase),
         ChangeNotifierProvider<GetFiringUseCase>(
           create: (_) => getFiringUseCase,
         ),

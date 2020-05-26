@@ -16,7 +16,7 @@ class FiringsList extends StatefulWidget {
 
 class _FiringListState extends State<FiringsList> {
   RefreshController _refreshController =
-      RefreshController(initialRefresh: true);
+      RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
     try {

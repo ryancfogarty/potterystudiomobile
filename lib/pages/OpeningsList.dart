@@ -12,7 +12,7 @@ class OpeningsList extends StatefulWidget {
 
 class _OpeningsListState extends State<OpeningsList> {
   RefreshController _refreshController =
-      RefreshController(initialRefresh: true);
+      RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
     try {

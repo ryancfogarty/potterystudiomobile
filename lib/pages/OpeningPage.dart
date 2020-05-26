@@ -96,13 +96,13 @@ class _OpeningPageState extends State<OpeningPage> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Consumer<GetUserUseCase>(
-                              builder: (context, useCase, _) {
-                                return ProfileImage(
-                                    imageUrl: useCase.user?.imageUrl,
-                                    radius: 20.0);
-                              },
-                            ),
+                            Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 8.0, right: 8.0),
+                                child: ProfileImage(
+                                    heroTag: null,
+                                    imageUrl: user.imageUrl,
+                                    height: 40.0)),
                             Text(
                               user.name,
                               style: TextStyles().mediumRegularStyle,
