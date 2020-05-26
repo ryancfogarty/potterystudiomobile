@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/usecases/DeleteUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
@@ -29,13 +30,31 @@ class _ProfilePageState extends State<ProfilePage> {
         children: <Widget>[
           Consumer<GetUserUseCase>(
             builder: (context, useCase, _) {
-              return ProfileImage(
-                imageUrl: useCase.user?.imageUrl,
-                height: 140.0,
-                circular: false,
+              return Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
+                    child: ProfileImage(
+                      imageUrl: useCase.user?.imageUrl,
+                      height: 140.0,
+                    ),
+                  ),
+                  Text(
+                    useCase.user?.name,
+                    style: TextStyles().mediumRegularStyle,
+                  ),
+                  Visibility(
+                    visible: useCase.user?.isAdmin == true,
+                    child: Text(
+                      "Admin",
+                      style: TextStyles().smallRegularStyle,
+                    ),
+                  )
+                ],
               );
             },
           ),
+          Divider(),
           ListTile(
               leading: Icon(Icons.delete, color: Theme.of(context).accentColor),
               title: Text("Delete my account"),
