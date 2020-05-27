@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 
 class UploadPhotoUseCase {
   Future<String> changePhoto(ImageSource source) async {
@@ -20,7 +21,7 @@ class UploadPhotoUseCase {
     if (croppedImage == null) return null;
 
     try {
-      StorageReference ref = FirebaseStorage.instance.ref().child("image.jpg");
+      StorageReference ref = FirebaseStorage.instance.ref().child(Uuid().v4());
       StorageUploadTask uploadTask = ref.putFile(croppedImage);
       return (await (await uploadTask.onComplete).ref.getDownloadURL());
     } catch (e) {
