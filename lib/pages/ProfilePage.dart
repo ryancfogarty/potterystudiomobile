@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
+import 'package:seven_spot_mobile/interactors/ProfileInteractor.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/usecases/DeleteUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
+import 'package:seven_spot_mobile/views/EditPhotoOptions.dart';
 import 'package:seven_spot_mobile/views/ProfileImage.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -24,101 +26,119 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _body() {
     var authService = Provider.of<AuthService>(context, listen: false);
 
-    return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Consumer<GetUserUseCase>(
-            builder: (context, useCase, _) {
-              return Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
-                    child: ProfileImage(
-                      imageUrl: useCase.user?.imageUrl,
-                      height: 140.0,
-                    ),
-                  ),
-                  Text(
-                    useCase.user?.name,
-                    style: TextStyles().mediumRegularStyle,
-                  ),
-                  Visibility(
-                    visible: useCase.user?.isAdmin == true,
-                    child: Text(
-                      "Admin",
-                      style: TextStyles().smallRegularStyle,
-                    ),
-                  )
-                ],
-              );
-            },
-          ),
-          Divider(),
-          ListTile(
-              leading: Icon(Icons.delete, color: Theme.of(context).accentColor),
-              title: Text("Delete my account"),
-              onTap: () async {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text("Delete account"),
-                        content: Text(
-                            "Deleting your account will remove you from all reservations."),
-                        actions: [
-                          FlatButton(
-                            child: Text("Cancel"),
-                            onPressed: () => Navigator.of(context).pop(),
+    return SingleChildScrollView(
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Consumer<GetUserUseCase>(
+              builder: (context, useCase, _) {
+                return Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
+                      child: Consumer<ProfileInteractor>(
+                          builder: (context, interactor, _) {
+                        return Visibility(
+                          visible: useCase.user == null ||
+                              interactor.changingPhoto ||
+                              interactor.deletingPhoto,
+                          child: CircularProgressIndicator(),
+                          replacement: ProfileImage(
+                            imageUrl: useCase.user?.imageUrl,
+                            height: 140.0,
                           ),
-                          Consumer<DeleteUserUseCase>(
-                            builder: (context, useCase, _) {
-                              return Visibility(
-                                visible: useCase.loading,
-                                child: CircularProgressIndicator(
-                                    valueColor:
-                                        AlwaysStoppedAnimation(Colors.red)),
-                                replacement: FlatButton(
-                                  color: Colors.red,
-                                  child: Text("Delete"),
-                                  onPressed: () async {
-                                    var success =
-                                        await Provider.of<DeleteUserUseCase>(
-                                                context,
-                                                listen: false)
-                                            .invoke();
+                        );
+                      }),
+                    ),
+                    Text(
+                      useCase.user?.name ?? "Loading...",
+                      style: TextStyles().mediumRegularStyle,
+                    ),
+                    Visibility(
+                      visible: useCase.user?.isAdmin == true,
+                      child: Text(
+                        "Admin",
+                        style: TextStyles().smallRegularStyle,
+                      ),
+                    ),
+                    EditPhotoOptions(
+                        onClickChange: (source) =>
+                            Provider.of<ProfileInteractor>(context, listen: false)
+                                .changePhoto(source),
+                        onClickDelete:
+                            Provider.of<ProfileInteractor>(context, listen: false)
+                                .deletePhoto),
+                  ],
+                );
+              },
+            ),
+            Divider(),
+            ListTile(
+                leading: Icon(Icons.delete, color: Theme.of(context).accentColor),
+                title: Text("Delete my account"),
+                onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("Delete account"),
+                          content: Text(
+                              "Deleting your account will remove you from all reservations."),
+                          actions: [
+                            FlatButton(
+                              child: Text("Cancel"),
+                              onPressed: () => Navigator.of(context).pop(),
+                            ),
+                            Consumer<DeleteUserUseCase>(
+                              builder: (context, useCase, _) {
+                                return Visibility(
+                                  visible: useCase.loading,
+                                  child: CircularProgressIndicator(
+                                      valueColor:
+                                          AlwaysStoppedAnimation(Colors.red)),
+                                  replacement: FlatButton(
+                                    color: Colors.red,
+                                    child: Text("Delete"),
+                                    onPressed: () async {
+                                      var success =
+                                          await Provider.of<DeleteUserUseCase>(
+                                                  context,
+                                                  listen: false)
+                                              .invoke();
 
-                                    if (success) {
-                                      await authService.signOut(context);
-                                    } else {
-                                      Navigator.of(context).pop();
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              title: Text("Error"),
-                                              content: Text(
-                                                  "An error occurred while deleting your account. Please contact the developer."),
-                                              actions: <Widget>[
-                                                FlatButton(
-                                                    child: Text("Dismiss"),
-                                                    onPressed: () =>
-                                                        Navigator.of(context)
-                                                            .pop()),
-                                              ],
-                                            );
-                                          });
-                                    }
-                                  },
-                                ),
-                              );
-                            },
-                          )
-                        ],
-                      );
-                    });
-              }),
-        ],
+                                      if (success) {
+                                        await authService.signOut(context);
+                                      } else {
+                                        Navigator.of(context).pop();
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text("Error"),
+                                                content: Text(
+                                                    "An error occurred while deleting your account. Please contact the developer."),
+                                                actions: <Widget>[
+                                                  FlatButton(
+                                                      child: Text("Dismiss"),
+                                                      onPressed: () =>
+                                                          Navigator.of(context)
+                                                              .pop()),
+                                                ],
+                                              );
+                                            });
+                                      }
+                                    },
+                                  ),
+                                );
+                              },
+                            )
+                          ],
+                        );
+                      });
+                }),
+          ],
+        ),
       ),
     );
   }

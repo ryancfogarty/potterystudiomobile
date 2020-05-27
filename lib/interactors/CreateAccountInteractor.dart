@@ -1,16 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:seven_spot_mobile/usecases/CreateStudioUseCase.dart';
 import 'package:seven_spot_mobile/usecases/CreateUserUseCase.dart';
+import 'package:seven_spot_mobile/usecases/UploadPhotoUseCase.dart';
 
 class CreateAccountInteractor extends ChangeNotifier {
   CreateUserUseCase _createUserUseCase;
   CreateStudioUseCase _createStudioUseCase;
+  UploadPhotoUseCase _uploadPhotoUseCase;
 
-  CreateAccountInteractor(CreateUserUseCase createUserUseCase,
-      CreateStudioUseCase createStudioUseCase) {
+  CreateAccountInteractor(
+      CreateUserUseCase createUserUseCase,
+      CreateStudioUseCase createStudioUseCase,
+      UploadPhotoUseCase uploadPhotoUseCase) {
     _createUserUseCase = createUserUseCase;
     _createStudioUseCase = createStudioUseCase;
+    _uploadPhotoUseCase = uploadPhotoUseCase;
   }
 
   bool _loadingCreateUser = false;
@@ -22,6 +28,10 @@ class CreateAccountInteractor extends ChangeNotifier {
   bool get loadingCreateStudio => _loadingCreateStudio;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  bool _uploadingImage = false;
+
+  bool get uploadingImage => _uploadingImage;
 
   String _profileImageUrl;
 
@@ -35,6 +45,21 @@ class CreateAccountInteractor extends ChangeNotifier {
   void setProfileImageUrl(String profileImageUrl) {
     _profileImageUrl = profileImageUrl;
     notifyListeners();
+  }
+
+  void changeImage(ImageSource source) async {
+    _uploadingImage = true;
+    notifyListeners();
+
+    try {
+      _profileImageUrl =
+          (await _uploadPhotoUseCase.changePhoto(source)) ?? _profileImageUrl;
+    } catch (e) {
+      print(e);
+    } finally {
+      _uploadingImage = false;
+      notifyListeners();
+    }
   }
 
   void initFromFirebaseUser() async {

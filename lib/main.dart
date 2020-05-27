@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/SupportsAppleLogin.dart';
 import 'package:seven_spot_mobile/interactors/CreateAccountInteractor.dart';
 import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
+import 'package:seven_spot_mobile/interactors/ProfileInteractor.dart';
 import 'package:seven_spot_mobile/pages/CreateAccountPage.dart';
 import 'package:seven_spot_mobile/pages/HomePage.dart';
 import 'package:seven_spot_mobile/pages/LoginPage.dart';
@@ -17,10 +18,12 @@ import 'package:seven_spot_mobile/repositories/UserRepository.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/services/FiringService.dart';
 import 'package:seven_spot_mobile/services/StudioService.dart';
+import 'package:seven_spot_mobile/usecases/ChangePhotoUseCase.dart';
 import 'package:seven_spot_mobile/usecases/CreateStudioUseCase.dart';
 import 'package:seven_spot_mobile/usecases/CreateUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/DeleteFiringUseCase.dart';
 import 'package:seven_spot_mobile/usecases/DeleteOpeningUseCase.dart';
+import 'package:seven_spot_mobile/usecases/DeletePhotoUseCase.dart';
 import 'package:seven_spot_mobile/usecases/DeleteUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetAllFiringsUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetAllOpeningsUseCase.dart';
@@ -31,6 +34,7 @@ import 'package:seven_spot_mobile/usecases/ManageFiringUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/RegisterAsAdminUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ToggleReservationUseCase.dart';
+import 'package:seven_spot_mobile/usecases/UploadPhotoUseCase.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,8 +68,14 @@ void main() async {
   var studioService = StudioService();
   var studioRepository = StudioRepository(studioService);
   var createStudioUseCase = CreateStudioUseCase(studioRepository, authService);
-  var createAccountInteractor =
-      CreateAccountInteractor(createUserUseCase, createStudioUseCase);
+  var uploadPhotoUseCase = UploadPhotoUseCase();
+  var createAccountInteractor = CreateAccountInteractor(
+      createUserUseCase, createStudioUseCase, uploadPhotoUseCase);
+  var changePhotoUseCase =
+      ChangePhotoUseCase(userRepository, uploadPhotoUseCase, getUserUseCase);
+  var deletePhotoUseCase = DeletePhotoUseCase(userRepository, getUserUseCase);
+  var profileInteractor =
+      ProfileInteractor(changePhotoUseCase, deletePhotoUseCase);
 
   await SupportsAppleLogin.init();
   authService.autoSignIn();
@@ -109,6 +119,9 @@ void main() async {
             create: (_) => registerAsAdminUseCase),
         ChangeNotifierProvider<CreateAccountInteractor>(
           create: (_) => createAccountInteractor,
+        ),
+        ChangeNotifierProvider<ProfileInteractor>(
+          create: (_) => profileInteractor,
         )
       ], child: MyApp()),
     );

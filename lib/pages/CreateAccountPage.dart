@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/interactors/CreateAccountInteractor.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
+import 'package:seven_spot_mobile/views/EditPhotoOptions.dart';
 import 'package:seven_spot_mobile/views/ProfileImage.dart';
 
 class CreateAccountPage extends StatefulWidget {
@@ -48,29 +49,23 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   children: [
                     Consumer<CreateAccountInteractor>(
                         builder: (context, interactor, _) {
-                      return ProfileImage(
-                          heroTag: null,
-                          imageUrl: interactor.profileImageUrl);
+                      return Visibility(
+                        visible: interactor.uploadingImage,
+                        child: CircularProgressIndicator(),
+                        replacement: ProfileImage(
+                            heroTag: null,
+                            imageUrl: interactor.profileImageUrl),
+                      );
                     }),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        FlatButton(
-                          child: Text("Change photo",
-                              style: TextStyles().mediumRegularStyle),
-                          onPressed: () {},
-                        ),
-                        FlatButton(
-                          child: Text("Remove photo",
-                              style: TextStyles()
-                                  .mediumRegularStyle
-                                  .copyWith(color: Colors.red)),
-                          onPressed: Provider.of<CreateAccountInteractor>(
-                                  context,
+                    EditPhotoOptions(
+                      onClickChange: (source) =>
+                          Provider.of<CreateAccountInteractor>(context,
                                   listen: false)
-                              .removePhoto,
-                        ),
-                      ],
+                              .changeImage(source),
+                      onClickDelete: Provider.of<CreateAccountInteractor>(
+                              context,
+                              listen: false)
+                          .removePhoto,
                     ),
                     TextField(
                         controller: _usersNameController,

@@ -19,6 +19,11 @@ class GetUserUseCaseImpl extends GetUserUseCase {
     _repo = repo;
   }
 
+  void setUser(User user) {
+    _user = user;
+    notifyListeners();
+  }
+
   Future<void> getUser() async {
     _clear();
 

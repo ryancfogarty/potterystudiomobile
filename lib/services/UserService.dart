@@ -69,4 +69,23 @@ class UserService {
 
     if (response.statusCode != 200) throw Exception("Error");
   }
+
+  Future<UserDto> updateUser(String name, String profileImageUrl) async {
+    var currentUser = await AuthService().currentUser;
+    var idToken = await currentUser.getIdToken(refresh: true);
+
+    var requestBody =
+        json.encode({"name": name, "profileImageUrl": profileImageUrl});
+    var url = "$_baseUrl/api/user";
+
+    var response = await http.put(url, body: requestBody, headers: {
+      "Authorization": idToken.token,
+      "Content-Type": "application/json"
+    });
+
+    if (response.statusCode != 200) throw Exception("Error");
+
+    var userJson = json.decode(response.body);
+    return UserDto.fromJson(userJson);
+  }
 }

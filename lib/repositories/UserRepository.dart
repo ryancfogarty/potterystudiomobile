@@ -26,4 +26,10 @@ class UserRepository {
   Future<void> registerAsAdmin(String adminCode) async {
     return await _service.registerAsAdmin(adminCode);
   }
+
+  Future<User> updateUser(String name, String profileImageUrl) async {
+    var userDto = await _service.updateUser(name, profileImageUrl);
+
+    return userDto.toModel();
+  }
 }
