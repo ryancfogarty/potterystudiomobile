@@ -68,10 +68,9 @@ class _UpcomingListPreviewState extends State<UpcomingListPreview> {
   Widget _viewAllButton() {
     return Consumer<GetUserUseCase>(builder: (context, getUserUseCase, _) {
       return Padding(
-        padding: const EdgeInsets.only(
-            top: 8.0, bottom: 8.0, left: 6.0, right: 6.0),
+        padding:
+            const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 6.0, right: 6.0),
         child: FlatButton(
-          color: Colors.white,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4.0),
               side: BorderSide(color: Theme.of(context).accentColor)),

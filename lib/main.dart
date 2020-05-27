@@ -29,6 +29,7 @@ import 'package:seven_spot_mobile/usecases/GetAllFiringsUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetAllOpeningsUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetFiringUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetOpeningUseCase.dart';
+import 'package:seven_spot_mobile/usecases/GetPresentUsersUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ManageFiringUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
@@ -76,6 +77,7 @@ void main() async {
   var deletePhotoUseCase = DeletePhotoUseCase(userRepository, getUserUseCase);
   var profileInteractor =
       ProfileInteractor(changePhotoUseCase, deletePhotoUseCase);
+  var getPresentUsersUseCase = GetPresentUsersUseCase(userRepository);
 
   await SupportsAppleLogin.init();
   authService.autoSignIn();
@@ -122,6 +124,9 @@ void main() async {
         ),
         ChangeNotifierProvider<ProfileInteractor>(
           create: (_) => profileInteractor,
+        ),
+        ChangeNotifierProvider<GetPresentUsersUseCase>(
+          create: (_) => getPresentUsersUseCase,
         )
       ], child: MyApp()),
     );

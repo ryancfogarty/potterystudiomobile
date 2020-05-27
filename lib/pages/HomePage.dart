@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
 import 'package:seven_spot_mobile/pages/FiringsList.dart';
@@ -10,12 +11,14 @@ import 'package:seven_spot_mobile/pages/OpeningsList.dart';
 import 'package:seven_spot_mobile/pages/ProfilePage.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/usecases/GetAllOpeningsUseCase.dart';
+import 'package:seven_spot_mobile/usecases/GetPresentUsersUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
 import 'package:seven_spot_mobile/views/FiringCard.dart';
 import 'package:seven_spot_mobile/views/HomePageSettings.dart';
 import 'package:seven_spot_mobile/views/OpeningCard.dart';
 import 'package:seven_spot_mobile/views/ProfileImage.dart';
 import 'package:seven_spot_mobile/views/UpcomingListPreview.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -23,6 +26,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +40,7 @@ class _HomePageState extends State<HomePage> {
     _getOpenings();
     _getFirings();
     _getUser();
+    _getPresentUsers();
   }
 
   _getOpenings() async {
@@ -83,6 +90,23 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void _refresh() {
+    _refreshController.refreshCompleted();
+
+    _getOpenings();
+    _getFirings();
+    _getPresentUsers();
+  }
+
+  void _getPresentUsers() async {
+    try {
+      await Provider.of<GetPresentUsersUseCase>(context, listen: false)
+          .invoke();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,16 +135,92 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _body() {
-    return SingleChildScrollView(
-        child: Column(
-      children: <Widget>[
-        _upcomingOpenings(),
-        _upcomingFirings(),
-        Divider(),
-        HomePageSettings(),
-      ],
-    ));
+    return SmartRefresher(
+      onRefresh: _refresh,
+      controller: _refreshController,
+      child: SingleChildScrollView(
+          child: Column(
+        children: <Widget>[
+          _presentUsers(),
+          _upcomingOpenings(),
+          _upcomingFirings(),
+          Divider(),
+          HomePageSettings(),
+        ],
+      )),
+    );
   }
+
+  Widget _presentUsers() {
+    return Consumer<GetPresentUsersUseCase>(builder: (context, useCase, _) {
+      var userWidgets = useCase.presentUsers.map((user) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: <Widget>[
+              ProfileImage(
+                  imageUrl: user.imageUrl, heroTag: null, height: 60.0),
+              Text(user.name
+                      .split(" ")
+                      .map((s) => s[0].toUpperCase())
+                      .join(".") +
+                  ".")
+            ],
+          ),
+        );
+      }).toList();
+
+      var headerText = Text(
+        "In the studio",
+        style: TextStyles().bigRegularStyle,
+      );
+
+      return Container(
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Row(
+                  children: <Widget>[
+                    Visibility(
+                      visible: useCase.loading,
+                      child: Shimmer.fromColors(
+                          child: headerText,
+                          baseColor: Colors.black.withAlpha(20),
+                          highlightColor: Theme.of(context).accentColor),
+                      replacement: headerText,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10000),
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              left: 8.0, right: 8.0, top: 4.0, bottom: 4.0),
+                          color: Colors.grey.withAlpha(150),
+                          child: Text(
+                            useCase.presentUsers.length.toString(),
+                            style: TextStyles().mediumRegularStyle,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Wrap(children: userWidgets),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+
+  Widget _present() {}
 
   Widget _upcomingFirings() {
     return Consumer<FiringListInteractor>(builder: (context, interactor, _) {

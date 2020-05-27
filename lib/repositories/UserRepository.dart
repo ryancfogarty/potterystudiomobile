@@ -32,4 +32,10 @@ class UserRepository {
 
     return userDto.toModel();
   }
+
+  Future<Iterable<User>> presentUsers() async {
+    var userDtos = await _service.presentUsers();
+
+    return userDtos.map((dto) => dto.toModel());
+  }
 }

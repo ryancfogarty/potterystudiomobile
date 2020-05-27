@@ -88,4 +88,19 @@ class UserService {
     var userJson = json.decode(response.body);
     return UserDto.fromJson(userJson);
   }
+
+  Future<Iterable<UserDto>> presentUsers() async {
+    var currentUser = await AuthService().currentUser;
+    var idToken = await currentUser.getIdToken(refresh: true);
+
+    var url = "$_baseUrl/api/user/present";
+
+    var response =
+        await http.get(url, headers: {"Authorization": idToken.token});
+
+    if (response.statusCode != 200) throw Exception("Error");
+
+    List usersJson = json.decode(response.body);
+    return usersJson.map((userJson) => UserDto.fromJson(userJson));
+  }
 }
