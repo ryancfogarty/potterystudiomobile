@@ -19,37 +19,33 @@ class _LoginPageState extends State<LoginPage> {
       body: SafeArea(
         child: Center(
             child: Stack(
-              children: <Widget>[
-                Positioned(
-                  top: 32,
-                  left: 0,
-                  right: 0,
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        "Pottery Studio",
-                        style: TextStyles().bigBoldStyle.copyWith(
-                            fontSize: 24.0),
-                      ),
-                      Text("(Beta)", style: TextStyles().smallRegularStyle)
-                    ],
+          children: <Widget>[
+            Positioned(
+              top: 32,
+              left: 0,
+              right: 0,
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    "Pottery Studio",
+                    style: TextStyles().bigBoldStyle.copyWith(fontSize: 24.0),
                   ),
-                ),
-                Positioned(
-                    top: 0,
-                    bottom: 0,
-                    left: 64,
-                    right: 64,
-                    child: Image(
-                        image: AssetImage("assets/ic_launcher.png"),
-                        width: 128.0,
-                        color: Theme
-                            .of(context)
-                            .primaryColor)),
-                Positioned(
-                    bottom: 16, left: 16, right: 16, child: _loginOrAutoLogin())
-              ],
-            )),
+                ],
+              ),
+            ),
+            Positioned(
+                top: 0,
+                bottom: 0,
+                left: 64,
+                right: 64,
+                child: Image(
+                    image: AssetImage("assets/ic_launcher.png"),
+                    width: 128.0,
+                    color: Theme.of(context).primaryColor)),
+            Positioned(
+                bottom: 16, left: 16, right: 16, child: _loginOrAutoLogin())
+          ],
+        )),
       ),
     );
   }
@@ -67,36 +63,32 @@ class _LoginPageState extends State<LoginPage> {
           ),
           replacement: Column(
             children: <Widget>[
-          ThirdPartySignInButton(
-          logoUri: "assets/google_logo.png",
-            thirdPartyProvider: "Google",
-            onPressed: _continueWithGoogle,
-            borderColor: Theme
-                .of(context)
-                .accentColor,
-          ),
-          _appleSignInButton(),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: FlatButton(
-              child: Text("View licenses",
-                  style: TextStyles()
-                      .mediumRegularStyle
-                      .copyWith(color: Theme
-                      .of(context)
-                      .accentColor, decoration: TextDecoration.underline)),
-                  onPressed: () {
-                    showAboutDialog(
-                        context: context,
-                        applicationName: "Pottery World",
-                        applicationVersion: "0.1.0",
-                        applicationLegalese: "© Ryan Fogarty 2020 ",
-                        applicationIcon: Image(
-                            height: 30,
-                            width: 30,
-                            image: AssetImage("assets/ic_launcher.png")));
-                  }),
-          ),
+              ThirdPartySignInButton(
+                logoUri: "assets/google_logo.png",
+                thirdPartyProvider: "Google",
+                onPressed: _continueWithGoogle,
+                borderColor: Theme.of(context).accentColor,
+              ),
+              _appleSignInButton(),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: FlatButton(
+                    child: Text("View licenses",
+                        style: TextStyles().mediumRegularStyle.copyWith(
+                            color: Theme.of(context).accentColor,
+                            decoration: TextDecoration.underline)),
+                    onPressed: () {
+                      showAboutDialog(
+                          context: context,
+                          applicationName: "Pottery Studio",
+                          applicationVersion: "0.1.0",
+                          applicationLegalese: "© Ryan Fogarty 2020 ",
+                          applicationIcon: Image(
+                              height: 30,
+                              width: 30,
+                              image: AssetImage("assets/ic_launcher.png")));
+                    }),
+              ),
             ],
           ),
         );

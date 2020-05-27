@@ -78,7 +78,7 @@ class HomePageSettings extends StatelessWidget {
             title: Text("About"),
             onTap: () => showAboutDialog(
                 context: context,
-                applicationName: "Pottery World",
+                applicationName: "Pottery Studio",
                 applicationVersion: "0.1.0",
                 applicationLegalese: "© Ryan Fogarty 2020 ",
                 applicationIcon: Image(

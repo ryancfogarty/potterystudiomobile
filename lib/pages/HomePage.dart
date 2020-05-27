@@ -212,6 +212,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
+              _togglePresence(),
               Wrap(children: userWidgets),
             ],
           ),
@@ -220,7 +221,37 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Widget _present() {}
+  Widget _togglePresence() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        FlatButton(
+          shape: RoundedRectangleBorder(
+              side: BorderSide(color: Theme.of(context).accentColor),
+              borderRadius: BorderRadius.circular(24.0)),
+          onPressed: () {},
+          child: Text(
+            "Enter studio",
+            style: TextStyles()
+                .mediumRegularStyle
+                .copyWith(color: Theme.of(context).accentColor),
+          ),
+        ),
+        FlatButton(
+          shape: RoundedRectangleBorder(
+              side: BorderSide(color: Theme.of(context).accentColor),
+              borderRadius: BorderRadius.circular(24.0)),
+          onPressed: () {},
+          child: Text(
+            "Leave studio",
+            style: TextStyles()
+                .mediumRegularStyle
+                .copyWith(color: Theme.of(context).accentColor),
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget _upcomingFirings() {
     return Consumer<FiringListInteractor>(builder: (context, interactor, _) {
