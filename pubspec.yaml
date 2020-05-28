@@ -45,6 +45,7 @@ flutter:
     - assets/google_logo.png
     - assets/apple_logo.png
     - assets/ic_launcher.png
+    - assets/placeholder_image.png
   fonts:
     - family: Lato
       fonts:

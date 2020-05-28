@@ -38,4 +38,12 @@ class UserRepository {
 
     return userDtos.map((dto) => dto.toModel());
   }
+
+  Future<void> checkIn() async {
+    return await _service.checkIn();
+  }
+
+  Future<void> checkOut() async {
+    return await _service.checkOut();
+  }
 }

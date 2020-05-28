@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/SupportsAppleLogin.dart';
+import 'package:seven_spot_mobile/interactors/CheckedInInteractor.dart';
 import 'package:seven_spot_mobile/interactors/CreateAccountInteractor.dart';
 import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
 import 'package:seven_spot_mobile/interactors/ProfileInteractor.dart';
@@ -19,6 +20,8 @@ import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/services/FiringService.dart';
 import 'package:seven_spot_mobile/services/StudioService.dart';
 import 'package:seven_spot_mobile/usecases/ChangePhotoUseCase.dart';
+import 'package:seven_spot_mobile/usecases/CheckInUseCase.dart';
+import 'package:seven_spot_mobile/usecases/CheckOutUseCase.dart';
 import 'package:seven_spot_mobile/usecases/CreateStudioUseCase.dart';
 import 'package:seven_spot_mobile/usecases/CreateUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/DeleteFiringUseCase.dart';
@@ -36,6 +39,7 @@ import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/RegisterAsAdminUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ToggleReservationUseCase.dart';
 import 'package:seven_spot_mobile/usecases/UploadPhotoUseCase.dart';
+import 'package:seven_spot_mobile/views/CheckedIn.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -78,6 +82,10 @@ void main() async {
   var profileInteractor =
       ProfileInteractor(changePhotoUseCase, deletePhotoUseCase);
   var getPresentUsersUseCase = GetPresentUsersUseCase(userRepository);
+  var checkInUseCase = CheckInUseCase(userRepository);
+  var checkOutUseCase = CheckOutUseCase(userRepository);
+  var checkedInInteractor = CheckedInInteractor(
+      getUserUseCase, checkInUseCase, checkOutUseCase, getPresentUsersUseCase);
 
   await SupportsAppleLogin.init();
   authService.autoSignIn();
@@ -127,6 +135,9 @@ void main() async {
         ),
         ChangeNotifierProvider<GetPresentUsersUseCase>(
           create: (_) => getPresentUsersUseCase,
+        ),
+        ChangeNotifierProvider<CheckedInInteractor>(
+          create: (_) => checkedInInteractor
         )
       ], child: MyApp()),
     );

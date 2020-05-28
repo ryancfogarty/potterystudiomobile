@@ -103,4 +103,28 @@ class UserService {
     List usersJson = json.decode(response.body);
     return usersJson.map((userJson) => UserDto.fromJson(userJson));
   }
+
+  Future<void> checkIn() async {
+    var currentUser = await AuthService().currentUser;
+    var idToken = await currentUser.getIdToken(refresh: true);
+
+    var url = "$_baseUrl/api/user/present";
+
+    var response =
+        await http.put(url, headers: {"Authorization": idToken.token});
+
+    if (response.statusCode != 200) throw Exception("Error");
+  }
+
+  Future<void> checkOut() async {
+    var currentUser = await AuthService().currentUser;
+    var idToken = await currentUser.getIdToken(refresh: true);
+
+    var url = "$_baseUrl/api/user/absent";
+
+    var response =
+    await http.put(url, headers: {"Authorization": idToken.token});
+
+    if (response.statusCode != 200) throw Exception("Error");
+  }
 }

@@ -13,6 +13,7 @@ import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/usecases/GetAllOpeningsUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetPresentUsersUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
+import 'package:seven_spot_mobile/views/CheckedIn.dart';
 import 'package:seven_spot_mobile/views/FiringCard.dart';
 import 'package:seven_spot_mobile/views/HomePageSettings.dart';
 import 'package:seven_spot_mobile/views/OpeningCard.dart';
@@ -141,115 +142,13 @@ class _HomePageState extends State<HomePage> {
       child: SingleChildScrollView(
           child: Column(
         children: <Widget>[
-          _presentUsers(),
+          CheckedIn(),
           _upcomingOpenings(),
           _upcomingFirings(),
           Divider(),
           HomePageSettings(),
         ],
       )),
-    );
-  }
-
-  Widget _presentUsers() {
-    return Consumer<GetPresentUsersUseCase>(builder: (context, useCase, _) {
-      var userWidgets = useCase.presentUsers.map((user) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              ProfileImage(
-                  imageUrl: user.imageUrl, heroTag: null, height: 60.0),
-              Text(user.name
-                      .split(" ")
-                      .map((s) => s[0].toUpperCase())
-                      .join(".") +
-                  ".")
-            ],
-          ),
-        );
-      }).toList();
-
-      var headerText = Text(
-        "In the studio",
-        style: TextStyles().bigRegularStyle,
-      );
-
-      return Container(
-        width: double.infinity,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Row(
-                  children: <Widget>[
-                    Visibility(
-                      visible: useCase.loading,
-                      child: Shimmer.fromColors(
-                          child: headerText,
-                          baseColor: Colors.black.withAlpha(20),
-                          highlightColor: Theme.of(context).accentColor),
-                      replacement: headerText,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10000),
-                        child: Container(
-                          padding: EdgeInsets.only(
-                              left: 8.0, right: 8.0, top: 4.0, bottom: 4.0),
-                          color: Colors.grey.withAlpha(150),
-                          child: Text(
-                            useCase.presentUsers.length.toString(),
-                            style: TextStyles().mediumRegularStyle,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              _togglePresence(),
-              Wrap(children: userWidgets),
-            ],
-          ),
-        ),
-      );
-    });
-  }
-
-  Widget _togglePresence() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        FlatButton(
-          shape: RoundedRectangleBorder(
-              side: BorderSide(color: Theme.of(context).accentColor),
-              borderRadius: BorderRadius.circular(24.0)),
-          onPressed: () {},
-          child: Text(
-            "Enter studio",
-            style: TextStyles()
-                .mediumRegularStyle
-                .copyWith(color: Theme.of(context).accentColor),
-          ),
-        ),
-        FlatButton(
-          shape: RoundedRectangleBorder(
-              side: BorderSide(color: Theme.of(context).accentColor),
-              borderRadius: BorderRadius.circular(24.0)),
-          onPressed: () {},
-          child: Text(
-            "Leave studio",
-            style: TextStyles()
-                .mediumRegularStyle
-                .copyWith(color: Theme.of(context).accentColor),
-          ),
-        ),
-      ],
     );
   }
 
