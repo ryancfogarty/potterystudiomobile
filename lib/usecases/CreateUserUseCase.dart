@@ -6,7 +6,7 @@ class CreateUserUseCase {
   UserRepository _repo;
   AuthService _authService;
 
-  CreateUserUseCase(AuthService authService, Encrypter encrypter) {
+  CreateUserUseCase(AuthService authService) {
     _repo = UserRepository();
     _authService = authService;
   }

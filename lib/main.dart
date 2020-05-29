@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:encrypt/encrypt.dart';
+import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/SupportsAppleLogin.dart';
 import 'package:seven_spot_mobile/interactors/CheckedInInteractor.dart';
@@ -18,6 +18,7 @@ import 'package:seven_spot_mobile/repositories/StudioRepository.dart';
 import 'package:seven_spot_mobile/repositories/UserRepository.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/services/FiringService.dart';
+import 'package:seven_spot_mobile/services/OpeningService.dart';
 import 'package:seven_spot_mobile/services/StudioService.dart';
 import 'package:seven_spot_mobile/usecases/ChangePhotoUseCase.dart';
 import 'package:seven_spot_mobile/usecases/CheckInUseCase.dart';
@@ -39,24 +40,49 @@ import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
 import 'package:seven_spot_mobile/usecases/RegisterAsAdminUseCase.dart';
 import 'package:seven_spot_mobile/usecases/ToggleReservationUseCase.dart';
 import 'package:seven_spot_mobile/usecases/UploadPhotoUseCase.dart';
-import 'package:seven_spot_mobile/views/CheckedIn.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  var publicKeyString = await rootBundle.loadString('assets/public.pem');
-  var keyParser = RSAKeyParser();
-  var publicKey = keyParser.parse(publicKeyString);
-  var encrypter = Encrypter(RSA(publicKey: publicKey));
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  var authenticatedDio = Dio();
+  authenticatedDio.options.baseUrl =
+      "https://us-central1-spot-629a6.cloudfunctions.net";
+  //  dio.options.baseUrl = "http://10.0.2.2:5001/spot-629a6/us-central1";
+  authenticatedDio.options.connectTimeout = 15000;
+  authenticatedDio.interceptors
+      .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
+    var idToken = await (await auth.currentUser()).getIdToken(refresh: true);
+
+    options.headers.addAll({"Authorization": idToken.token});
+  }, onResponse: (Response<dynamic> response) async {
+        // todo
+//    if (response.statusCode == 401) {
+//      var idToken = await (await auth.currentUser()).getIdToken(refresh: true);
+//
+//      var request = response.request;
+//      request.headers.addAll({"Authorization": idToken.token});
+//      authenticatedDio.request(request.path,
+//          data: request.data,
+//          queryParameters: request.queryParameters,
+//          cancelToken: request.cancelToken);
+//    }
+  }));
+
+//  var publicKeyString = await rootBundle.loadString('assets/public.pem');
+//  var keyParser = RSAKeyParser();
+//  var publicKey = keyParser.parse(publicKeyString);
+//  var encrypter = Encrypter(RSA(publicKey: publicKey));
 
   var authService = AuthService();
-  var createUserUseCase = CreateUserUseCase(authService, encrypter);
-  var openingRepository = OpeningRepository();
+  var createUserUseCase = CreateUserUseCase(authService);
+  var openingService = OpeningService(authenticatedDio);
+  var openingRepository = OpeningRepository(openingService);
   var userRepository = UserRepository();
   var toggleReservationUseCase =
       ToggleReservationUseCaseImpl(openingRepository);
   var getUserUseCase = GetUserUseCaseImpl(userRepository);
-  var getAllOpeningsUseCase = GetAllOpeningsUseCase();
+  var getAllOpeningsUseCase = GetAllOpeningsUseCase(openingRepository);
   var getOpeningUseCase = GetOpeningUseCase(openingRepository);
   var manageOpeningUseCase = ManageOpeningUseCase(openingRepository);
   var deleteOpeningUseCase = DeleteOpeningUseCase(openingRepository);
@@ -137,8 +163,7 @@ void main() async {
           create: (_) => getPresentUsersUseCase,
         ),
         ChangeNotifierProvider<CheckedInInteractor>(
-          create: (_) => checkedInInteractor
-        )
+            create: (_) => checkedInInteractor)
       ], child: MyApp()),
     );
   });

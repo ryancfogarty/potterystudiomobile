@@ -4,8 +4,8 @@ import 'package:seven_spot_mobile/services/OpeningService.dart';
 class OpeningRepository {
   OpeningService _service;
 
-  OpeningRepository() {
-    _service = OpeningService();
+  OpeningRepository(OpeningService service) {
+    _service = service;
   }
 
   Future<Iterable<Opening>> getAll(bool includePast) async {

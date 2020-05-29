@@ -24,8 +24,8 @@ class GetAllOpeningsUseCase extends ChangeNotifier {
 
   OpeningRepository _repo;
 
-  GetAllOpeningsUseCase() {
-    _repo = OpeningRepository();
+  GetAllOpeningsUseCase(OpeningRepository repo) {
+    _repo = repo;
   }
 
   Future<void> invoke() async {
@@ -36,6 +36,7 @@ class GetAllOpeningsUseCase extends ChangeNotifier {
       _openings = await _repo.getAll(_includePast);
     } catch (e) {
       print(e);
+      throw e;
     } finally {
       _loading = false;
       notifyListeners();

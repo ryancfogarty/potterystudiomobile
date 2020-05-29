@@ -1,28 +1,28 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
-import 'package:seven_spot_mobile/DebugUtils.dart';
 import 'package:seven_spot_mobile/models/OpeningDto.dart';
 import 'package:seven_spot_mobile/models/UserDto.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 
 class OpeningService {
+  Dio _dio;
   String _baseUrl = "https://us-central1-spot-629a6.cloudfunctions.net";
 
-//  String _baseUrl = "http://10.0.2.2:5001/spot-629a6/us-central1";
+  OpeningService(Dio dio) {
+    _dio = dio;
+  }
 
   Future<Iterable<OpeningDto>> getAll(bool includePast) async {
-    var currentUser = await AuthService().currentUser;
-    var idToken = await currentUser.getIdToken(refresh: true);
+    var currentUser = await FirebaseAuth.instance.currentUser();
 
-    var url = "$_baseUrl/api/opening?includePast=$includePast";
-    var response =
-        await http.get(url, headers: {"Authorization": idToken.token});
+    var response = await _dio.get("/api/opening?includePast=$includePast");
 
-    printLongString(idToken.token);
     if (response.statusCode >= 400) throw Exception("Error");
 
-    List openingsJson = json.decode(response.body);
+    List openingsJson = response.data;
     return openingsJson
         .map((openingJson) => _jsonToDto(openingJson, currentUser.uid));
   }

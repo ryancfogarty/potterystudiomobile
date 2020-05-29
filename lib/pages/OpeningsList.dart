@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
 import 'package:seven_spot_mobile/usecases/GetAllOpeningsUseCase.dart';
 import 'package:seven_spot_mobile/views/OpeningCard.dart';
 import 'package:seven_spot_mobile/views/ToggleButtonView.dart';
@@ -18,7 +19,7 @@ class _OpeningsListState extends State<OpeningsList> {
     try {
       await Provider.of<GetAllOpeningsUseCase>(context, listen: false).invoke();
     } catch (e) {
-      print(e);
+      HttpRetryDialog().retry(context, _refreshController.requestRefresh);
     } finally {
       _refreshController.refreshCompleted();
     }

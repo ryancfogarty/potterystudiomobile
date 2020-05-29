@@ -30,6 +30,7 @@ dependencies:
   image_cropper: ^1.2.2
   uuid: ^2.0.4
   cached_network_image: ^2.2.0+1
+  dio: ^3.0.9
 
 dev_dependencies:
   flutter_test:
