@@ -126,19 +126,6 @@ class _UpcomingListPreviewState extends State<UpcomingListPreview> {
             })
           ],
         ),
-        Row(
-          children: <Widget>[
-            Visibility(
-              visible: widget.loading,
-              child: Padding(
-                padding:
-                    const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
-                child:
-                    Text("Loading...", style: TextStyles().mediumRegularStyle),
-              ),
-            )
-          ],
-        )
       ],
     );
   }

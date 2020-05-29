@@ -43,12 +43,13 @@ class _CheckedInState extends State<CheckedIn> {
       return Container(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(bottom: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
+                padding: const EdgeInsets.only(
+                    left: 16.0, right: 16.0, top: 16.0, bottom: 8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -83,7 +84,10 @@ class _CheckedInState extends State<CheckedIn> {
                   ],
                 ),
               ),
-              Wrap(children: userWidgets),
+              SingleChildScrollView(
+                  padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                  scrollDirection: Axis.horizontal,
+                  child: Row(children: userWidgets)),
             ],
           ),
         ),
@@ -97,7 +101,7 @@ class _CheckedInState extends State<CheckedIn> {
         var text = interactor.checkedIn ? "Check out" : "Check in";
 
         return Visibility(
-          visible: interactor.checkingInOrOut,
+          visible: interactor.checkingInOrOut || interactor.loadingPresentUsers,
           child: CircularProgressIndicator(),
           replacement: FlatButton(
               shape: RoundedRectangleBorder(

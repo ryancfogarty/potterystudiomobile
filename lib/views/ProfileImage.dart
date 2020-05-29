@@ -43,7 +43,10 @@ class _ProfileImageState extends State<ProfileImage> {
           height: widget.height,
           placeholder: (context, url) => Row(
                 children: <Widget>[
-                  CircularProgressIndicator(),
+                  Container(
+                      width: 40,
+                      height: 40,
+                      child: Center(child: CircularProgressIndicator())),
                 ],
               ));
     } else {

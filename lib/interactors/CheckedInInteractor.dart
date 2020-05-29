@@ -14,6 +14,8 @@ class CheckedInInteractor extends ChangeNotifier {
 
   bool get checkingInOrOut => _checkingInOrOut;
 
+  bool get loadingPresentUsers => _getPresentUsersUseCase.loading;
+
   bool get checkedIn => _getPresentUsersUseCase.presentUsers
       .where((user) => user.id == _getUserUseCase.user?.id)
       .isNotEmpty;
