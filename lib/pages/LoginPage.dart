@@ -111,9 +111,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _logInWithEmailAndPassword() {
-
-  }
+  void _logInWithEmailAndPassword() {}
 
   Widget _loginOrAutoLogin() {
     var keyboardOpen = MediaQuery.of(context).viewInsets.bottom == 0.0;
