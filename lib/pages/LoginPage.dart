@@ -16,6 +16,9 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
+  FocusNode _emailNode = FocusNode();
+  FocusNode _passwordNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,11 +68,22 @@ class _LoginPageState extends State<LoginPage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        TextField(
+        TextFormField(
+          textInputAction: TextInputAction.next,
+          onFieldSubmitted: (_) {
+            _emailNode.unfocus();
+            FocusScope.of(context).requestFocus(_passwordNode);
+          },
+          focusNode: _emailNode,
           controller: _emailController,
           decoration: InputDecoration(labelText: "Email"),
         ),
-        TextField(
+        TextFormField(
+          textInputAction: TextInputAction.go,
+          onFieldSubmitted: (_) {
+            _logInWithEmailAndPassword();
+          },
+          focusNode: _passwordNode,
           controller: _passwordController,
           obscureText: true,
           decoration: InputDecoration(labelText: "Password"),
@@ -79,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
           width: double.infinity,
           child: FlatButton(
               child: Text("Sign in", style: TextStyles().mediumRegularStyle),
-              onPressed: () {},
+              onPressed: _logInWithEmailAndPassword,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
                   side: BorderSide(color: Theme.of(context).accentColor))),
@@ -95,6 +109,10 @@ class _LoginPageState extends State<LoginPage> {
         )
       ],
     );
+  }
+
+  void _logInWithEmailAndPassword() {
+
   }
 
   Widget _loginOrAutoLogin() {
