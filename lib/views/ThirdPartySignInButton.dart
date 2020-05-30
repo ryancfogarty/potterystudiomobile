@@ -19,8 +19,7 @@ class ThirdPartySignInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: RaisedButton(
-        color: Colors.white,
+      child: FlatButton(
         onPressed: onPressed,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(6),

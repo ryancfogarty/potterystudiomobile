@@ -13,6 +13,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,31 +29,77 @@ class _LoginPageState extends State<LoginPage> {
               right: 0,
               child: Column(
                 children: <Widget>[
-                  Text(
-                    "Pottery Studio",
-                    style: TextStyles().bigBoldStyle.copyWith(fontSize: 24.0),
-                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Image(
+                          color: Theme.of(context).primaryColor,
+                          image: AssetImage("assets/ic_launcher.png"),
+                          width: 32.0),
+                      Text(
+                        "Pottery Studio",
+                        style:
+                            TextStyles().bigBoldStyle.copyWith(fontSize: 24.0),
+                      ),
+                      // hack to center "Pottery Studio" text
+                      Image(
+                          color: Colors.transparent,
+                          image: AssetImage("assets/ic_launcher.png"),
+                          width: 32.0),
+                    ],
+                  )
                 ],
               ),
             ),
             Positioned(
-                top: 0,
-                bottom: 0,
-                left: 64,
-                right: 64,
-                child: Image(
-                    image: AssetImage("assets/ic_launcher.png"),
-                    width: 128.0,
-                    color: Theme.of(context).primaryColor)),
+                bottom: 0, left: 16, right: 16, child: _loginOrAutoLogin()),
             Positioned(
-                bottom: 16, left: 16, right: 16, child: _loginOrAutoLogin())
+                top: 0, bottom: 0, left: 16, right: 16, child: _emailLogin())
           ],
         )),
       ),
     );
   }
 
+  Widget _emailLogin() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        TextField(
+          controller: _emailController,
+          decoration: InputDecoration(labelText: "Email"),
+        ),
+        TextField(
+          controller: _passwordController,
+          obscureText: true,
+          decoration: InputDecoration(labelText: "Password"),
+        ),
+        Container(height: 16.0),
+        Container(
+          width: double.infinity,
+          child: FlatButton(
+              child: Text("Sign in", style: TextStyles().mediumRegularStyle),
+              onPressed: () {},
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                  side: BorderSide(color: Theme.of(context).accentColor))),
+        ),
+        Container(
+          width: double.infinity,
+          child: FlatButton(
+              child: Text("Sign up", style: TextStyles().mediumRegularStyle),
+              onPressed: () {},
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                  side: BorderSide(color: Theme.of(context).accentColor))),
+        )
+      ],
+    );
+  }
+
   Widget _loginOrAutoLogin() {
+    var keyboardOpen = MediaQuery.of(context).viewInsets.bottom == 0.0;
+
     return Consumer<AuthService>(
       builder: (context, authService, _) {
         return Visibility(
@@ -58,37 +107,44 @@ class _LoginPageState extends State<LoginPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              CircularProgressIndicator(),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: CircularProgressIndicator(),
+              ),
             ],
           ),
           replacement: Column(
             children: <Widget>[
-              ThirdPartySignInButton(
-                logoUri: "assets/google_logo.png",
-                thirdPartyProvider: "Google",
-                onPressed: _continueWithGoogle,
-                borderColor: Theme.of(context).accentColor,
+              Visibility(
+                visible: keyboardOpen,
+                child: Column(
+                  children: <Widget>[
+                    ThirdPartySignInButton(
+                      logoUri: "assets/google_logo.png",
+                      thirdPartyProvider: "Google",
+                      onPressed: _continueWithGoogle,
+                      borderColor: Colors.black,
+                    ),
+                    _appleSignInButton(),
+                  ],
+                ),
               ),
-              _appleSignInButton(),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: FlatButton(
-                    child: Text("View licenses",
-                        style: TextStyles().mediumRegularStyle.copyWith(
-                            color: Theme.of(context).accentColor,
-                            decoration: TextDecoration.underline)),
-                    onPressed: () {
-                      showAboutDialog(
-                          context: context,
-                          applicationName: "Pottery Studio",
-                          applicationVersion: "0.1.0",
-                          applicationLegalese: "© Ryan Fogarty 2020 ",
-                          applicationIcon: Image(
-                              height: 30,
-                              width: 30,
-                              image: AssetImage("assets/ic_launcher.png")));
-                    }),
-              ),
+              FlatButton(
+                  child: Text("About",
+                      style: TextStyles().mediumRegularStyle.copyWith(
+                          color: Theme.of(context).accentColor,
+                          decoration: TextDecoration.underline)),
+                  onPressed: () {
+                    showAboutDialog(
+                        context: context,
+                        applicationName: "Pottery Studio",
+                        applicationVersion: "0.1.0",
+                        applicationLegalese: "© Ryan Fogarty 2020 ",
+                        applicationIcon: Image(
+                            height: 30,
+                            width: 30,
+                            image: AssetImage("assets/ic_launcher.png")));
+                  })
             ],
           ),
         );
