@@ -25,7 +25,7 @@ dependencies:
   pointycastle: ^1.0.2
   flutter_countdown_timer: ^1.1.0
   shimmer: ^1.1.1
-  image_picker: ^0.6.6+5
+  image_picker: ^0.6.7
   firebase_storage: ^3.1.6
   image_cropper: ^1.2.2
   uuid: ^2.0.4

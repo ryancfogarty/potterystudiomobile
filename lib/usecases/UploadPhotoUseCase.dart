@@ -7,13 +7,13 @@ import 'package:uuid/uuid.dart';
 
 class UploadPhotoUseCase {
   Future<String> changePhoto(ImageSource source) async {
-    File imageFile = await ImagePicker.pickImage(
+    PickedFile pickedFile = await ImagePicker().getImage(
         source: source, preferredCameraDevice: CameraDevice.front);
 
-    if (imageFile == null) return null;
+    if (pickedFile == null) return null;
 
     File croppedImage = await ImageCropper.cropImage(
-        sourcePath: imageFile.path,
+        sourcePath: pickedFile.path,
         cropStyle: CropStyle.rectangle,
         aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
         compressQuality: 50);
