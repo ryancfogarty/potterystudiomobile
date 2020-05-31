@@ -41,6 +41,9 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<void> loginWithEmail(String email, String password) async {
+    _authenticating = true;
+    notifyListeners();
+
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
 
@@ -55,6 +58,9 @@ class AuthService extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       throw Exception("error");
+    } finally {
+      _authenticating = false;
+      notifyListeners();
     }
   }
 

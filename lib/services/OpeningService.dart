@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:seven_spot_mobile/models/OpeningDto.dart';
-import 'package:seven_spot_mobile/models/UserDto.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 
 class OpeningService {
@@ -23,26 +22,8 @@ class OpeningService {
     if (response.statusCode >= 400) throw Exception("Error");
 
     List openingsJson = response.data;
-    return openingsJson
-        .map((openingJson) => _jsonToDto(openingJson, currentUser.uid));
-  }
-
-  OpeningDto _jsonToDto(dynamic openingJson, String currentUserId) {
-    List<String> reservedUserIds =
-        openingJson["reservedUserIds"].cast<String>();
-    List<UserDto> reservedUserDtos = [
-      for (var userJson in (openingJson["reservedUsers"] ?? []))
-        UserDto.fromJson(userJson)
-    ];
-
-    return OpeningDto(
-        openingJson["id"],
-        openingJson["start"],
-        openingJson["lengthSeconds"],
-        openingJson["size"],
-        reservedUserIds,
-        reservedUserIds.contains(currentUserId),
-        reservedUserDtos);
+    return openingsJson.map(
+        (openingJson) => OpeningDto.fromJson(openingJson, currentUser.uid));
   }
 
   Future<OpeningDto> reserveOpening(String openingId) async {
@@ -56,7 +37,7 @@ class OpeningService {
     if (response.statusCode >= 400) throw Exception("Error");
 
     var openingJson = json.decode(response.body);
-    return _jsonToDto(openingJson, currentUser.uid);
+    return OpeningDto.fromJson(openingJson, currentUser.uid);
   }
 
   Future<OpeningDto> removeReservation(String openingId) async {
@@ -70,7 +51,7 @@ class OpeningService {
     if (response.statusCode >= 400) throw Exception("Error");
 
     var openingJson = json.decode(response.body);
-    return _jsonToDto(openingJson, currentUser.uid);
+    return OpeningDto.fromJson(openingJson, currentUser.uid);
   }
 
   Future<OpeningDto> getOpening(String openingId) async {
@@ -85,7 +66,7 @@ class OpeningService {
       throw Exception("Error ${response.statusCode}");
 
     var openingJson = json.decode(response.body);
-    return _jsonToDto(openingJson, currentUser.uid);
+    return OpeningDto.fromJson(openingJson, currentUser.uid);
   }
 
   Future<OpeningDto> createOpening(OpeningDto openingDto) async {
@@ -114,7 +95,7 @@ class OpeningService {
     if (response.statusCode >= 400) throw Exception("Error");
 
     var openingJson = json.decode(response.body)[0];
-    return _jsonToDto(openingJson, currentUser.uid);
+    return OpeningDto.fromJson(openingJson, currentUser.uid);
   }
 
   Future<OpeningDto> updateOpening(OpeningDto openingDto) async {
@@ -135,7 +116,7 @@ class OpeningService {
     if (response.statusCode >= 400) throw Exception("Error");
 
     var openingJson = json.decode(response.body);
-    return _jsonToDto(openingJson, currentUser.uid);
+    return OpeningDto.fromJson(openingJson, currentUser.uid);
   }
 
   Future<void> deleteOpening(String openingId) async {

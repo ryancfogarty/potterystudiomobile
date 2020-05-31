@@ -37,6 +37,23 @@ class OpeningDto {
     this.numberOfOccurrences = numberOfOccurrences;
   }
 
+  OpeningDto.fromJson(dynamic openingJson, String currentUserId) {
+    List<String> reservedUserIds =
+    openingJson["reservedUserIds"].cast<String>();
+    List<UserDto> reservedUserDtos = [
+      for (var userJson in (openingJson["reservedUsers"] ?? []))
+        UserDto.fromJson(userJson)
+    ];
+
+    this.id = openingJson["id"];
+    this.start = openingJson["start"];
+    this.lengthSeconds = openingJson["lengthSeconds"];
+    this.size = openingJson["size"];
+    this.reservedUserIds = reservedUserIds;
+    this.loggedInUserReserved = reservedUserIds.contains(currentUserId);
+    this.reservedUsers = reservedUserDtos;
+  }
+
   Opening toModel() {
     var startDateTime = DateTime.parse(start);
 
