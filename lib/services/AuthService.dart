@@ -34,6 +34,30 @@ class AuthService extends ChangeNotifier {
     }
   }
 
+  Future<void> createAccount(String email, String password) async {
+    var result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+
+    result.user.sendEmailVerification();
+  }
+
+  Future<void> loginWithEmail(String email, String password) async {
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+      var currentUser = await _auth.currentUser();
+
+      if (!currentUser.isEmailVerified) {
+        await _auth.signOut();
+        throw Exception();
+      }
+
+      state = AppState.AUTHENTICATED;
+      notifyListeners();
+    } catch (e) {
+      throw Exception("error");
+    }
+  }
+
   Future<void> continueWithApple() async {
     _authenticating = true;
     notifyListeners();

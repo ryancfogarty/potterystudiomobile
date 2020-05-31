@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/SupportsAppleLogin.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
+import 'package:seven_spot_mobile/pages/EmailSignUpPage.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/views/ThirdPartySignInButton.dart';
 
@@ -79,10 +80,6 @@ class _LoginPageState extends State<LoginPage> {
           decoration: InputDecoration(labelText: "Email"),
         ),
         TextFormField(
-          textInputAction: TextInputAction.go,
-          onFieldSubmitted: (_) {
-            _logInWithEmailAndPassword();
-          },
           focusNode: _passwordNode,
           controller: _passwordController,
           obscureText: true,
@@ -98,20 +95,57 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(4.0),
                   side: BorderSide(color: Theme.of(context).accentColor))),
         ),
-        Container(
-          width: double.infinity,
-          child: FlatButton(
-              child: Text("Sign up", style: TextStyles().mediumRegularStyle),
-              onPressed: () {},
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                  side: BorderSide(color: Theme.of(context).accentColor))),
+        Visibility(
+          visible: MediaQuery.of(context).viewInsets.bottom == 0,
+          child: Column(
+            children: <Widget>[
+              Divider(),
+              Container(
+                width: double.infinity,
+                child: FlatButton(
+                    child: Text("Sign up", style: TextStyles().mediumRegularStyle),
+                    onPressed: _signUpWithEmail,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                        side: BorderSide(color: Theme.of(context).accentColor))),
+              )
+            ],
+          ),
         )
       ],
     );
   }
 
-  void _logInWithEmailAndPassword() {}
+  void _signUpWithEmail() async {
+    var map = await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => EmailSignUpPage()));
+
+    if (map != null) {
+      _emailController.text = map["email"];
+      _passwordController.text = map["password"];
+    }
+  }
+
+  void _logInWithEmailAndPassword() async {
+    try {
+      await Provider.of<AuthService>(context)
+          .loginWithEmail(_emailController.text, _passwordController.text);
+    } catch (e) {
+      showDialog(
+          context: context,
+          child: AlertDialog(
+            title: Text("Error"),
+            content: Text(
+                "Incorrect email or password, or email has not been verified."),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("Dismiss"),
+                onPressed: Navigator.of(context).pop,
+              )
+            ],
+          ));
+    }
+  }
 
   Widget _loginOrAutoLogin() {
     var keyboardOpen = MediaQuery.of(context).viewInsets.bottom == 0.0;
