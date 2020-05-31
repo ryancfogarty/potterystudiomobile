@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
             Positioned(
                 bottom: 0, left: 16, right: 16, child: _loginOrAutoLogin()),
             Positioned(
-                top: 0, bottom: 0, left: 16, right: 16, child: _emailLogin())
+                top: 0, bottom: 1, left: 16, right: 16, child: _emailLogin())
           ],
         )),
       ),
