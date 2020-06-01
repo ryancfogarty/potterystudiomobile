@@ -15,6 +15,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool _obscurePassword = true;
+
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
@@ -33,21 +35,21 @@ class _LoginPageState extends State<LoginPage> {
               left: -100,
               child: Blob.fromID(
                 styles: BlobStyles(
-                  color: Theme.of(context).primaryColor.withAlpha(100),
+                  color: Theme.of(context).primaryColor.withAlpha(50),
                 ),
                 size: 200,
                 id: ["8-8-8"],
               ),
             ),
             Positioned(
-              right: MediaQuery.of(context).size.width / 2,
-              top: MediaQuery.of(context).size.height / 2,
+              left: -50,
+              top: MediaQuery.of(context).size.height / 1.8,
               child: Blob.fromID(
                 styles: BlobStyles(
-                  color: Theme.of(context).primaryColor.withAlpha(100),
+                  color: Theme.of(context).primaryColor.withAlpha(50),
                 ),
-                size: 300,
-                id: ["6-6-6"],
+                size: 200,
+                id: ["6-6-10"],
               ),
             ),
             Positioned(
@@ -55,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
               top: MediaQuery.of(context).size.height / 10,
               child: Blob.fromID(
                 styles: BlobStyles(
-                  color: Theme.of(context).primaryColor.withAlpha(100),
+                  color: Theme.of(context).primaryColor.withAlpha(50),
                 ),
                 size: 200,
                 id: ["7-7-7"],
@@ -68,8 +70,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Center(
                 child: Text(
                   "Pottery Studio",
-                  style:
-                  TextStyles().bigBoldStyle.copyWith(fontSize: 24.0),
+                  style: TextStyles().bigBoldStyle.copyWith(fontSize: 24.0),
                 ),
               ),
             ),
@@ -100,8 +101,16 @@ class _LoginPageState extends State<LoginPage> {
         TextFormField(
           focusNode: _passwordNode,
           controller: _passwordController,
-          obscureText: true,
-          decoration: InputDecoration(labelText: "Password"),
+          obscureText: _obscurePassword,
+          decoration: InputDecoration(
+              labelText: "Password",
+              suffixIcon: IconButton(
+                icon: Icon(
+                    _obscurePassword ? Icons.visibility_off : Icons.visibility),
+                onPressed: () => setState(() {
+                  _obscurePassword = !_obscurePassword;
+                }),
+              )),
         ),
         Container(height: 16.0),
         Container(
@@ -193,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
                       logoUri: "assets/google_logo.png",
                       thirdPartyProvider: "Google",
                       onPressed: _continueWithGoogle,
-                      borderColor: Colors.black,
+                      borderColor: Colors.black.withAlpha(150),
                     ),
                     _appleSignInButton(),
                   ],
@@ -228,11 +237,10 @@ class _LoginPageState extends State<LoginPage> {
         child: Padding(
           padding: const EdgeInsets.only(top: 16.0),
           child: ThirdPartySignInButton(
-            logoUri: "assets/apple_logo.png",
-            thirdPartyProvider: "Apple",
-            onPressed: _continueWithApple,
-            borderColor: Colors.black,
-          ),
+              logoUri: "assets/apple_logo.png",
+              thirdPartyProvider: "Apple",
+              onPressed: _continueWithApple,
+              borderColor: Colors.black.withAlpha(150)),
         ));
   }
 

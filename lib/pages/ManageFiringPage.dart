@@ -71,29 +71,30 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
   }
 
   Widget _body() {
-    return SingleChildScrollView(
-      child: Consumer<ManageFiringUseCase>(builder: (context, useCase, _) {
-        return Visibility(
-            visible: !useCase.loading,
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Container(height: 12.0),
-                  _start(),
-                  Container(height: 24.0),
-                  _firingDuration(),
-                  Container(height: 24.0),
-                  _cooldownDuration(),
-                  Container(height: 24.0),
-                  _type(),
-                  Container(height: 100.0),
-                ],
-              ),
+    return Consumer<ManageFiringUseCase>(builder: (context, useCase, _) {
+      return Visibility(
+        visible: useCase.loading,
+        child: Center(child: CircularProgressIndicator()),
+        replacement: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Container(height: 12.0),
+                _start(),
+                Container(height: 24.0),
+                _firingDuration(),
+                Container(height: 24.0),
+                _cooldownDuration(),
+                Container(height: 24.0),
+                _type(),
+                Container(height: 100.0),
+              ],
             ),
-            replacement: Center(child: CircularProgressIndicator()));
-      }),
-    );
+          ),
+        ),
+      );
+    });
   }
 
   Widget _start() {

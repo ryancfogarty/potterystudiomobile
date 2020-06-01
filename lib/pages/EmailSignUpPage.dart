@@ -11,16 +11,15 @@ class EmailSignUpPage extends StatefulWidget {
 }
 
 class _EmailSignUpPageState extends State<EmailSignUpPage> {
-  bool _autovalidate = false;
+  bool _obscurePassword = true;
+  bool _autoValidate = false;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  TextEditingController _verifyPasswordController = TextEditingController();
 
   FocusNode _emailNode = FocusNode();
   FocusNode _passwordNode = FocusNode();
-  FocusNode _verifyPasswordNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +29,7 @@ class _EmailSignUpPageState extends State<EmailSignUpPage> {
       ),
       body: Form(
         key: _formKey,
-        autovalidate: _autovalidate,
+        autovalidate: _autoValidate,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -56,29 +55,21 @@ class _EmailSignUpPageState extends State<EmailSignUpPage> {
                 decoration: InputDecoration(labelText: "Email"),
               ),
               TextFormField(
-                textInputAction: TextInputAction.next,
-                onFieldSubmitted: (_) {
-                  _passwordNode.unfocus();
-                  FocusScope.of(context).requestFocus(_verifyPasswordNode);
-                },
                 focusNode: _passwordNode,
                 controller: _passwordController,
-                obscureText: true,
+                obscureText: _obscurePassword,
                 validator: (password) =>
-                    password.compareTo(_verifyPasswordController.text) == 0
-                        ? null
-                        : "Passwords do not match",
-                decoration: InputDecoration(labelText: "Password"),
-              ),
-              TextFormField(
-                focusNode: _verifyPasswordNode,
-                controller: _verifyPasswordController,
-                obscureText: true,
-                validator: (password) =>
-                    password.compareTo(_passwordController.text) == 0
-                        ? null
-                        : "Passwords do not match",
-                decoration: InputDecoration(labelText: "Verify password"),
+                    password.compareTo("") == 0 ? "Cannot be empty" : null,
+                decoration: InputDecoration(
+                    labelText: "Password",
+                    suffixIcon: IconButton(
+                      icon: Icon(_obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility),
+                      onPressed: () => setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      }),
+                    )),
               ),
               Container(height: 16.0),
               Container(
@@ -102,7 +93,7 @@ class _EmailSignUpPageState extends State<EmailSignUpPage> {
   void _signUp() async {
     if (!_formKey.currentState.validate()) {
       setState(() {
-        _autovalidate = true;
+        _autoValidate = true;
       });
       return;
     }

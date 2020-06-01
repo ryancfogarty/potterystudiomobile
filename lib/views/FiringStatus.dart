@@ -66,7 +66,10 @@ class _FiringStatusState extends State<FiringStatus> {
                           child: Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: CountdownTimer(
-                              daysSymbol: " day(s), ",
+                              daysSymbol:
+                                  dateTime.difference(DateTime.now()).inDays >= 2
+                                      ? " days, "
+                                      : " day, ",
                               endTime: dateTime.millisecondsSinceEpoch,
                               textStyle: TextStyles().bigRegularStyle,
                               onEnd: () => Future.delayed(

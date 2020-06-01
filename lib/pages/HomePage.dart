@@ -19,7 +19,6 @@ import 'package:seven_spot_mobile/views/HomePageSettings.dart';
 import 'package:seven_spot_mobile/views/OpeningCard.dart';
 import 'package:seven_spot_mobile/views/ProfileImage.dart';
 import 'package:seven_spot_mobile/views/UpcomingListPreview.dart';
-import 'package:shimmer/shimmer.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -155,8 +154,8 @@ class _HomePageState extends State<HomePage> {
   Widget _upcomingFirings() {
     return Consumer<FiringListInteractor>(builder: (context, interactor, _) {
       var upcomingFirings = interactor.firings
-          .where(
-              (opening) => !opening.end.difference(DateTime.now()).isNegative)
+          .where((opening) =>
+              !opening.cooldownEnd.difference(DateTime.now()).isNegative)
           .take(3);
 
       List<Widget> firingCards = upcomingFirings
