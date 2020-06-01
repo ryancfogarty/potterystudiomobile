@@ -31,6 +31,7 @@ dependencies:
   uuid: ^2.0.4
   cached_network_image: ^2.2.0+1
   dio: ^3.0.9
+  blobs: ^1.2.0
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,4 @@
+import 'package:blobs/blobs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -28,37 +29,54 @@ class _LoginPageState extends State<LoginPage> {
             child: Stack(
           children: <Widget>[
             Positioned(
+              top: -100,
+              left: -100,
+              child: Blob.fromID(
+                styles: BlobStyles(
+                  color: Theme.of(context).primaryColor.withAlpha(100),
+                ),
+                size: 200,
+                id: ["8-8-8"],
+              ),
+            ),
+            Positioned(
+              right: MediaQuery.of(context).size.width / 2,
+              top: MediaQuery.of(context).size.height / 2,
+              child: Blob.fromID(
+                styles: BlobStyles(
+                  color: Theme.of(context).primaryColor.withAlpha(100),
+                ),
+                size: 300,
+                id: ["6-6-6"],
+              ),
+            ),
+            Positioned(
+              right: -70,
+              top: MediaQuery.of(context).size.height / 10,
+              child: Blob.fromID(
+                styles: BlobStyles(
+                  color: Theme.of(context).primaryColor.withAlpha(100),
+                ),
+                size: 200,
+                id: ["7-7-7"],
+              ),
+            ),
+            Positioned(
               top: 32,
               left: 0,
               right: 0,
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Image(
-                          color: Theme.of(context).primaryColor,
-                          image: AssetImage("assets/ic_launcher.png"),
-                          width: 32.0),
-                      Text(
-                        "Pottery Studio",
-                        style:
-                            TextStyles().bigBoldStyle.copyWith(fontSize: 24.0),
-                      ),
-                      // hack to center "Pottery Studio" text
-                      Image(
-                          color: Colors.transparent,
-                          image: AssetImage("assets/ic_launcher.png"),
-                          width: 32.0),
-                    ],
-                  )
-                ],
+              child: Center(
+                child: Text(
+                  "Pottery Studio",
+                  style:
+                  TextStyles().bigBoldStyle.copyWith(fontSize: 24.0),
+                ),
               ),
             ),
             Positioned(
                 bottom: 0, left: 16, right: 16, child: _loginOrAutoLogin()),
             Positioned(
-                top: 0, bottom: 0, left: 16, right: 16, child: _emailLogin())
+                top: 0, bottom: 0, left: 16, right: 16, child: _emailLogin()),
           ],
         )),
       ),
@@ -103,11 +121,13 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 width: double.infinity,
                 child: FlatButton(
-                    child: Text("Sign up", style: TextStyles().mediumRegularStyle),
+                    child:
+                        Text("Sign up", style: TextStyles().mediumRegularStyle),
                     onPressed: _signUpWithEmail,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(4.0),
-                        side: BorderSide(color: Theme.of(context).accentColor))),
+                        side:
+                            BorderSide(color: Theme.of(context).accentColor))),
               )
             ],
           ),
