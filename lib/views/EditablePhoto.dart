@@ -61,10 +61,7 @@ class _EditablePhotoState extends State<EditablePhoto> {
             replacement: Column(
               children: <Widget>[
                 Container(height: 16),
-                ProfileImage(
-                  imageUri: widget.imageUrl,
-                  heroTag: null,
-                ),
+                ProfileImage(imageUri: widget.imageUrl),
                 widget.imageSubtitle
               ],
             )),
