@@ -14,7 +14,8 @@ class CheckedInInteractor extends ChangeNotifier {
 
   bool get checkingInOrOut => _checkingInOrOut;
 
-  bool get loadingPresentUsers => _getPresentUsersUseCase.loading;
+  bool get loadingPresentUsers =>
+      _getPresentUsersUseCase.loading || _getUserUseCase.user == null;
 
   bool get checkedIn => _getPresentUsersUseCase.presentUsers
       .where((user) => user.id == _getUserUseCase.user?.id)
@@ -29,6 +30,10 @@ class CheckedInInteractor extends ChangeNotifier {
     _checkInUseCase = checkInUseCase;
     _checkOutUseCase = checkOutUseCase;
     _getPresentUsersUseCase = getPresentUsersUseCase;
+  }
+
+  void update() {
+    notifyListeners();
   }
 
   Future<void> toggle() async {

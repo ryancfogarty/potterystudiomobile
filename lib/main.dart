@@ -56,7 +56,7 @@ void main() async {
 
     options.headers.addAll({"Authorization": idToken.token});
   }, onResponse: (Response<dynamic> response) async {
-        // todo
+    // todo
 //    if (response.statusCode == 401) {
 //      var idToken = await (await auth.currentUser()).getIdToken(refresh: true);
 //
@@ -162,8 +162,11 @@ void main() async {
         ChangeNotifierProvider<GetPresentUsersUseCase>(
           create: (_) => getPresentUsersUseCase,
         ),
-        ChangeNotifierProvider<CheckedInInteractor>(
-            create: (_) => checkedInInteractor)
+        ChangeNotifierProxyProvider2<GetUserUseCase, GetPresentUsersUseCase,
+            CheckedInInteractor>(
+          create: (context) => checkedInInteractor,
+          update: (context, A, B, R) => checkedInInteractor..update(),
+        )
       ], child: MyApp()),
     );
   });
