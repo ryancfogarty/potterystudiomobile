@@ -6,9 +6,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 class UploadPhotoUseCase {
-  Future<String> changePhoto(ImageSource source) async {
-    PickedFile pickedFile = await ImagePicker().getImage(
-        source: source, preferredCameraDevice: CameraDevice.front);
+  Future<String> withSelection() async {
+    PickedFile pickedFile =
+        await ImagePicker().getImage(source: ImageSource.gallery);
 
     if (pickedFile == null) return null;
 
@@ -21,13 +21,29 @@ class UploadPhotoUseCase {
     if (croppedImage == null) return null;
 
     try {
-      StorageReference ref = FirebaseStorage.instance.ref().child(Uuid().v4());
-      StorageUploadTask uploadTask = ref.putFile(croppedImage);
-      return (await (await uploadTask.onComplete).ref.getDownloadURL());
+      return await _uploadToFirebase(croppedImage);
     } catch (e) {
       print("Uploading image error $e");
     }
 
     return null;
+  }
+
+  Future<String> withPhoto(String filePath) async {
+    try {
+      File file = File(filePath);
+
+      return await _uploadToFirebase(file);
+    } catch (e) {
+      print("Uploading image error $e");
+    }
+
+    return null;
+  }
+
+  Future<String> _uploadToFirebase(File file) async {
+    StorageReference ref = FirebaseStorage.instance.ref().child(Uuid().v4());
+    StorageUploadTask uploadTask = ref.putFile(file);
+    return (await (await uploadTask.onComplete).ref.getDownloadURL());
   }
 }

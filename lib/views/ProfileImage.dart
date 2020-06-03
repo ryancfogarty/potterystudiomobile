@@ -3,14 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProfileImage extends StatefulWidget {
-  final String imageUrl;
+  final String imageUri;
   final double height;
   final bool circular;
   final String heroTag;
 
   ProfileImage(
       {Key key,
-      this.imageUrl,
+      this.imageUri,
       this.height = 80.0,
       this.circular = true,
       this.heroTag = "profileimage"})
@@ -36,19 +36,15 @@ class _ProfileImageState extends State<ProfileImage> {
   Widget _image() {
     var image;
 
-    if (widget.imageUrl != null) {
+    if (widget.imageUri != null) {
       image = CachedNetworkImage(
-          imageUrl: widget.imageUrl,
+          imageUrl: widget.imageUri,
           filterQuality: FilterQuality.high,
           height: widget.height,
-          placeholder: (context, url) => Row(
-                children: <Widget>[
-                  Container(
-                      width: 40,
-                      height: 40,
-                      child: Center(child: CircularProgressIndicator())),
-                ],
-              ));
+          placeholder: (context, url) => Container(
+              width: 40,
+              height: 40,
+              child: Center(child: CircularProgressIndicator())));
     } else {
       image = Image(
         image: AssetImage("assets/placeholder_image.png"),

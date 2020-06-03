@@ -15,8 +15,10 @@ class ChangePhotoUseCase {
     _getUserUseCase = getUserUseCase;
   }
 
-  Future<void> invoke(ImageSource source) async {
-    var imageUrl = await _uploadPhotoUseCase.changePhoto(source);
+  Future<void> invoke(ImageSource source, String filePath) async {
+    var imageUrl = await (source == ImageSource.gallery
+        ? _uploadPhotoUseCase.withSelection()
+        : _uploadPhotoUseCase.withPhoto(filePath));
 
     if (imageUrl == null) return;
 

@@ -101,7 +101,7 @@ class _OpeningPageState extends State<OpeningPage> {
                                     left: 8.0, right: 8.0),
                                 child: ProfileImage(
                                     heroTag: null,
-                                    imageUrl: user.imageUrl,
+                                    imageUri: user.imageUrl,
                                     height: 40.0)),
                             Text(
                               user.name,

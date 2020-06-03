@@ -32,11 +32,11 @@ dependencies:
   cached_network_image: ^2.2.0+1
   dio: ^3.0.9
   blobs: ^1.2.0
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-
+  camera: ^0.5.8+2
+  path_provider: ^1.6.10
+  path: ^1.7.0
+  flutter_native_image: ^0.0.5+2
+  image: ^2.1.13
 
 flutter:
 

@@ -6,8 +6,7 @@ import 'package:seven_spot_mobile/interactors/ProfileInteractor.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
 import 'package:seven_spot_mobile/usecases/DeleteUserUseCase.dart';
 import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
-import 'package:seven_spot_mobile/views/EditPhotoOptions.dart';
-import 'package:seven_spot_mobile/views/ProfileImage.dart';
+import 'package:seven_spot_mobile/views/EditablePhoto.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -33,49 +32,45 @@ class _ProfilePageState extends State<ProfilePage> {
           children: <Widget>[
             Consumer<GetUserUseCase>(
               builder: (context, useCase, _) {
-                return Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
-                      child: Consumer<ProfileInteractor>(
-                          builder: (context, interactor, _) {
-                        return Visibility(
-                          visible: useCase.user == null ||
-                              interactor.changingPhoto ||
-                              interactor.deletingPhoto,
-                          child: CircularProgressIndicator(),
-                          replacement: ProfileImage(
-                            imageUrl: useCase.user?.imageUrl,
-                            height: 140.0,
-                          ),
-                        );
-                      }),
-                    ),
-                    Text(
-                      useCase.user?.name ?? "Loading...",
-                      style: TextStyles().mediumRegularStyle,
-                    ),
-                    Visibility(
-                      visible: useCase.user?.isAdmin == true,
-                      child: Text(
-                        "Admin",
-                        style: TextStyles().smallRegularStyle,
+                return Consumer<ProfileInteractor>(
+                  builder: (context, interactor, _) {
+                    return Visibility(
+                      visible: interactor.changingPhoto ||
+                          interactor.deletingPhoto ||
+                          useCase.user == null,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(),
                       ),
-                    ),
-                    EditPhotoOptions(
-                        onClickChange: (source) =>
-                            Provider.of<ProfileInteractor>(context, listen: false)
-                                .changePhoto(source),
-                        onClickDelete:
-                            Provider.of<ProfileInteractor>(context, listen: false)
-                                .deletePhoto),
-                  ],
+                      replacement: EditablePhoto(
+                        onDelete: interactor.deletePhoto,
+                        onChange: interactor.changePhoto,
+                        imageUrl: useCase.user?.imageUrl,
+                        imageSubtitle: Column(
+                          children: <Widget>[
+                            Text(
+                              useCase.user?.name ?? "Loading...",
+                              style: TextStyles().mediumRegularStyle,
+                            ),
+                            Visibility(
+                              visible: useCase.user?.isAdmin == true,
+                              child: Text(
+                                "Admin",
+                                style: TextStyles().smallRegularStyle,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 );
               },
             ),
             Divider(),
             ListTile(
-                leading: Icon(Icons.delete, color: Theme.of(context).accentColor),
+                leading:
+                    Icon(Icons.delete, color: Theme.of(context).accentColor),
                 title: Text("Delete my account"),
                 onTap: () async {
                   showDialog(

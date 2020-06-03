@@ -47,13 +47,15 @@ class CreateAccountInteractor extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeImage(ImageSource source) async {
+  Future changeImage(ImageSource source, String filePath) async {
     _uploadingImage = true;
     notifyListeners();
 
     try {
-      _profileImageUrl =
-          (await _uploadPhotoUseCase.changePhoto(source)) ?? _profileImageUrl;
+      _profileImageUrl = (source == ImageSource.gallery
+              ? await _uploadPhotoUseCase.withSelection()
+              : await _uploadPhotoUseCase.withPhoto(filePath)) ??
+          _profileImageUrl;
     } catch (e) {
       print(e);
     } finally {

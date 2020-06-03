@@ -22,7 +22,7 @@ class _CheckedInState extends State<CheckedIn> {
           child: Column(
             children: <Widget>[
               ProfileImage(
-                  imageUrl: user.imageUrl, heroTag: null, height: 60.0),
+                  imageUri: user.imageUrl, heroTag: null, height: 60.0),
               Text(
                   user.name
                           .split(" ")

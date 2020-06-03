@@ -125,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                 return Padding(
                   padding: const EdgeInsets.only(
                       left: 16.0, top: 4.0, right: 16.0, bottom: 4.0),
-                  child: ProfileImage(imageUrl: useCase.user?.imageUrl),
+                  child: ProfileImage(imageUri: useCase.user?.imageUrl),
                 );
               })),
         ],

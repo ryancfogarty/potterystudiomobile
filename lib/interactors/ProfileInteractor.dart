@@ -21,12 +21,12 @@ class ProfileInteractor extends ChangeNotifier {
     _deletePhotoUseCase = deletePhotoUseCase;
   }
 
-  Future<void> changePhoto(ImageSource source) async {
+  Future<void> changePhoto(ImageSource source, String filePath) async {
     _changingPhoto = true;
     notifyListeners();
 
     try {
-      await _changePhotoUseCase.invoke(source);
+      await _changePhotoUseCase.invoke(source, filePath);
     } catch (e) {
       print(e);
     } finally {

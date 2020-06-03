@@ -3,8 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/interactors/CreateAccountInteractor.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
-import 'package:seven_spot_mobile/views/EditPhotoOptions.dart';
-import 'package:seven_spot_mobile/views/ProfileImage.dart';
+import 'package:seven_spot_mobile/views/EditablePhoto.dart';
 
 class CreateAccountPage extends StatefulWidget {
   @override
@@ -42,41 +41,40 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
           title: Text("Create account"),
         ),
         body: SingleChildScrollView(
-            child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Consumer<CreateAccountInteractor>(
-                        builder: (context, interactor, _) {
-                      return Visibility(
-                        visible: interactor.uploadingImage,
-                        child: CircularProgressIndicator(),
-                        replacement: ProfileImage(
-                            heroTag: null,
-                            imageUrl: interactor.profileImageUrl),
-                      );
-                    }),
-                    EditPhotoOptions(
-                      onClickChange: (source) =>
-                          Provider.of<CreateAccountInteractor>(context,
-                                  listen: false)
-                              .changeImage(source),
-                      onClickDelete: Provider.of<CreateAccountInteractor>(
-                              context,
-                              listen: false)
-                          .removePhoto,
-                    ),
-                    TextField(
-                        controller: _usersNameController,
-                        decoration: InputDecoration(labelText: "Display name")),
-                    Container(height: 24.0),
-                    _toggle(),
-                    Container(height: 48.0),
-                    _createUserWidget(),
-                    _createStudioWidget()
-                  ],
-                ))));
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Consumer<CreateAccountInteractor>(
+                builder: (context, interactor, _) {
+              return Visibility(
+                  visible: interactor.uploadingImage,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircularProgressIndicator(),
+                  ),
+                  replacement: EditablePhoto(
+                    imageUrl: interactor.profileImageUrl,
+                    onChange: interactor.changeImage,
+                    onDelete: interactor.removePhoto,
+                  ));
+            }),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: <Widget>[
+                  TextField(
+                      controller: _usersNameController,
+                      decoration: InputDecoration(labelText: "Display name")),
+                  Container(height: 24.0),
+                  _toggle(),
+                  Container(height: 48.0),
+                  _createUserWidget(),
+                  _createStudioWidget()
+                ],
+              ),
+            )
+          ],
+        )));
   }
 
   Widget _toggle() {
