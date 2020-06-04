@@ -19,7 +19,6 @@ class DeleteFiringUseCase extends ChangeNotifier {
     try {
       await _repo.deleteFiring(firingId);
     } catch (e) {
-      print(e);
       throw e;
     } finally {
       _loading = false;

@@ -31,7 +31,6 @@ class ManageOpeningUseCase extends ChangeNotifier {
     try {
       _opening = await _repo.getOpening(openingId);
     } catch (e) {
-      print(e);
       throw e;
     } finally {
       _loading = false;

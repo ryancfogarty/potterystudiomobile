@@ -8,8 +8,6 @@ class CheckOutUseCase {
   }
 
   Future<void> invoke() async {
-    print("checking out");
-
     await _repo.checkOut();
   }
 }

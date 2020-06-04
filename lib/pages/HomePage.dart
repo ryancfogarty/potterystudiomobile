@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
 import 'package:seven_spot_mobile/pages/FiringsList.dart';
@@ -55,7 +56,7 @@ class _HomePageState extends State<HomePage> {
     try {
       await Provider.of<FiringListInteractor>(context, listen: false).getAll();
     } catch (e) {
-      print(e);
+      HttpRetryDialog().retry(context, _getFirings);
     }
   }
 
@@ -98,12 +99,12 @@ class _HomePageState extends State<HomePage> {
     _getPresentUsers();
   }
 
-  void _getPresentUsers() async {
+  Future _getPresentUsers() async {
     try {
       await Provider.of<GetPresentUsersUseCase>(context, listen: false)
           .invoke();
     } catch (e) {
-      print(e);
+      HttpRetryDialog().retry(context, _getPresentUsers);
     }
   }
 
@@ -201,15 +202,35 @@ class _HomePageState extends State<HomePage> {
     var shouldRefreshList = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => ManageFiringPage()));
 
-    if (shouldRefreshList ?? false)
-      Provider.of<FiringListInteractor>(context, listen: false).getAll();
+    if (shouldRefreshList ?? false) {
+      try {
+        await _refreshFiringList();
+      } catch (e) {
+        HttpRetryDialog().retry(context, _refreshFiringList);
+      }
+    }
+  }
+
+  Future _refreshFiringList() async {
+    return await Provider.of<FiringListInteractor>(context, listen: false)
+        .getAll();
   }
 
   void _addOpening() async {
     var shouldRefreshList = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => ManageOpeningPage()));
 
-    if (shouldRefreshList ?? false)
-      Provider.of<GetAllOpeningsUseCase>(context, listen: false).invoke();
+    if (shouldRefreshList ?? false) {
+      try {
+        await _refreshOpeningList();
+      } catch (e) {
+        HttpRetryDialog().retry(context, _refreshOpeningList);
+      }
+    }
+  }
+
+  Future _refreshOpeningList() async {
+    return await Provider.of<GetAllOpeningsUseCase>(context, listen: false)
+        .invoke();
   }
 }

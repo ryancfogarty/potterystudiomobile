@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:seven_spot_mobile/common/DateFormatter.dart';
+import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
 import 'package:seven_spot_mobile/models/Opening.dart';
 import 'package:seven_spot_mobile/pages/OpeningPage.dart';
 import 'package:seven_spot_mobile/usecases/ToggleReservationUseCase.dart';
@@ -102,7 +103,7 @@ class _OpeningCardState extends State<OpeningCard> {
     );
   }
 
-  void _toggleReservation(Opening opening) async {
+  Future _toggleReservation(Opening opening) async {
     ToggleReservationUseCase useCase =
         Provider.of<ToggleReservationUseCase>(context);
 
@@ -112,7 +113,7 @@ class _OpeningCardState extends State<OpeningCard> {
         widget.refresh();
       }
     } catch (e) {
-      print(e.toString());
+      HttpRetryDialog().retry(context, () => _toggleReservation(opening));
     }
   }
 }

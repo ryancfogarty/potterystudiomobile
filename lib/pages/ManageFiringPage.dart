@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/pages/DateTimeView.dart';
 import 'package:seven_spot_mobile/usecases/ManageFiringUseCase.dart';
@@ -67,7 +68,9 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
     try {
       await Provider.of<ManageFiringUseCase>(context, listen: false).save();
       Navigator.pop(context, true);
-    } catch (e) {}
+    } catch (e) {
+      HttpRetryDialog().retry(context, _save);
+    }
   }
 
   Widget _body() {

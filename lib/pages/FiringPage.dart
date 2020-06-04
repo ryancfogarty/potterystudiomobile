@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/FiringTypeFormatter.dart';
+import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/pages/ManageFiringPage.dart';
 import 'package:seven_spot_mobile/usecases/DeleteFiringUseCase.dart';
@@ -28,10 +29,16 @@ class _FiringPageState extends State<FiringPage> {
     Future.delayed(Duration.zero, _getFiring);
   }
 
-  void _getFiring() async {
+  void _getFiring({bool popOnErrorDismiss = true}) async {
     var useCase = Provider.of<GetFiringUseCase>(context, listen: false);
     useCase.clear();
-    useCase.invoke(widget.firingId);
+
+    try {
+      await useCase.invoke(widget.firingId);
+    } catch (e) {
+      HttpRetryDialog().retry(context, () => useCase.invoke(widget.firingId),
+          onDismiss: () => popOnErrorDismiss && Navigator.of(context).pop());
+    }
   }
 
   @override
@@ -151,7 +158,9 @@ class _FiringPageState extends State<FiringPage> {
       await Provider.of<DeleteFiringUseCase>(context, listen: false)
           .deleteFiring(widget.firingId);
       Navigator.of(context).pop(true);
-    } catch (e) {}
+    } catch (e) {
+      HttpRetryDialog().retry(context, _deleteFiring);
+    }
   }
 
   void _editFiring() async {
@@ -161,7 +170,7 @@ class _FiringPageState extends State<FiringPage> {
             builder: (context) => ManageFiringPage(firingId: widget.firingId)));
 
     if (edited == true) {
-      _getFiring();
+      _getFiring(popOnErrorDismiss: false);
       _edited = true;
     }
   }

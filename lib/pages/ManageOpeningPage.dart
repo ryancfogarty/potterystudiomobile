@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/DateFormatter.dart';
+import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/pages/DateTimeView.dart';
 import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
@@ -40,8 +41,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
         Provider.of<ManageOpeningUseCase>(context, listen: false)
             .getOpening(widget.openingId);
       } catch (e) {
-        // todo: throw error and prompt refresh instead
-        Navigator.pop(context);
+        HttpRetryDialog().retry(context, _setup, onDismiss: Navigator.of(context).pop);
       }
     }
   }
@@ -90,6 +90,8 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
               ],
             );
           });
+    } else {
+      HttpRetryDialog().retry(context, _save);
     }
   }
 
@@ -295,7 +297,8 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text("Monthly on the ${DateFormatter().dd.format(useCase.opening.start)}"),
+                    Text(
+                        "Monthly on the ${DateFormatter().dd.format(useCase.opening.start)}"),
                     Radio(
                       value: "MONTHLY",
                       groupValue: useCase.opening.recurrenceType,

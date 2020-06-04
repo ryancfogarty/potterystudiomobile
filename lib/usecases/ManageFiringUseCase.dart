@@ -34,7 +34,6 @@ class ManageFiringUseCase extends ChangeNotifier {
     try {
       _firing = await _repo.getFiring(firingId);
     } catch (e) {
-      print(e);
       throw e;
     } finally {
       _loading = false;
@@ -94,7 +93,6 @@ class ManageFiringUseCase extends ChangeNotifier {
         await _repo.createFiring(_firing);
       }
     } catch (e) {
-      print(e);
       throw e;
     } finally {
       _saving = false;

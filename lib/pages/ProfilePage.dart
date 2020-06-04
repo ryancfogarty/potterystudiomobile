@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/interactors/ProfileInteractor.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
@@ -38,10 +40,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       loading: interactor.deletingPhoto ||
                           interactor.changingPhoto ||
                           useCase.user == null,
-                      onDelete: interactor.deletePhoto,
-                      onChange: interactor.changePhoto,
+                      onDelete: _deletePhoto,
+                      onChange: _changePhoto,
                       imageUrl: useCase.user?.imageUrl,
-                      imageSubtitle: Column(
+                      imageSubWidget: Column(
                         children: <Widget>[
                           Text(
                             useCase.user?.name ?? "",
@@ -130,5 +132,21 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  Future _changePhoto(ImageSource source, String filePath) async {
+    try {
+      await Provider.of<ProfileInteractor>(context).changePhoto(source, filePath);
+    } catch (e) {
+      HttpRetryDialog().retry(context, () => _changePhoto(source, filePath));
+    }
+  }
+
+  Future _deletePhoto() async {
+    try {
+      await Provider.of<ProfileInteractor>(context).deletePhoto();
+    } catch (e) {
+      HttpRetryDialog().retry(context, _deletePhoto);
+    }
   }
 }

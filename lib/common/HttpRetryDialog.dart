@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HttpRetryDialog {
-  static bool shown = false;
+  static bool showing = false;
 
   static final HttpRetryDialog _httpRetryDialog = HttpRetryDialog._internal();
 
@@ -12,9 +12,9 @@ class HttpRetryDialog {
 
   HttpRetryDialog._internal();
 
-  void retry(BuildContext context, Function retry) async {
-    if (!shown) {
-      shown = true;
+  void retry(BuildContext context, Function retry, {Function onDismiss}) async {
+    if (!showing) {
+      showing = true;
 
       showDialog(
           context: context,
@@ -25,14 +25,16 @@ class HttpRetryDialog {
               FlatButton(
                 child: Text("Dismiss"),
                 onPressed: () {
-                  shown = false;
+                  if (onDismiss != null) onDismiss();
+
+                  showing = false;
                   Navigator.of(context).pop();
                 },
               ),
               FlatButton(
                 child: Text("Retry"),
                 onPressed: () {
-                  shown = false;
+                  showing = false;
                   Navigator.of(context).pop();
 
                   retry();

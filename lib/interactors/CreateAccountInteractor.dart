@@ -57,7 +57,7 @@ class CreateAccountInteractor extends ChangeNotifier {
               : await _uploadPhotoUseCase.withPhoto(filePath)) ??
           _profileImageUrl;
     } catch (e) {
-      print(e);
+      throw e;
     } finally {
       _uploadingImage = false;
       notifyListeners();
@@ -86,7 +86,7 @@ class CreateAccountInteractor extends ChangeNotifier {
       await _createUserUseCase.createUser(
           studioCode, displayName, _profileImageUrl);
     } catch (e) {
-      print(e);
+      throw e;
     } finally {
       _loadingCreateUser = false;
       notifyListeners();
@@ -101,7 +101,7 @@ class CreateAccountInteractor extends ChangeNotifier {
       await _createStudioUseCase.createStudio(
           userName, studioName, _profileImageUrl);
     } catch (e) {
-      print(e);
+      throw e;
     } finally {
       _loadingCreateStudio = false;
       notifyListeners();

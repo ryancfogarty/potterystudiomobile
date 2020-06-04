@@ -15,7 +15,7 @@ class EditablePhoto extends StatefulWidget {
   final Future Function(ImageSource imageSource, String filePath) onChange;
   final Function onDelete;
   final String imageUrl;
-  final Widget imageSubtitle;
+  final Widget imageSubWidget;
   final bool loading;
 
   EditablePhoto(
@@ -24,7 +24,7 @@ class EditablePhoto extends StatefulWidget {
       this.onDelete,
       this.imageUrl,
       this.loading,
-      this.imageSubtitle = const SizedBox.shrink()})
+      this.imageSubWidget = const SizedBox.shrink()})
       : super(key: key);
 
   _EditablePhotoState createState() => _EditablePhotoState();
@@ -70,7 +70,7 @@ class _EditablePhotoState extends State<EditablePhoto> {
                       child: CircularProgressIndicator(),
                     ),
                     replacement: ProfileImage(imageUri: widget.imageUrl)),
-                widget.imageSubtitle
+                widget.imageSubWidget
               ],
             )),
         EditPhotoOptions(

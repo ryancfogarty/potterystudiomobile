@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
 import 'package:seven_spot_mobile/usecases/ChangePhotoUseCase.dart';
 import 'package:seven_spot_mobile/usecases/DeletePhotoUseCase.dart';
 
@@ -28,7 +29,7 @@ class ProfileInteractor extends ChangeNotifier {
     try {
       await _changePhotoUseCase.invoke(source, filePath);
     } catch (e) {
-      print(e);
+      throw e;
     } finally {
       _changingPhoto = false;
       notifyListeners();
@@ -42,7 +43,7 @@ class ProfileInteractor extends ChangeNotifier {
     try {
       await _deletePhotoUseCase.invoke();
     } catch (e) {
-      print(e);
+      throw e;
     } finally {
       _deletingPhoto = false;
       notifyListeners();

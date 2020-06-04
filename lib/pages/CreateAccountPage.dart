@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/interactors/CreateAccountInteractor.dart';
 import 'package:seven_spot_mobile/services/AuthService.dart';
@@ -49,7 +51,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               return EditablePhoto(
                 loading: interactor.uploadingImage,
                 imageUrl: interactor.profileImageUrl,
-                onChange: interactor.changeImage,
+                onChange: _onChangeImage,
                 onDelete: interactor.removePhoto,
               );
             }),
@@ -208,16 +210,29 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   }
 
   void _createUser() async {
-    var interactor = Provider.of<CreateAccountInteractor>(context);
-
-    await interactor.createUser(
-        _studioCodeController.text, _usersNameController.text);
+    try {
+      await Provider.of<CreateAccountInteractor>(context)
+          .createUser(_studioCodeController.text, _usersNameController.text);
+    } catch (e) {
+      HttpRetryDialog().retry(context, _createUser);
+    }
   }
 
   void _createStudio() async {
-    var interactor = Provider.of<CreateAccountInteractor>(context);
+    try {
+      await Provider.of<CreateAccountInteractor>(context)
+          .createStudio(_usersNameController.text, _studioNameController.text);
+    } catch (e) {
+      HttpRetryDialog().retry(context, _createStudio);
+    }
+  }
 
-    await interactor.createStudio(
-        _usersNameController.text, _studioNameController.text);
+  Future _onChangeImage(ImageSource source, String filePath) async {
+    try {
+      await Provider.of<CreateAccountInteractor>(context)
+          .changeImage(source, filePath);
+    } catch (e) {
+      HttpRetryDialog().retry(context, () => _onChangeImage(source, filePath));
+    }
   }
 }

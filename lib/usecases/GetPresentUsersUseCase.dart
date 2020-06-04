@@ -24,7 +24,7 @@ class GetPresentUsersUseCase extends ChangeNotifier {
     try {
       _presentUsers = await _repo.presentUsers();
     } catch (e) {
-      print(e);
+      throw e;
     } finally {
       _loading = false;
       notifyListeners();

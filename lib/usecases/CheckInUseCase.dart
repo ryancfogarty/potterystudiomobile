@@ -8,8 +8,6 @@ class CheckInUseCase {
   }
 
   Future<void> invoke() async {
-    print("checking in");
-
-    await _repo.checkIn();
+    return await _repo.checkIn();
   }
 }

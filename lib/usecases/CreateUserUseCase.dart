@@ -13,14 +13,8 @@ class CreateUserUseCase {
 
   Future<void> createUser(
       String studioCode, String displayName, String imageUrl) async {
-    try {
-      var success = await _repo.createUser(studioCode, displayName, imageUrl);
+    await _repo.createUser(studioCode, displayName, imageUrl);
 
-      if (success) {
-        _authService.updateState(AppState.REGISTERED);
-      }
-    } catch (e) {
-      print(e);
-    }
+    _authService.updateState(AppState.REGISTERED);
   }
 }

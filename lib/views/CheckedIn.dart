@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/interactors/CheckedInInteractor.dart';
 import 'package:seven_spot_mobile/usecases/GetPresentUsersUseCase.dart';
@@ -107,9 +108,7 @@ class _CheckedInState extends State<CheckedIn> {
               shape: RoundedRectangleBorder(
                   side: BorderSide(color: Theme.of(context).accentColor),
                   borderRadius: BorderRadius.circular(24.0)),
-              onPressed: () =>
-                  Provider.of<CheckedInInteractor>(context, listen: false)
-                      .toggle(),
+              onPressed: _toggle,
               child: Text(
                 text,
                 style: TextStyles()
@@ -119,5 +118,13 @@ class _CheckedInState extends State<CheckedIn> {
         );
       },
     );
+  }
+
+  Future _toggle() async {
+    try {
+      await Provider.of<CheckedInInteractor>(context, listen: false).toggle();
+    } catch (e) {
+      HttpRetryDialog().retry(context, _toggle);
+    }
   }
 }

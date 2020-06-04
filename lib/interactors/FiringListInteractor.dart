@@ -31,7 +31,6 @@ class FiringListInteractor extends ChangeNotifier {
     try {
       _firings = await _getAllFiringsUseCase.invoke(_includePast);
     } catch (e) {
-      print(e);
       throw e;
     } finally {
       _loading = false;

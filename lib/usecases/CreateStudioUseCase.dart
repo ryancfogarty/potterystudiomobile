@@ -12,14 +12,12 @@ class CreateStudioUseCase {
 
   Future<void> createStudio(
       String userName, String studioName, String imageUrl) async {
-    try {
-      var success = await _repo.createStudio(userName, studioName, imageUrl);
+    var success = await _repo.createStudio(userName, studioName, imageUrl);
 
-      if (success) {
-        _authService.updateState(AppState.REGISTERED);
-      }
-    } catch (e) {
-      print(e);
+    if (success) {
+      _authService.updateState(AppState.REGISTERED);
+    } else {
+      throw "studio created but user not created";
     }
   }
 }

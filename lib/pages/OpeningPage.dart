@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:seven_spot_mobile/common/DateFormatter.dart';
+import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/pages/ManageOpeningPage.dart';
 import 'package:seven_spot_mobile/usecases/DeleteOpeningUseCase.dart';
@@ -31,7 +32,12 @@ class _OpeningPageState extends State<OpeningPage> {
   _getOpening() {
     var useCase = Provider.of<GetOpeningUseCase>(context, listen: false);
     useCase.clear();
-    useCase.invoke(widget.openingId);
+
+    try {
+      useCase.invoke(widget.openingId);
+    } catch (e) {
+      HttpRetryDialog().retry(context, () => useCase.invoke(widget.openingId));
+    }
   }
 
   @override
@@ -185,7 +191,7 @@ class _OpeningPageState extends State<OpeningPage> {
           .deleteOpening(widget.openingId);
       Navigator.pop(context, true);
     } catch (e) {
-      // todo: show error
+      HttpRetryDialog().retry(context, _deleteOpening);
     }
   }
 

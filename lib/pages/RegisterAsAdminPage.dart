@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
 import 'package:seven_spot_mobile/common/TextStyles.dart';
 import 'package:seven_spot_mobile/usecases/RegisterAsAdminUseCase.dart';
 
@@ -70,7 +71,7 @@ class _RegisterAsAdminPageState extends State<RegisterAsAdminPage> {
           .registerAsAdmin(_adminCodeController.text);
       Navigator.of(context).pop();
     } catch (e) {
-      print(e);
+      HttpRetryDialog().retry(context, _registerAsAdmin);
     }
   }
 }

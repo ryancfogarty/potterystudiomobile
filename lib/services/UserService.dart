@@ -10,7 +10,7 @@ class UserService {
 
 //  String _baseUrl = "http://10.0.2.2:5001/spot-629a6/us-central1";
 
-  Future<bool> createUser(
+  Future<void> createUser(
       String studioCode, String displayName, String imageUrl) async {
     var currentUser = await AuthService().currentUser;
     var idToken = await currentUser.getIdToken(refresh: true);
@@ -27,7 +27,9 @@ class UserService {
       "Content-Type": "application/json"
     });
 
-    return response.statusCode >= 200 && response.statusCode < 300;
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw "error";
+    }
   }
 
   Future<UserDto> getUser() async {

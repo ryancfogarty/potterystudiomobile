@@ -35,7 +35,6 @@ class GetAllOpeningsUseCase extends ChangeNotifier {
     try {
       _openings = await _repo.getAll(_includePast);
     } catch (e) {
-      print(e);
       throw e;
     } finally {
       _loading = false;

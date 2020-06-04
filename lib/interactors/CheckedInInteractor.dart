@@ -44,7 +44,7 @@ class CheckedInInteractor extends ChangeNotifier {
       await (checkedIn ? _checkOutUseCase.invoke() : _checkInUseCase.invoke());
       await _getPresentUsersUseCase.invoke();
     } catch (e) {
-      print(e);
+      throw e;
     } finally {
       _checkingInOrOut = false;
       notifyListeners();
