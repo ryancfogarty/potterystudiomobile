@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>138929793965-ob9gj5v2urh1o9ov7cg6euk4ne7np4mk.apps.googleusercontent.com</string>
+	<string>138929793965-fs0qrtg14to41jd66g45hhmqufi6e7of.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.138929793965-ob9gj5v2urh1o9ov7cg6euk4ne7np4mk</string>
+	<string>com.googleusercontent.apps.138929793965-fs0qrtg14to41jd66g45hhmqufi6e7of</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>138929793965-3smjqmlpkdt93u74qblc31mr4tqrj599.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>ryan.fogarty.potteryWorld</string>
+	<string>ryan.fogarty.potteryStudio</string>
 	<key>PROJECT_ID</key>
 	<string>spot-629a6</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:138929793965:ios:77d9804f77846c27cc8f24</string>
+	<string>1:138929793965:ios:ab878fa1f2822d97cc8f24</string>
 	<key>DATABASE_URL</key>
 	<string>https://spot-629a6.firebaseio.com</string>
 </dict>
