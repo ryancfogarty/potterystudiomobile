@@ -38,18 +38,18 @@ class _LoginPageState extends State<LoginPage> {
                   color: Theme.of(context).primaryColor.withAlpha(50),
                 ),
                 size: 200,
-                id: ["8-8-8"],
+                id: ["20-2-626147"],
               ),
             ),
             Positioned(
-              left: -50,
+              left: -90,
               top: MediaQuery.of(context).size.height / 1.8,
               child: Blob.fromID(
                 styles: BlobStyles(
                   color: Theme.of(context).primaryColor.withAlpha(50),
                 ),
                 size: 200,
-                id: ["6-6-10"],
+                id: ["20-2-12"],
               ),
             ),
             Positioned(
@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                   color: Theme.of(context).primaryColor.withAlpha(50),
                 ),
                 size: 200,
-                id: ["7-7-7"],
+                id: ["20-2-25302"],
               ),
             ),
             Positioned(
