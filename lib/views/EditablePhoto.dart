@@ -16,12 +16,14 @@ class EditablePhoto extends StatefulWidget {
   final Function onDelete;
   final String imageUrl;
   final Widget imageSubtitle;
+  final bool loading;
 
   EditablePhoto(
       {Key key,
       this.onChange,
       this.onDelete,
       this.imageUrl,
+      this.loading,
       this.imageSubtitle = const SizedBox.shrink()})
       : super(key: key);
 
@@ -61,7 +63,13 @@ class _EditablePhotoState extends State<EditablePhoto> {
             replacement: Column(
               children: <Widget>[
                 Container(height: 16),
-                ProfileImage(imageUri: widget.imageUrl),
+                Visibility(
+                    visible: widget.loading,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                    replacement: ProfileImage(imageUri: widget.imageUrl)),
                 widget.imageSubtitle
               ],
             )),
@@ -151,12 +159,12 @@ class _EditablePhotoState extends State<EditablePhoto> {
 
     await _controller.takePicture(path);
 
-    var resizedPath = await _cropSquare(path, flip: _frontCamera);
+    var resizedPath = await _cropSquare(path, _frontCamera);
 
     await widget.onChange(ImageSource.camera, resizedPath);
   }
 
-  Future<String> _cropSquare(String srcFilePath, {bool flip = true}) async {
+  Future<String> _cropSquare(String srcFilePath, bool flip) async {
     var bytes = await File(srcFilePath).readAsBytes();
     IMG.Image src = IMG.decodeImage(bytes);
 

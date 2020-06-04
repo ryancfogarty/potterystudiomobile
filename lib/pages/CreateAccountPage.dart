@@ -46,17 +46,12 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
           children: [
             Consumer<CreateAccountInteractor>(
                 builder: (context, interactor, _) {
-              return Visibility(
-                  visible: interactor.uploadingImage,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CircularProgressIndicator(),
-                  ),
-                  replacement: EditablePhoto(
-                    imageUrl: interactor.profileImageUrl,
-                    onChange: interactor.changeImage,
-                    onDelete: interactor.removePhoto,
-                  ));
+              return EditablePhoto(
+                loading: interactor.uploadingImage,
+                imageUrl: interactor.profileImageUrl,
+                onChange: interactor.changeImage,
+                onDelete: interactor.removePhoto,
+              );
             }),
             Padding(
               padding: const EdgeInsets.all(16.0),

@@ -34,33 +34,27 @@ class _ProfilePageState extends State<ProfilePage> {
               builder: (context, useCase, _) {
                 return Consumer<ProfileInteractor>(
                   builder: (context, interactor, _) {
-                    return Visibility(
-                      visible: interactor.changingPhoto ||
-                          interactor.deletingPhoto ||
+                    return EditablePhoto(
+                      loading: interactor.deletingPhoto ||
+                          interactor.changingPhoto ||
                           useCase.user == null,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CircularProgressIndicator(),
-                      ),
-                      replacement: EditablePhoto(
-                        onDelete: interactor.deletePhoto,
-                        onChange: interactor.changePhoto,
-                        imageUrl: useCase.user?.imageUrl,
-                        imageSubtitle: Column(
-                          children: <Widget>[
-                            Text(
-                              useCase.user?.name ?? "Loading...",
-                              style: TextStyles().mediumRegularStyle,
+                      onDelete: interactor.deletePhoto,
+                      onChange: interactor.changePhoto,
+                      imageUrl: useCase.user?.imageUrl,
+                      imageSubtitle: Column(
+                        children: <Widget>[
+                          Text(
+                            useCase.user?.name ?? "",
+                            style: TextStyles().mediumRegularStyle,
+                          ),
+                          Visibility(
+                            visible: useCase.user?.isAdmin == true,
+                            child: Text(
+                              "Admin",
+                              style: TextStyles().smallRegularStyle,
                             ),
-                            Visibility(
-                              visible: useCase.user?.isAdmin == true,
-                              child: Text(
-                                "Admin",
-                                style: TextStyles().smallRegularStyle,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     );
                   },
