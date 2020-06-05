@@ -8,12 +8,28 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:138929793965:android:54374c90e53a27b2cc8f24",
+        "mobilesdk_app_id": "1:138929793965:android:471ee412e73cb513cc8f24",
         "android_client_info": {
-          "package_name": "com.example.seven_spot_mobile"
+          "package_name": "ryan.fogarty.potteryStudio"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "138929793965-gid6o6gajieu93ks6dabklgdjr7t6rbv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ryan.fogarty.potteryStudio",
+            "certificate_hash": "dd6d07bb2782f792f4b32576ce56428e4e975455"
+          }
+        },
+        {
+          "client_id": "138929793965-qsfa8qmadstvdvnuivvukjgtlmggn56f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ryan.fogarty.potteryStudio",
+            "certificate_hash": "c6b17b2aa1d61a19f168337bc508968d99322cfc"
+          }
+        },
         {
           "client_id": "138929793965-0oo1ra7938v1tihj2s4u4et6gcq28v4n.apps.googleusercontent.com",
           "client_type": 3
@@ -30,6 +46,13 @@
             {
               "client_id": "138929793965-0oo1ra7938v1tihj2s4u4et6gcq28v4n.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "138929793965-fs0qrtg14to41jd66g45hhmqufi6e7of.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ryan.fogarty.potteryStudio"
+              }
             }
           ]
         }

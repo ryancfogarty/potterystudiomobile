@@ -1,4 +1,4 @@
-package com.example.seven_spot_mobile;
+package ryan.fogarty.potteryStudio;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

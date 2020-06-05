@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.seven_spot_mobile">
+    package="ryan.fogarty.potteryStudio">
 
     <uses-sdk tools:overrideLibrary="io.flutter.plugins.camera"/>
 
