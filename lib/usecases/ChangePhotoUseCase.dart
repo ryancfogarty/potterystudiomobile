@@ -1,7 +1,7 @@
 import 'package:image_picker/image_picker.dart';
-import 'package:seven_spot_mobile/repositories/UserRepository.dart';
-import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
-import 'package:seven_spot_mobile/usecases/UploadPhotoUseCase.dart';
+import 'package:pottery_studio/repositories/UserRepository.dart';
+import 'package:pottery_studio/usecases/GetUserUseCase.dart';
+import 'package:pottery_studio/usecases/UploadPhotoUseCase.dart';
 
 class ChangePhotoUseCase {
   UserRepository _repo;

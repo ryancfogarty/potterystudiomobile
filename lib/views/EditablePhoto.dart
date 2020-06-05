@@ -8,8 +8,8 @@ import 'package:image/image.dart' as IMG;
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path;
 import 'package:path_provider/path_provider.dart';
-import 'package:seven_spot_mobile/views/EditPhotoOptions.dart';
-import 'package:seven_spot_mobile/views/ProfileImage.dart';
+import 'package:pottery_studio/views/EditPhotoOptions.dart';
+import 'package:pottery_studio/views/ProfileImage.dart';
 
 class EditablePhoto extends StatefulWidget {
   final Future Function(ImageSource imageSource, String filePath) onChange;

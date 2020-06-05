@@ -1,6 +1,6 @@
 import 'package:encrypt/encrypt.dart';
-import 'package:seven_spot_mobile/repositories/UserRepository.dart';
-import 'package:seven_spot_mobile/services/AuthService.dart';
+import 'package:pottery_studio/repositories/UserRepository.dart';
+import 'package:pottery_studio/services/AuthService.dart';
 
 class CreateUserUseCase {
   UserRepository _repo;

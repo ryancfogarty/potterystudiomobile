@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
-import 'package:seven_spot_mobile/common/TextStyles.dart';
-import 'package:seven_spot_mobile/interactors/CheckedInInteractor.dart';
-import 'package:seven_spot_mobile/usecases/GetPresentUsersUseCase.dart';
-import 'package:seven_spot_mobile/views/ProfileImage.dart';
+import 'package:pottery_studio/common/HttpRetryDialog.dart';
+import 'package:pottery_studio/common/TextStyles.dart';
+import 'package:pottery_studio/interactors/CheckedInInteractor.dart';
+import 'package:pottery_studio/usecases/GetPresentUsersUseCase.dart';
+import 'package:pottery_studio/views/ProfileImage.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CheckedIn extends StatefulWidget {

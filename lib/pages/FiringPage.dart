@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:seven_spot_mobile/common/FiringTypeFormatter.dart';
-import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
-import 'package:seven_spot_mobile/common/TextStyles.dart';
-import 'package:seven_spot_mobile/pages/ManageFiringPage.dart';
-import 'package:seven_spot_mobile/usecases/DeleteFiringUseCase.dart';
-import 'package:seven_spot_mobile/usecases/GetFiringUseCase.dart';
-import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
-import 'package:seven_spot_mobile/views/FiringStatus.dart';
+import 'package:pottery_studio/common/FiringTypeFormatter.dart';
+import 'package:pottery_studio/common/HttpRetryDialog.dart';
+import 'package:pottery_studio/common/TextStyles.dart';
+import 'package:pottery_studio/pages/ManageFiringPage.dart';
+import 'package:pottery_studio/usecases/DeleteFiringUseCase.dart';
+import 'package:pottery_studio/usecases/GetFiringUseCase.dart';
+import 'package:pottery_studio/usecases/GetUserUseCase.dart';
+import 'package:pottery_studio/views/FiringStatus.dart';
 
 class FiringPage extends StatefulWidget {
   FiringPage({Key key, @required this.firingId}) : super(key: key);
@@ -37,7 +37,9 @@ class _FiringPageState extends State<FiringPage> {
       await useCase.invoke(widget.firingId);
     } catch (e) {
       HttpRetryDialog().retry(context, () => useCase.invoke(widget.firingId),
-          onDismiss: () => popOnErrorDismiss && Navigator.of(context).pop());
+          onDismiss: () {
+            if (popOnErrorDismiss) Navigator.of(context).pop();
+          });
     }
   }
 

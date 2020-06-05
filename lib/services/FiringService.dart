@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:seven_spot_mobile/models/FiringDto.dart';
-import 'package:seven_spot_mobile/services/AuthService.dart';
+import 'package:pottery_studio/models/FiringDto.dart';
+import 'package:pottery_studio/services/AuthService.dart';
 
 class FiringService {
   String _baseUrl = "https://us-central1-spot-629a6.cloudfunctions.net";

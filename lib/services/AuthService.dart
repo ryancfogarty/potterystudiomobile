@@ -8,7 +8,9 @@ enum AppState { UNAUTHENTICATED, AUTHENTICATED, REGISTERED }
 
 class AuthService extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+      clientId:
+          "138929793965-1jbii3a9h57sanr8vkia4c0u5crmkpps.apps.googleusercontent.com");
 
   AppState state = AppState.UNAUTHENTICATED;
 
@@ -35,7 +37,8 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<void> createAccount(String email, String password) async {
-    var result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+    var result = await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
 
     result.user.sendEmailVerification();
   }
@@ -54,10 +57,11 @@ class AuthService extends ChangeNotifier {
         throw Exception();
       }
 
-      state = AppState.AUTHENTICATED;
+      state =
+          await _isRegistered() ? AppState.REGISTERED : AppState.AUTHENTICATED;
       notifyListeners();
     } catch (e) {
-      throw Exception("error");
+      throw e;
     } finally {
       _authenticating = false;
       notifyListeners();

@@ -1,4 +1,4 @@
-import 'package:seven_spot_mobile/models/UserDto.dart';
+import 'package:pottery_studio/models/UserDto.dart';
 
 import 'Opening.dart';
 

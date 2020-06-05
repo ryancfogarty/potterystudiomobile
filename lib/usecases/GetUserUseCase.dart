@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:seven_spot_mobile/models/User.dart';
-import 'package:seven_spot_mobile/repositories/UserRepository.dart';
+import 'package:pottery_studio/models/User.dart';
+import 'package:pottery_studio/repositories/UserRepository.dart';
 
 abstract class GetUserUseCase extends ChangeNotifier {
   Future<void> getUser();

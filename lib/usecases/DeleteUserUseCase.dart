@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:seven_spot_mobile/repositories/UserRepository.dart';
+import 'package:pottery_studio/repositories/UserRepository.dart';
 
 class DeleteUserUseCase extends ChangeNotifier {
   bool _loading = false;

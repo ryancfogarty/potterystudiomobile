@@ -1,4 +1,4 @@
-import 'package:seven_spot_mobile/models/Opening.dart';
+import 'package:pottery_studio/models/Opening.dart';
 
 class OpeningGroup {
   List<Opening> openings;

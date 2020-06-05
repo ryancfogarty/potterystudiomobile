@@ -1,5 +1,5 @@
-import 'package:seven_spot_mobile/repositories/StudioRepository.dart';
-import 'package:seven_spot_mobile/services/AuthService.dart';
+import 'package:pottery_studio/repositories/StudioRepository.dart';
+import 'package:pottery_studio/services/AuthService.dart';
 
 class CreateStudioUseCase {
   StudioRepository _repo;

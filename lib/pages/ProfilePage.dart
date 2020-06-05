@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
-import 'package:seven_spot_mobile/common/TextStyles.dart';
-import 'package:seven_spot_mobile/interactors/ProfileInteractor.dart';
-import 'package:seven_spot_mobile/services/AuthService.dart';
-import 'package:seven_spot_mobile/usecases/DeleteUserUseCase.dart';
-import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
-import 'package:seven_spot_mobile/views/EditablePhoto.dart';
+import 'package:pottery_studio/common/HttpRetryDialog.dart';
+import 'package:pottery_studio/common/TextStyles.dart';
+import 'package:pottery_studio/interactors/ProfileInteractor.dart';
+import 'package:pottery_studio/services/AuthService.dart';
+import 'package:pottery_studio/usecases/DeleteUserUseCase.dart';
+import 'package:pottery_studio/usecases/GetUserUseCase.dart';
+import 'package:pottery_studio/views/EditablePhoto.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  State<StatefulWidget> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
@@ -25,8 +25,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _body() {
-    var authService = Provider.of<AuthService>(context, listen: false);
-
     return SingleChildScrollView(
       child: Center(
         child: Column(
@@ -99,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               .invoke();
 
                                       if (success) {
-                                        await authService.signOut(context);
+                                        await Provider.of<AuthService>(context, listen: false).signOut(context);
                                       } else {
                                         Navigator.of(context).pop();
                                         showDialog(

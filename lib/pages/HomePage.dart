@@ -1,25 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pottery_studio/common/HttpRetryDialog.dart';
+import 'package:pottery_studio/common/TextStyles.dart';
+import 'package:pottery_studio/interactors/FiringListInteractor.dart';
+import 'package:pottery_studio/pages/FiringsList.dart';
+import 'package:pottery_studio/pages/ManageFiringPage.dart';
+import 'package:pottery_studio/pages/ManageOpeningPage.dart';
+import 'package:pottery_studio/pages/OpeningsList.dart';
+import 'package:pottery_studio/pages/ProfilePage.dart';
+import 'package:pottery_studio/services/AuthService.dart';
+import 'package:pottery_studio/usecases/GetAllOpeningsUseCase.dart';
+import 'package:pottery_studio/usecases/GetPresentUsersUseCase.dart';
+import 'package:pottery_studio/usecases/GetUserUseCase.dart';
+import 'package:pottery_studio/views/CheckedIn.dart';
+import 'package:pottery_studio/views/FiringCard.dart';
+import 'package:pottery_studio/views/HomePageSettings.dart';
+import 'package:pottery_studio/views/OpeningCard.dart';
+import 'package:pottery_studio/views/ProfileImage.dart';
+import 'package:pottery_studio/views/UpcomingListPreview.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
-import 'package:seven_spot_mobile/common/TextStyles.dart';
-import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
-import 'package:seven_spot_mobile/pages/FiringsList.dart';
-import 'package:seven_spot_mobile/pages/ManageFiringPage.dart';
-import 'package:seven_spot_mobile/pages/ManageOpeningPage.dart';
-import 'package:seven_spot_mobile/pages/OpeningsList.dart';
-import 'package:seven_spot_mobile/pages/ProfilePage.dart';
-import 'package:seven_spot_mobile/services/AuthService.dart';
-import 'package:seven_spot_mobile/usecases/GetAllOpeningsUseCase.dart';
-import 'package:seven_spot_mobile/usecases/GetPresentUsersUseCase.dart';
-import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
-import 'package:seven_spot_mobile/views/CheckedIn.dart';
-import 'package:seven_spot_mobile/views/FiringCard.dart';
-import 'package:seven_spot_mobile/views/HomePageSettings.dart';
-import 'package:seven_spot_mobile/views/OpeningCard.dart';
-import 'package:seven_spot_mobile/views/ProfileImage.dart';
-import 'package:seven_spot_mobile/views/UpcomingListPreview.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -120,8 +120,8 @@ class _HomePageState extends State<HomePage> {
         }),
         actions: <Widget>[
           InkWell(
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ProfilePage())),
+              onTap: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => ProfilePage())),
               child: Consumer<GetUserUseCase>(builder: (context, useCase, _) {
                 return Padding(
                   padding: const EdgeInsets.only(

@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:seven_spot_mobile/common/DateFormatter.dart';
-import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
-import 'package:seven_spot_mobile/models/Opening.dart';
-import 'package:seven_spot_mobile/pages/OpeningPage.dart';
-import 'package:seven_spot_mobile/usecases/ToggleReservationUseCase.dart';
+import 'package:pottery_studio/common/DateFormatter.dart';
+import 'package:pottery_studio/common/HttpRetryDialog.dart';
+import 'package:pottery_studio/models/Opening.dart';
+import 'package:pottery_studio/pages/OpeningPage.dart';
+import 'package:pottery_studio/usecases/ToggleReservationUseCase.dart';
 
 class OpeningCard extends StatefulWidget {
   @override

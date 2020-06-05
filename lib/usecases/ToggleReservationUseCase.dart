@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:seven_spot_mobile/models/Opening.dart';
-import 'package:seven_spot_mobile/repositories/OpeningRepository.dart';
+import 'package:pottery_studio/models/Opening.dart';
+import 'package:pottery_studio/repositories/OpeningRepository.dart';
 
 abstract class ToggleReservationUseCase extends ChangeNotifier {
   Future<void> toggleReservationForOpening(Opening opening);

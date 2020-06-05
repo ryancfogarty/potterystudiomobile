@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:seven_spot_mobile/common/DateFormatter.dart';
-import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
-import 'package:seven_spot_mobile/common/TextStyles.dart';
-import 'package:seven_spot_mobile/pages/DateTimeView.dart';
-import 'package:seven_spot_mobile/usecases/ManageOpeningUseCase.dart';
+import 'package:pottery_studio/common/DateFormatter.dart';
+import 'package:pottery_studio/common/HttpRetryDialog.dart';
+import 'package:pottery_studio/common/TextStyles.dart';
+import 'package:pottery_studio/pages/DateTimeView.dart';
+import 'package:pottery_studio/usecases/ManageOpeningUseCase.dart';
 
 class ManageOpeningPage extends StatefulWidget {
   ManageOpeningPage({Key key, this.openingId}) : super(key: key);

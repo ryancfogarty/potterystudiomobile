@@ -1,4 +1,4 @@
-import 'package:seven_spot_mobile/services/StudioService.dart';
+import 'package:pottery_studio/services/StudioService.dart';
 
 class StudioRepository {
   StudioService _service;

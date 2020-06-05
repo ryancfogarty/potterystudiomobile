@@ -1,4 +1,5 @@
 import 'package:apple_sign_in/apple_sign_in.dart';
+import 'package:flutter/foundation.dart';
 
 class SupportsAppleLogin {
   static final SupportsAppleLogin _supportsAppleLogin =
@@ -15,6 +16,6 @@ class SupportsAppleLogin {
   bool get supported => _supported;
 
   static init() async {
-    _supported = await AppleSignIn.isAvailable();
+    _supported = !kIsWeb && await AppleSignIn.isAvailable();
   }
 }

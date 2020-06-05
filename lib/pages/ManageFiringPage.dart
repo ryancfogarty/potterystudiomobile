@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
-import 'package:seven_spot_mobile/common/TextStyles.dart';
-import 'package:seven_spot_mobile/pages/DateTimeView.dart';
-import 'package:seven_spot_mobile/usecases/ManageFiringUseCase.dart';
-import 'package:seven_spot_mobile/views/DurationPicker.dart';
+import 'package:pottery_studio/common/HttpRetryDialog.dart';
+import 'package:pottery_studio/common/TextStyles.dart';
+import 'package:pottery_studio/pages/DateTimeView.dart';
+import 'package:pottery_studio/usecases/ManageFiringUseCase.dart';
+import 'package:pottery_studio/views/DurationPicker.dart';
 
 class ManageFiringPage extends StatefulWidget {
   ManageFiringPage({Key key, this.firingId}) : super(key: key);

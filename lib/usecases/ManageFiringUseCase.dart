@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:seven_spot_mobile/models/Firing.dart';
-import 'package:seven_spot_mobile/repositories/FiringRepository.dart';
+import 'package:pottery_studio/models/Firing.dart';
+import 'package:pottery_studio/repositories/FiringRepository.dart';
 
 class ManageFiringUseCase extends ChangeNotifier {
   FiringRepository _repo;

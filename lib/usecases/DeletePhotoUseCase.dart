@@ -1,5 +1,5 @@
-import 'package:seven_spot_mobile/repositories/UserRepository.dart';
-import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
+import 'package:pottery_studio/repositories/UserRepository.dart';
+import 'package:pottery_studio/usecases/GetUserUseCase.dart';
 
 class DeletePhotoUseCase {
   UserRepository _repo;

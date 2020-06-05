@@ -1,5 +1,5 @@
-import 'package:seven_spot_mobile/models/User.dart';
-import 'package:seven_spot_mobile/services/UserService.dart';
+import 'package:pottery_studio/models/User.dart';
+import 'package:pottery_studio/services/UserService.dart';
 
 class UserRepository {
   UserService _service;

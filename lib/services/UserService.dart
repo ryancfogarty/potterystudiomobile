@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:seven_spot_mobile/models/UserDto.dart';
+import 'package:pottery_studio/models/UserDto.dart';
 
 import 'AuthService.dart';
 

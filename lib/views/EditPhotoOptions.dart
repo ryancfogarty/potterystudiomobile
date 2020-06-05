@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:seven_spot_mobile/common/TextStyles.dart';
+import 'package:pottery_studio/common/TextStyles.dart';
 
 class EditPhotoOptions extends StatefulWidget {
   final Function(ImageSource) onClickChange;

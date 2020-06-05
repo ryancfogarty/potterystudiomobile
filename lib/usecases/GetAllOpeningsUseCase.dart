@@ -1,8 +1,8 @@
 import "package:collection/collection.dart";
 import 'package:flutter/widgets.dart';
-import 'package:seven_spot_mobile/models/Opening.dart';
-import 'package:seven_spot_mobile/models/OpeningGroup.dart';
-import 'package:seven_spot_mobile/repositories/OpeningRepository.dart';
+import 'package:pottery_studio/models/Opening.dart';
+import 'package:pottery_studio/models/OpeningGroup.dart';
+import 'package:pottery_studio/repositories/OpeningRepository.dart';
 
 class GetAllOpeningsUseCase extends ChangeNotifier {
   Iterable<Opening> _openings = Iterable.empty();

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
-import 'package:seven_spot_mobile/usecases/ChangePhotoUseCase.dart';
-import 'package:seven_spot_mobile/usecases/DeletePhotoUseCase.dart';
+import 'package:pottery_studio/common/HttpRetryDialog.dart';
+import 'package:pottery_studio/usecases/ChangePhotoUseCase.dart';
+import 'package:pottery_studio/usecases/DeletePhotoUseCase.dart';
 
 class ProfileInteractor extends ChangeNotifier {
   bool _changingPhoto = false;

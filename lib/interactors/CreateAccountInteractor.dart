@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:seven_spot_mobile/usecases/CreateStudioUseCase.dart';
-import 'package:seven_spot_mobile/usecases/CreateUserUseCase.dart';
-import 'package:seven_spot_mobile/usecases/UploadPhotoUseCase.dart';
+import 'package:pottery_studio/usecases/CreateStudioUseCase.dart';
+import 'package:pottery_studio/usecases/CreateUserUseCase.dart';
+import 'package:pottery_studio/usecases/UploadPhotoUseCase.dart';
 
 class CreateAccountInteractor extends ChangeNotifier {
   CreateUserUseCase _createUserUseCase;

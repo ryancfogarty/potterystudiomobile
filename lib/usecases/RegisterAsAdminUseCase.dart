@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:seven_spot_mobile/repositories/UserRepository.dart';
-import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
+import 'package:pottery_studio/repositories/UserRepository.dart';
+import 'package:pottery_studio/usecases/GetUserUseCase.dart';
 
 class RegisterAsAdminUseCase extends ChangeNotifier {
   UserRepository _repo;

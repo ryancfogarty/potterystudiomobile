@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:seven_spot_mobile/repositories/OpeningRepository.dart';
+import 'package:pottery_studio/repositories/OpeningRepository.dart';
 
 class DeleteOpeningUseCase extends ChangeNotifier {
   OpeningRepository _repo;

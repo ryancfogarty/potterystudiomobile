@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:seven_spot_mobile/pages/RegisterAsAdminPage.dart';
-import 'package:seven_spot_mobile/services/AuthService.dart';
-import 'package:seven_spot_mobile/usecases/DeleteUserUseCase.dart';
-import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
+import 'package:pottery_studio/pages/RegisterAsAdminPage.dart';
+import 'package:pottery_studio/services/AuthService.dart';
+import 'package:pottery_studio/usecases/DeleteUserUseCase.dart';
+import 'package:pottery_studio/usecases/GetUserUseCase.dart';
 
 class HomePageSettings extends StatelessWidget {
   @override

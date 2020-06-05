@@ -1,5 +1,5 @@
-import 'package:seven_spot_mobile/models/Firing.dart';
-import 'package:seven_spot_mobile/services/FiringService.dart';
+import 'package:pottery_studio/models/Firing.dart';
+import 'package:pottery_studio/services/FiringService.dart';
 
 class FiringRepository {
   FiringService _service;

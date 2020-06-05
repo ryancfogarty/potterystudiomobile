@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:seven_spot_mobile/common/TextStyles.dart';
+import 'package:pottery_studio/common/TextStyles.dart';
 
 class ThirdPartySignInButton extends StatelessWidget {
   final String logoUri;

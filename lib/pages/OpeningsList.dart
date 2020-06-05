@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
-import 'package:seven_spot_mobile/usecases/GetAllOpeningsUseCase.dart';
-import 'package:seven_spot_mobile/views/OpeningCard.dart';
-import 'package:seven_spot_mobile/views/ToggleButtonView.dart';
+import 'package:pottery_studio/common/HttpRetryDialog.dart';
+import 'package:pottery_studio/usecases/GetAllOpeningsUseCase.dart';
+import 'package:pottery_studio/views/OpeningCard.dart';
+import 'package:pottery_studio/views/ToggleButtonView.dart';
 
 class OpeningsList extends StatefulWidget {
   @override

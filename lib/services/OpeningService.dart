@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
-import 'package:seven_spot_mobile/models/OpeningDto.dart';
-import 'package:seven_spot_mobile/services/AuthService.dart';
+import 'package:pottery_studio/models/OpeningDto.dart';
+import 'package:pottery_studio/services/AuthService.dart';
 
 class OpeningService {
   Dio _dio;

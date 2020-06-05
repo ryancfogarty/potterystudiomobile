@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:seven_spot_mobile/models/Firing.dart';
-import 'package:seven_spot_mobile/usecases/GetAllFiringsUseCase.dart';
+import 'package:pottery_studio/models/Firing.dart';
+import 'package:pottery_studio/usecases/GetAllFiringsUseCase.dart';
 
 class FiringListInteractor extends ChangeNotifier {
   GetAllFiringsUseCase _getAllFiringsUseCase;

@@ -2,9 +2,9 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pottery_studio/common/TextStyles.dart';
+import 'package:pottery_studio/services/AuthService.dart';
 import 'package:provider/provider.dart';
-import 'package:seven_spot_mobile/common/TextStyles.dart';
-import 'package:seven_spot_mobile/services/AuthService.dart';
 
 class EmailSignUpPage extends StatefulWidget {
   _EmailSignUpPageState createState() => _EmailSignUpPageState();

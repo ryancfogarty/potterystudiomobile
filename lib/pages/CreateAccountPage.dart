@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
-import 'package:seven_spot_mobile/common/TextStyles.dart';
-import 'package:seven_spot_mobile/interactors/CreateAccountInteractor.dart';
-import 'package:seven_spot_mobile/services/AuthService.dart';
-import 'package:seven_spot_mobile/views/EditablePhoto.dart';
+import 'package:pottery_studio/common/HttpRetryDialog.dart';
+import 'package:pottery_studio/common/TextStyles.dart';
+import 'package:pottery_studio/interactors/CreateAccountInteractor.dart';
+import 'package:pottery_studio/services/AuthService.dart';
+import 'package:pottery_studio/views/EditablePhoto.dart';
 
 class CreateAccountPage extends StatefulWidget {
   @override

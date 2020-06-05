@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:seven_spot_mobile/common/DateFormatter.dart';
-import 'package:seven_spot_mobile/common/FiringTypeFormatter.dart';
-import 'package:seven_spot_mobile/common/TextStyles.dart';
-import 'package:seven_spot_mobile/models/Firing.dart';
-import 'package:seven_spot_mobile/pages/FiringPage.dart';
+import 'package:pottery_studio/common/DateFormatter.dart';
+import 'package:pottery_studio/common/FiringTypeFormatter.dart';
+import 'package:pottery_studio/common/TextStyles.dart';
+import 'package:pottery_studio/models/Firing.dart';
+import 'package:pottery_studio/pages/FiringPage.dart';
 
 class FiringCard extends StatefulWidget {
   final Firing firing;

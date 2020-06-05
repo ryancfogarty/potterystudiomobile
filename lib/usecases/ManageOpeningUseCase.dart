@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:seven_spot_mobile/models/Opening.dart';
-import 'package:seven_spot_mobile/repositories/OpeningRepository.dart';
+import 'package:pottery_studio/models/Opening.dart';
+import 'package:pottery_studio/repositories/OpeningRepository.dart';
 
 enum SaveResponse { SUCCESS, ERROR, INVALID }
 

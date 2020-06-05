@@ -1,4 +1,4 @@
-import 'package:seven_spot_mobile/repositories/UserRepository.dart';
+import 'package:pottery_studio/repositories/UserRepository.dart';
 
 class CheckInUseCase {
   UserRepository _repo;

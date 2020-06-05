@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:seven_spot_mobile/usecases/CheckInUseCase.dart';
-import 'package:seven_spot_mobile/usecases/CheckOutUseCase.dart';
-import 'package:seven_spot_mobile/usecases/GetPresentUsersUseCase.dart';
-import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
+import 'package:pottery_studio/usecases/CheckInUseCase.dart';
+import 'package:pottery_studio/usecases/CheckOutUseCase.dart';
+import 'package:pottery_studio/usecases/GetPresentUsersUseCase.dart';
+import 'package:pottery_studio/usecases/GetUserUseCase.dart';
 
 class CheckedInInteractor extends ChangeNotifier {
   GetUserUseCase _getUserUseCase;

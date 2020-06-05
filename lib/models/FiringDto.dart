@@ -1,4 +1,4 @@
-import 'package:seven_spot_mobile/models/Firing.dart';
+import 'package:pottery_studio/models/Firing.dart';
 
 class FiringDto {
   String id;

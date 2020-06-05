@@ -1,5 +1,5 @@
-import 'package:seven_spot_mobile/models/Opening.dart';
-import 'package:seven_spot_mobile/services/OpeningService.dart';
+import 'package:pottery_studio/models/Opening.dart';
+import 'package:pottery_studio/services/OpeningService.dart';
 
 class OpeningRepository {
   OpeningService _service;

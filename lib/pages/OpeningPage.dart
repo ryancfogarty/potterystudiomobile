@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:seven_spot_mobile/common/DateFormatter.dart';
-import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
-import 'package:seven_spot_mobile/common/TextStyles.dart';
-import 'package:seven_spot_mobile/pages/ManageOpeningPage.dart';
-import 'package:seven_spot_mobile/usecases/DeleteOpeningUseCase.dart';
-import 'package:seven_spot_mobile/usecases/GetOpeningUseCase.dart';
-import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
-import 'package:seven_spot_mobile/views/ProfileImage.dart';
+import 'package:pottery_studio/common/DateFormatter.dart';
+import 'package:pottery_studio/common/HttpRetryDialog.dart';
+import 'package:pottery_studio/common/TextStyles.dart';
+import 'package:pottery_studio/pages/ManageOpeningPage.dart';
+import 'package:pottery_studio/usecases/DeleteOpeningUseCase.dart';
+import 'package:pottery_studio/usecases/GetOpeningUseCase.dart';
+import 'package:pottery_studio/usecases/GetUserUseCase.dart';
+import 'package:pottery_studio/views/ProfileImage.dart';
 
 class OpeningPage extends StatefulWidget {
   OpeningPage({Key key, @required this.openingId}) : super(key: key);

@@ -2,12 +2,12 @@ import 'package:blobs/blobs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pottery_studio/common/SupportsAppleLogin.dart';
+import 'package:pottery_studio/common/TextStyles.dart';
+import 'package:pottery_studio/pages/EmailSignUpPage.dart';
+import 'package:pottery_studio/services/AuthService.dart';
+import 'package:pottery_studio/views/ThirdPartySignInButton.dart';
 import 'package:provider/provider.dart';
-import 'package:seven_spot_mobile/common/SupportsAppleLogin.dart';
-import 'package:seven_spot_mobile/common/TextStyles.dart';
-import 'package:seven_spot_mobile/pages/EmailSignUpPage.dart';
-import 'package:seven_spot_mobile/services/AuthService.dart';
-import 'package:seven_spot_mobile/views/ThirdPartySignInButton.dart';
 
 class LoginPage extends StatefulWidget {
   @override

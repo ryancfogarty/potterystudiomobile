@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:seven_spot_mobile/common/TextStyles.dart';
-import 'package:seven_spot_mobile/usecases/GetUserUseCase.dart';
+import 'package:pottery_studio/common/TextStyles.dart';
+import 'package:pottery_studio/usecases/GetUserUseCase.dart';
 import 'package:shimmer/shimmer.dart';
 
 class UpcomingListPreview extends StatefulWidget {

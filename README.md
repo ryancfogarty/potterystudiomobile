@@ -1,4 +1,4 @@
-# seven_spot_mobile
+# pottery_studio
 
 A new Flutter project.
 

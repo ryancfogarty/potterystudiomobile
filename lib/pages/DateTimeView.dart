@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:seven_spot_mobile/common/DateFormatter.dart';
-import 'package:seven_spot_mobile/common/TextStyles.dart';
+import 'package:pottery_studio/common/DateFormatter.dart';
+import 'package:pottery_studio/common/TextStyles.dart';
 
 class DateTimeView extends StatelessWidget {
   const DateTimeView(

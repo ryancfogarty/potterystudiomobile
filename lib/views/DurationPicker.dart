@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:seven_spot_mobile/common/TextStyles.dart';
+import 'package:pottery_studio/common/TextStyles.dart';
 
 class DurationPicker extends StatefulWidget {
   DurationPicker(

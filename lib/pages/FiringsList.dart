@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:seven_spot_mobile/common/DateFormatter.dart';
-import 'package:seven_spot_mobile/common/FiringTypeFormatter.dart';
-import 'package:seven_spot_mobile/common/HttpRetryDialog.dart';
-import 'package:seven_spot_mobile/common/TextStyles.dart';
-import 'package:seven_spot_mobile/interactors/FiringListInteractor.dart';
-import 'package:seven_spot_mobile/models/Firing.dart';
-import 'package:seven_spot_mobile/pages/FiringPage.dart';
-import 'package:seven_spot_mobile/views/ToggleButtonView.dart';
+import 'package:pottery_studio/common/DateFormatter.dart';
+import 'package:pottery_studio/common/FiringTypeFormatter.dart';
+import 'package:pottery_studio/common/HttpRetryDialog.dart';
+import 'package:pottery_studio/common/TextStyles.dart';
+import 'package:pottery_studio/interactors/FiringListInteractor.dart';
+import 'package:pottery_studio/models/Firing.dart';
+import 'package:pottery_studio/pages/FiringPage.dart';
+import 'package:pottery_studio/views/ToggleButtonView.dart';
 
 class FiringsList extends StatefulWidget {
   @override

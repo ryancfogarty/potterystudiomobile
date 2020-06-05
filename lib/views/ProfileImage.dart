@@ -39,7 +39,6 @@ class _ProfileImageState extends State<ProfileImage> {
     if (widget.imageUri != null) {
       image = CachedNetworkImage(
           imageUrl: widget.imageUri,
-          filterQuality: FilterQuality.high,
           height: widget.height,
           placeholder: (context, url) => Container(
               width: 40,
