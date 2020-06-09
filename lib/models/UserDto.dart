@@ -8,9 +8,17 @@ class UserDto {
   String studioCode;
   String studioAdminCode;
   String imageUrl;
+  String studioBanner;
 
-  UserDto(String id, String studioName, String name, bool isAdmin,
-      String studioCode, String studioAdminCode, String imageUrl) {
+  UserDto(
+      String id,
+      String studioName,
+      String name,
+      bool isAdmin,
+      String studioCode,
+      String studioAdminCode,
+      String imageUrl,
+      String studioBanner) {
     this.id = id;
     this.studioName = studioName;
     this.name = name;
@@ -18,6 +26,7 @@ class UserDto {
     this.studioCode = studioCode;
     this.studioAdminCode = studioAdminCode;
     this.imageUrl = imageUrl;
+    this.studioBanner = studioBanner;
   }
 
   UserDto.fromJson(dynamic userJson) {
@@ -28,10 +37,11 @@ class UserDto {
     this.studioCode = userJson["studioCode"];
     this.studioAdminCode = userJson["studioAdminCode"];
     this.imageUrl = userJson["profileImageUrl"];
+    this.studioBanner = userJson["studioBanner"];
   }
 
   User toModel() {
-    return User(
-        id, studioName, name, isAdmin, studioCode, studioAdminCode, imageUrl);
+    return User(id, studioName, name, isAdmin, studioCode, studioAdminCode,
+        imageUrl, studioBanner);
   }
 }

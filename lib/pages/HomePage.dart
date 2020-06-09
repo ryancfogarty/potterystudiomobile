@@ -120,8 +120,8 @@ class _HomePageState extends State<HomePage> {
         }),
         actions: <Widget>[
           InkWell(
-              onTap: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => ProfilePage())),
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProfilePage())),
               child: Consumer<GetUserUseCase>(builder: (context, useCase, _) {
                 return Padding(
                   padding: const EdgeInsets.only(
@@ -142,6 +142,7 @@ class _HomePageState extends State<HomePage> {
       child: SingleChildScrollView(
           child: Column(
         children: <Widget>[
+          _studioBanner(),
           CheckedIn(),
           _upcomingOpenings(),
           _upcomingFirings(),
@@ -149,6 +150,44 @@ class _HomePageState extends State<HomePage> {
           HomePageSettings(),
         ],
       )),
+    );
+  }
+
+  Widget _studioBanner() {
+    return Consumer<GetUserUseCase>(
+      builder: (context, useCase, _) {
+        return Visibility(
+            visible: useCase.user?.studioBanner != null,
+            child: Container(
+              width: double.infinity,
+              child: Card(
+                margin: EdgeInsets.all(8),
+                child: InkWell(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Studio notes",
+                            style: TextStyles().bigRegularStyle),
+                        Container(height: 8),
+                        Container(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(useCase.user?.studioBanner,
+                                style: TextStyles().mediumRegularStyle,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ));
+      },
     );
   }
 

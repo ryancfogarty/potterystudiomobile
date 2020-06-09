@@ -125,7 +125,7 @@ class UserService {
     var url = "$_baseUrl/api/user/absent";
 
     var response =
-    await http.put(url, headers: {"Authorization": idToken.token});
+        await http.put(url, headers: {"Authorization": idToken.token});
 
     if (response.statusCode != 200) throw Exception("Error");
   }

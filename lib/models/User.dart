@@ -8,9 +8,17 @@ class User {
   String studioCode;
   String studioAdminCode;
   String imageUrl;
+  String studioBanner;
 
-  User(String id, String studioName, String name, bool isAdmin,
-      String studioCode, String studioAdminCode, String imageUrl) {
+  User(
+      String id,
+      String studioName,
+      String name,
+      bool isAdmin,
+      String studioCode,
+      String studioAdminCode,
+      String imageUrl,
+      String studioBanner) {
     this.id = id;
     this.studioName = studioName;
     this.name = name;
@@ -18,8 +26,9 @@ class User {
     this.studioCode = studioCode;
     this.studioAdminCode = studioAdminCode;
     this.imageUrl = imageUrl;
+    this.studioBanner = studioBanner;
   }
 
-  UserDto toDto() => UserDto(
-      id, studioName, name, isAdmin, studioCode, studioAdminCode, imageUrl);
+  UserDto toDto() => UserDto(id, studioName, name, isAdmin, studioCode,
+      studioAdminCode, imageUrl, studioBanner);
 }
