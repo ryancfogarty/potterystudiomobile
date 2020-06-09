@@ -1,4 +1,6 @@
+
 android/gradle.properties
+android/app/release/
 
 # Miscellaneous
 *.class
