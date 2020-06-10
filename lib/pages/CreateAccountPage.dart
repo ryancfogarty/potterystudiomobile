@@ -111,7 +111,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         children: <Widget>[
           Text(
             "To register with an existing studio, enter the studio code and click \"Create account\".",
-            style: TextStyles().mediumRegularStyle,
+            style: TextStyles.mediumRegularStyle,
           ),
           TextField(
             controller: _studioCodeController,
@@ -130,7 +130,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         children: <Widget>[
           Text(
               "To create a new studio, enter your desired studio name and click \"Create studio\".",
-              style: TextStyles().mediumRegularStyle),
+              style: TextStyles.mediumRegularStyle),
           TextField(
             controller: _studioNameController,
             decoration: InputDecoration(labelText: "Studio name"),
@@ -155,7 +155,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             onPressed: _createUser,
             child: Text(
               "Create account",
-              style: TextStyles()
+              style: TextStyles
                   .mediumRegularStyle
                   .copyWith(color: Theme.of(context).accentColor),
             ),
@@ -180,7 +180,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             onPressed: _createStudio,
             child: Text(
               "Create studio",
-              style: TextStyles()
+              style: TextStyles
                   .mediumRegularStyle
                   .copyWith(color: Theme.of(context).accentColor),
             ),

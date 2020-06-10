@@ -118,7 +118,7 @@ class _FiringPageState extends State<FiringPage> {
                     onPressed: _deleteFiring,
                     child: Text(
                       "Delete firing",
-                      style: TextStyles()
+                      style: TextStyles
                           .mediumRegularStyle
                           .copyWith(color: Theme.of(context).errorColor),
                     ),
@@ -145,7 +145,7 @@ class _FiringPageState extends State<FiringPage> {
             onPressed: _editFiring,
             child: Text(
               "Edit firing",
-              style: TextStyles()
+              style: TextStyles
                   .mediumRegularStyle
                   .copyWith(color: Theme.of(context).accentColor),
             ),

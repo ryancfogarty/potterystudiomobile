@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:pottery_studio/common/SupportsAppleLogin.dart';
 import 'package:pottery_studio/interactors/CheckedInInteractor.dart';
 import 'package:pottery_studio/interactors/CreateAccountInteractor.dart';
@@ -39,7 +38,9 @@ import 'package:pottery_studio/usecases/ManageFiringUseCase.dart';
 import 'package:pottery_studio/usecases/ManageOpeningUseCase.dart';
 import 'package:pottery_studio/usecases/RegisterAsAdminUseCase.dart';
 import 'package:pottery_studio/usecases/ToggleReservationUseCase.dart';
+import 'package:pottery_studio/usecases/UpdateStudioBannerUseCase.dart';
 import 'package:pottery_studio/usecases/UploadPhotoUseCase.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -112,6 +113,8 @@ void main() async {
   var checkOutUseCase = CheckOutUseCase(userRepository);
   var checkedInInteractor = CheckedInInteractor(
       getUserUseCase, checkInUseCase, checkOutUseCase, getPresentUsersUseCase);
+  var updateStudioBannerUseCase =
+      UpdateStudioBannerUseCase(studioRepository, getUserUseCase);
 
   await SupportsAppleLogin.init();
   authService.autoSignIn();
@@ -166,6 +169,9 @@ void main() async {
             CheckedInInteractor>(
           create: (context) => checkedInInteractor,
           update: (context, A, B, R) => checkedInInteractor..update(),
+        ),
+        ChangeNotifierProvider<UpdateStudioBannerUseCase>(
+          create: (_) => updateStudioBannerUseCase
         )
       ], child: MyApp()),
     );

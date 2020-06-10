@@ -45,17 +45,17 @@ class _FiringCardState extends State<FiringCard> {
                   Text(
                       DateFormatter()
                           .formatDateTimeRange(firing.start, firing.end),
-                      style: TextStyles().mediumRegularStyle),
+                      style: TextStyles.mediumRegularStyle),
                   Text(
                       "Done cooling down: ${DateFormatter().dd_MMMM.format(firing.cooldownEnd)} ${DateFormatter().HH_mm.format(firing.cooldownEnd)}",
-                      style: TextStyles().mediumRegularStyle),
+                      style: TextStyles.mediumRegularStyle),
                 ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(FiringTypeFormatter().format(firing.type),
-                  style: TextStyles().mediumBoldStyle),
+                  style: TextStyles.mediumBoldStyle),
             ),
           ],
         ),

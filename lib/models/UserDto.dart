@@ -37,7 +37,7 @@ class UserDto {
     this.studioCode = userJson["studioCode"];
     this.studioAdminCode = userJson["studioAdminCode"];
     this.imageUrl = userJson["profileImageUrl"];
-    this.studioBanner = userJson["studioBanner"];
+    this.studioBanner = userJson["studioBanner"] ?? "";
   }
 
   User toModel() {

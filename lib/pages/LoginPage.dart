@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Center(
                 child: Text(
                   "Pottery Studio",
-                  style: TextStyles().bigBoldStyle.copyWith(fontSize: 24.0),
+                  style: TextStyles.bigBoldStyle.copyWith(fontSize: 24.0),
                 ),
               ),
             ),
@@ -116,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
         Container(
           width: double.infinity,
           child: FlatButton(
-              child: Text("Sign in", style: TextStyles().mediumRegularStyle),
+              child: Text("Sign in", style: TextStyles.mediumRegularStyle),
               onPressed: _logInWithEmailAndPassword,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
@@ -131,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 child: FlatButton(
                     child:
-                        Text("Sign up", style: TextStyles().mediumRegularStyle),
+                        Text("Sign up", style: TextStyles.mediumRegularStyle),
                     onPressed: _signUpWithEmail,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(4.0),
@@ -210,7 +210,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               FlatButton(
                   child: Text("About",
-                      style: TextStyles().mediumRegularStyle.copyWith(
+                      style: TextStyles.mediumRegularStyle.copyWith(
                           color: Theme.of(context).accentColor,
                           decoration: TextDecoration.underline)),
                   onPressed: () {

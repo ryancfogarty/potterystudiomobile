@@ -34,7 +34,7 @@ class ThirdPartySignInButton extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
                     child: Text("Continue with $thirdPartyProvider",
-                        style: TextStyles().bigRegularStyle),
+                        style: TextStyles.bigRegularStyle),
                   )
                 ])),
       ),

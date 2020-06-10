@@ -112,7 +112,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("Capacity", style: TextStyles().bigRegularStyle),
+                      Text("Capacity", style: TextStyles.bigRegularStyle),
                       Container(width: 64, child: _size()),
                     ],
                   ),
@@ -205,10 +205,10 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("Recurring", style: TextStyles().bigRegularStyle),
+                      Text("Recurring", style: TextStyles.bigRegularStyle),
                       Text(
                           "Creates additional openings with the same details based on the pattern chosen.",
-                          style: TextStyles().smallRegularStyle)
+                          style: TextStyles.smallRegularStyle)
                     ],
                   ),
                 ),
@@ -233,7 +233,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Text("Recurrence pattern",
-                          style: TextStyles().bigRegularStyle),
+                          style: TextStyles.bigRegularStyle),
                     ],
                   ),
                   _recurrencePattern(),
@@ -319,7 +319,7 @@ class _ManageOpeningPageState extends State<ManageOpeningPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text("Number of occurrences", style: TextStyles().bigRegularStyle),
+        Text("Number of occurrences", style: TextStyles.bigRegularStyle),
         Container(
             width: 64,
             child:

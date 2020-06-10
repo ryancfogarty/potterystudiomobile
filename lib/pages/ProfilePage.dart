@@ -45,13 +45,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: <Widget>[
                           Text(
                             useCase.user?.name ?? "",
-                            style: TextStyles().mediumRegularStyle,
+                            style: TextStyles.mediumRegularStyle,
                           ),
                           Visibility(
                             visible: useCase.user?.isAdmin == true,
                             child: Text(
                               "Admin",
-                              style: TextStyles().smallRegularStyle,
+                              style: TextStyles.smallRegularStyle,
                             ),
                           ),
                         ],

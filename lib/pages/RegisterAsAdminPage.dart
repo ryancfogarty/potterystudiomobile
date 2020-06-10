@@ -31,7 +31,7 @@ class _RegisterAsAdminPageState extends State<RegisterAsAdminPage> {
               children: [
                 Text(
                   "To register as an admin for your studio, enter the admin code.",
-                  style: TextStyles().mediumRegularStyle,
+                  style: TextStyles.mediumRegularStyle,
                 ),
                 TextField(
                     controller: _adminCodeController,
@@ -54,7 +54,7 @@ class _RegisterAsAdminPageState extends State<RegisterAsAdminPage> {
             onPressed: _registerAsAdmin,
             child: Text(
               "Submit",
-              style: TextStyles()
+              style: TextStyles
                   .mediumRegularStyle
                   .copyWith(color: Theme.of(context).accentColor),
             ),

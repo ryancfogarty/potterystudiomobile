@@ -28,4 +28,19 @@ class StudioService {
 
     return response.statusCode >= 200 && response.statusCode < 300;
   }
+
+  Future<void> updateStudioBanner(String banner) async {
+    var currentUser = await AuthService().currentUser;
+    var idToken = await currentUser.getIdToken(refresh: true);
+
+    var requestBody = json.encode({"banner": banner});
+
+    var url = "$_baseUrl/api/studio/banner";
+    var response = await http.put(url, body: requestBody, headers: {
+      "Authorization": idToken.token,
+      "Content-Type": "application/json"
+    });
+
+    return response.statusCode >= 200 && response.statusCode < 300;
+  }
 }

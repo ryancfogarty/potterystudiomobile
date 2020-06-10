@@ -53,7 +53,7 @@ class _UpcomingListPreviewState extends State<UpcomingListPreview> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         "There are no upcoming ${widget.itemType}",
-                        style: TextStyles().mediumSkinnyStyle,
+                        style: TextStyles.mediumSkinnyStyle,
                       ),
                     )),
                 _viewAllButton()
@@ -106,7 +106,7 @@ class _UpcomingListPreviewState extends State<UpcomingListPreview> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text("Upcoming ${widget.itemType}",
-                  style: TextStyles().bigRegularStyle),
+                  style: TextStyles.bigRegularStyle),
             ),
             Consumer<GetUserUseCase>(builder: (context, useCase, _) {
               return Visibility(

@@ -80,13 +80,13 @@ class _OpeningPageState extends State<OpeningPage> {
                           ? DateFormatter()
                               .formatDateTimeRange(opening.start, opening.end)
                           : "Loading...",
-                      style: TextStyles().bigRegularStyle)
+                      style: TextStyles.bigRegularStyle)
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Text("Reserved slots ($reserved)",
-                    style: TextStyles().bigRegularStyle),
+                    style: TextStyles.bigRegularStyle),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -111,7 +111,7 @@ class _OpeningPageState extends State<OpeningPage> {
                                     height: 40.0)),
                             Text(
                               user.name,
-                              style: TextStyles().mediumRegularStyle,
+                              style: TextStyles.mediumRegularStyle,
                             ),
                           ],
                         ),
@@ -145,7 +145,7 @@ class _OpeningPageState extends State<OpeningPage> {
         onPressed: _editOpening,
         child: Text(
           "Edit opening",
-          style: TextStyles()
+          style: TextStyles
               .mediumRegularStyle
               .copyWith(color: Theme.of(context).accentColor),
         ),
@@ -176,7 +176,7 @@ class _OpeningPageState extends State<OpeningPage> {
               onPressed: _deleteOpening,
               child: Text(
                 "Delete opening",
-                style: TextStyles()
+                style: TextStyles
                     .mediumRegularStyle
                     .copyWith(color: Theme.of(context).errorColor),
               )),

@@ -43,7 +43,7 @@ class _FiringStatusState extends State<FiringStatus> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Text("$title", style: TextStyles().bigRegularStyle),
+                    Text("$title", style: TextStyles.bigRegularStyle),
                   ],
                 ),
                 Column(
@@ -53,7 +53,7 @@ class _FiringStatusState extends State<FiringStatus> {
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Text(
                           DateFormatter().dd_MMMM_HH_mm.format(dateTime),
-                          style: TextStyles().bigRegularStyle),
+                          style: TextStyles.bigRegularStyle),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -71,7 +71,7 @@ class _FiringStatusState extends State<FiringStatus> {
                                       ? " days, "
                                       : " day, ",
                               endTime: dateTime.millisecondsSinceEpoch,
-                              textStyle: TextStyles().bigRegularStyle,
+                              textStyle: TextStyles.bigRegularStyle,
                               onEnd: () => Future.delayed(
                                   Duration(seconds: 1), () => setState(() {})),
                             ),

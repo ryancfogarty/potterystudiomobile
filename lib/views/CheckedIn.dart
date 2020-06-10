@@ -30,7 +30,7 @@ class _CheckedInState extends State<CheckedIn> {
                           .map((s) => s[0].toUpperCase())
                           .join(".") +
                       ".",
-                  style: TextStyles().smallRegularStyle)
+                  style: TextStyles.smallRegularStyle)
             ],
           ),
         );
@@ -38,7 +38,7 @@ class _CheckedInState extends State<CheckedIn> {
 
       var headerText = Text(
         "In the studio",
-        style: TextStyles().bigRegularStyle,
+        style: TextStyles.bigRegularStyle,
       );
 
       return Container(
@@ -74,7 +74,7 @@ class _CheckedInState extends State<CheckedIn> {
                               color: Colors.grey.withAlpha(150),
                               child: Text(
                                 useCase.presentUsers.length.toString(),
-                                style: TextStyles().mediumRegularStyle,
+                                style: TextStyles.mediumRegularStyle,
                               ),
                             ),
                           ),
@@ -111,7 +111,7 @@ class _CheckedInState extends State<CheckedIn> {
               onPressed: _toggle,
               child: Text(
                 text,
-                style: TextStyles()
+                style: TextStyles
                     .mediumRegularStyle
                     .copyWith(color: Theme.of(context).accentColor),
               )),

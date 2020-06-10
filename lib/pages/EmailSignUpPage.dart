@@ -76,7 +76,7 @@ class _EmailSignUpPageState extends State<EmailSignUpPage> {
                 width: double.infinity,
                 child: FlatButton(
                     child:
-                        Text("Sign up", style: TextStyles().mediumRegularStyle),
+                        Text("Sign up", style: TextStyles.mediumRegularStyle),
                     onPressed: _signUp,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(4.0),

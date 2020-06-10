@@ -11,4 +11,8 @@ class StudioRepository {
       String userName, String studioName, String imageUrl) async {
     return await _service.createStudio(userName, studioName, imageUrl);
   }
+
+  Future<void> updateStudioBanner(String banner) async {
+    return await _service.updateStudioBanner(banner);
+  }
 }

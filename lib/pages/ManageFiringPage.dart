@@ -160,7 +160,7 @@ class _ManageFiringPageState extends State<ManageFiringPage> {
             children: [
               Text(
                 "Type",
-                style: TextStyles().bigRegularStyle,
+                style: TextStyles.bigRegularStyle,
               ),
               Row(
                 children: [

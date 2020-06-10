@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:pottery_studio/common/HttpRetryDialog.dart';
 import 'package:pottery_studio/common/TextStyles.dart';
 import 'package:pottery_studio/interactors/FiringListInteractor.dart';
@@ -8,6 +9,7 @@ import 'package:pottery_studio/pages/ManageFiringPage.dart';
 import 'package:pottery_studio/pages/ManageOpeningPage.dart';
 import 'package:pottery_studio/pages/OpeningsList.dart';
 import 'package:pottery_studio/pages/ProfilePage.dart';
+import 'package:pottery_studio/pages/StudioNotes.dart';
 import 'package:pottery_studio/services/AuthService.dart';
 import 'package:pottery_studio/usecases/GetAllOpeningsUseCase.dart';
 import 'package:pottery_studio/usecases/GetPresentUsersUseCase.dart';
@@ -20,6 +22,7 @@ import 'package:pottery_studio/views/ProfileImage.dart';
 import 'package:pottery_studio/views/UpcomingListPreview.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:url_launcher/url_launcher.dart' as launcher;
 
 class HomePage extends StatefulWidget {
   @override
@@ -116,7 +119,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.white,
         title: Consumer<GetUserUseCase>(builder: (context, useCase, _) {
           return Text(useCase.user?.studioName ?? "Loading...",
-              style: TextStyles().bigRegularStyle);
+              style: TextStyles.bigRegularStyle);
         }),
         actions: <Widget>[
           InkWell(
@@ -162,33 +165,66 @@ class _HomePageState extends State<HomePage> {
               width: double.infinity,
               child: Card(
                 margin: EdgeInsets.all(8),
-                child: InkWell(
-                  onTap: () {},
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Studio notes",
-                            style: TextStyles().bigRegularStyle),
-                        Container(height: 8),
-                        Container(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(useCase.user?.studioBanner,
-                                style: TextStyles().mediumRegularStyle,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Studio notes", style: TextStyles.bigRegularStyle),
+                      Column(
+                        children: [
+                          Container(
+                            child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 8, top: 16, right: 8, bottom: 8),
+                                child: Linkify(
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  text: useCase.user?.studioBanner ?? "",
+                                  style: TextStyles.mediumRegularStyle,
+                                  onOpen: (link) => launch(link.url),
+                                )),
                           ),
-                        ),
-                      ],
-                    ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              FlatButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4.0),
+                                    side: BorderSide(
+                                        color:
+                                        Theme
+                                            .of(context)
+                                            .accentColor)),
+                                child: Text(
+                                  "More",
+                                  style: TextStyles.mediumRegularStyle
+                                      .copyWith(
+                                      color:
+                                      Theme
+                                          .of(context)
+                                          .accentColor),
+                                ),
+                                onPressed: () =>
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => StudioNotes())))
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
             ));
       },
     );
+  }
+
+  Future launch(String url) async {
+    if (await launcher.canLaunch(url)) {
+      await launcher.launch(url);
+    }
   }
 
   Widget _upcomingFirings() {

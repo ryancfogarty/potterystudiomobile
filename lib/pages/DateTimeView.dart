@@ -21,27 +21,27 @@ class DateTimeView extends StatelessWidget {
   final bool isValid;
 
   static final TextStyle _errorTextStyle =
-      TextStyles().mediumSkinnyStyle.apply(color: Colors.red);
+      TextStyles.mediumSkinnyStyle.apply(color: Colors.red);
 
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(
         title,
-        style: TextStyles().bigRegularStyle,
+        style: TextStyles.bigRegularStyle,
       ),
       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Container(),
         FlatButton(
             child: Text(
               DateFormatter().EEE_dd_MMMM_y.format(dateTime),
-              style: isValid ? TextStyles().mediumSkinnyStyle : _errorTextStyle,
+              style: isValid ? TextStyles.mediumSkinnyStyle : _errorTextStyle,
             ),
             onPressed: () => _editDate(context)),
         FlatButton(
             child: Text(
               DateFormatter().HH_mm.format(dateTime),
-              style: isValid ? TextStyles().mediumSkinnyStyle : _errorTextStyle,
+              style: isValid ? TextStyles.mediumSkinnyStyle : _errorTextStyle,
             ),
             onPressed: () => _editTime(context))
       ]),

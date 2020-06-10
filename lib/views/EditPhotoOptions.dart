@@ -21,12 +21,12 @@ class _EditPhotoOptionsState extends State<EditPhotoOptions> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         FlatButton(
-            child: Text("Change photo", style: TextStyles().mediumRegularStyle),
+            child: Text("Change photo", style: TextStyles.mediumRegularStyle),
             onPressed: _showChangePhotoDialog),
         FlatButton(
           child: Text("Remove photo",
               style:
-                  TextStyles().mediumRegularStyle.copyWith(color: Colors.red)),
+                  TextStyles.mediumRegularStyle.copyWith(color: Colors.red)),
           onPressed: widget.onClickDelete,
         ),
       ],
