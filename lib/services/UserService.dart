@@ -1,9 +1,8 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:pottery_studio/models/UserDto.dart';
-
-import 'AuthService.dart';
 
 class UserService {
   String _baseUrl = "https://us-central1-spot-629a6.cloudfunctions.net";
@@ -12,7 +11,7 @@ class UserService {
 
   Future<void> createUser(
       String studioCode, String displayName, String imageUrl) async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var requestBody = json.encode({
@@ -33,7 +32,7 @@ class UserService {
   }
 
   Future<UserDto> getUser() async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/user";
@@ -47,7 +46,7 @@ class UserService {
   }
 
   Future<void> deleteUser() async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/user";
@@ -58,7 +57,7 @@ class UserService {
   }
 
   Future<void> registerAsAdmin(String adminCode) async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var requestBody = json.encode({"adminCode": adminCode});
@@ -73,7 +72,7 @@ class UserService {
   }
 
   Future<UserDto> updateUser(String name, String profileImageUrl) async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var requestBody =
@@ -92,7 +91,7 @@ class UserService {
   }
 
   Future<Iterable<UserDto>> presentUsers() async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/user/present";
@@ -107,7 +106,7 @@ class UserService {
   }
 
   Future<void> checkIn() async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/user/present";
@@ -119,7 +118,7 @@ class UserService {
   }
 
   Future<void> checkOut() async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/user/absent";

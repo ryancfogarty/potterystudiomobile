@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:pottery_studio/models/FiringDto.dart';
 import 'package:pottery_studio/services/AuthService.dart';
@@ -10,7 +11,7 @@ class FiringService {
 //  String _baseUrl = "http://10.0.2.2:5001/spot-629a6/us-central1";
 
   Future<Iterable<FiringDto>> getAll(bool includePast) async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/firing?includePast=$includePast";
@@ -36,7 +37,7 @@ class FiringService {
   }
 
   Future<FiringDto> getFiring(String firingId) async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/firing/$firingId";
@@ -50,7 +51,7 @@ class FiringService {
   }
 
   Future<FiringDto> createFiring(FiringDto firingDto) async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/firing";
@@ -75,7 +76,7 @@ class FiringService {
   }
 
   Future<void> deleteFiring(String firingId) async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/firing/$firingId";
@@ -86,7 +87,7 @@ class FiringService {
   }
 
   Future<FiringDto> updateFiring(FiringDto firingDto) async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/firing";

@@ -2,11 +2,17 @@ import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
+import 'package:pottery_studio/usecases/GetUserUseCase.dart';
 
 enum AppState { UNAUTHENTICATED, AUTHENTICATED, REGISTERED }
 
 class AuthService extends ChangeNotifier {
+  GetUserUseCase _getUserUseCase;
+
+  AuthService(GetUserUseCase getUserUseCase) {
+    _getUserUseCase = getUserUseCase;
+  }
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
       clientId:
@@ -173,18 +179,12 @@ class AuthService extends ChangeNotifier {
     notifyListeners();
   }
 
-  String _baseUrl = "https://us-central1-spot-629a6.cloudfunctions.net";
-
-//  String _baseUrl = "http://10.0.2.2:5001/spot-629a6/us-central1";
   Future<bool> _isRegistered() async {
-    var idToken = await (await currentUser)?.getIdToken(refresh: true);
-
-    if (idToken == null) return false;
-
-    var url = "$_baseUrl/api/user/valid";
-    var response =
-        await http.get(url, headers: {"Authorization": idToken.token});
-
-    return response.statusCode == 200;
+    try {
+      await _getUserUseCase.getUser();
+      return _getUserUseCase.user != null;
+    } catch (e) {
+      return false;
+    }
   }
 }

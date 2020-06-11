@@ -27,7 +27,7 @@ class OpeningService {
   }
 
   Future<OpeningDto> reserveOpening(String openingId) async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/opening/$openingId/reserve";
@@ -41,7 +41,7 @@ class OpeningService {
   }
 
   Future<OpeningDto> removeReservation(String openingId) async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/opening/$openingId/reserve";
@@ -55,7 +55,7 @@ class OpeningService {
   }
 
   Future<OpeningDto> getOpening(String openingId) async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/opening/$openingId";
@@ -70,7 +70,7 @@ class OpeningService {
   }
 
   Future<OpeningDto> createOpening(OpeningDto openingDto) async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var occurrences = {
@@ -99,7 +99,7 @@ class OpeningService {
   }
 
   Future<OpeningDto> updateOpening(OpeningDto openingDto) async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/opening";
@@ -120,7 +120,7 @@ class OpeningService {
   }
 
   Future<void> deleteOpening(String openingId) async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var url = "$_baseUrl/api/opening/$openingId";

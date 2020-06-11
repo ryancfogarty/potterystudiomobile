@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 import 'AuthService.dart';
@@ -11,7 +12,7 @@ class StudioService {
 
   Future<bool> createStudio(
       String userName, String studioName, String imageUrl) async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var requestBody = json.encode({
@@ -30,7 +31,7 @@ class StudioService {
   }
 
   Future<void> updateStudioBanner(String banner) async {
-    var currentUser = await AuthService().currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
 
     var requestBody = json.encode({"banner": banner});

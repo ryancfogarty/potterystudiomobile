@@ -75,14 +75,14 @@ void main() async {
 //  var publicKey = keyParser.parse(publicKeyString);
 //  var encrypter = Encrypter(RSA(publicKey: publicKey));
 
-  var authService = AuthService();
-  var createUserUseCase = CreateUserUseCase(authService);
   var openingService = OpeningService(authenticatedDio);
   var openingRepository = OpeningRepository(openingService);
   var userRepository = UserRepository();
   var toggleReservationUseCase =
       ToggleReservationUseCaseImpl(openingRepository);
   var getUserUseCase = GetUserUseCaseImpl(userRepository);
+  var authService = AuthService(getUserUseCase);
+  var createUserUseCase = CreateUserUseCase(authService);
   var getAllOpeningsUseCase = GetAllOpeningsUseCase(openingRepository);
   var getOpeningUseCase = GetOpeningUseCase(openingRepository);
   var manageOpeningUseCase = ManageOpeningUseCase(openingRepository);

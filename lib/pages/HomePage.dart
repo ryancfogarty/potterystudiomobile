@@ -43,7 +43,6 @@ class _HomePageState extends State<HomePage> {
   _initWithContext() {
     _getOpenings();
     _getFirings();
-    _getUser();
     _getPresentUsers();
   }
 
@@ -60,37 +59,6 @@ class _HomePageState extends State<HomePage> {
       await Provider.of<FiringListInteractor>(context, listen: false).getAll();
     } catch (e) {
       HttpRetryDialog().retry(context, _getFirings);
-    }
-  }
-
-  _getUser() async {
-    try {
-      await Provider.of<GetUserUseCase>(context, listen: false).getUser();
-    } catch (e) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text("Error"),
-              content: Text("An error occurred while fetching your details."),
-              actions: [
-                FlatButton(
-                  child: Text("Sign out"),
-                  onPressed: () {
-                    Provider.of<AuthService>(context, listen: false)
-                        .signOut(context);
-                  },
-                ),
-                FlatButton(
-                  child: Text("Retry"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    _getUser();
-                  },
-                ),
-              ],
-            );
-          });
     }
   }
 
