@@ -29,6 +29,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool _studioBannerVisible = false;
+
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
@@ -130,49 +132,73 @@ class _HomePageState extends State<HomePage> {
           width: double.infinity,
           child: Card(
             margin: EdgeInsets.all(8),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Studio notes", style: TextStyles.bigRegularStyle),
-                  Column(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8, top: 16, right: 8, bottom: 8),
-                            child: Linkify(
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                              text: useCase.user?.studioBanner ?? "",
-                              style: TextStyles.mediumRegularStyle,
-                              onOpen: (link) => launch(link.url),
-                            )),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          FlatButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4.0),
-                                  side: BorderSide(
-                                      color: Theme.of(context).accentColor)),
-                              child: Text(
-                                "More",
-                                style: TextStyles.mediumRegularStyle.copyWith(
-                                    color: Theme.of(context).accentColor),
-                              ),
-                              onPressed: () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) => StudioNotes())))
-                        ],
-                      )
-                    ],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      _studioBannerVisible = !_studioBannerVisible;
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Studio notes", style: TextStyles.bigRegularStyle),
+                        Icon(
+                            _studioBannerVisible
+                                ? Icons.keyboard_arrow_up
+                                : Icons.keyboard_arrow_down,
+                            color: Theme.of(context).accentColor)
+                      ],
+                    ),
                   ),
-                ],
-              ),
+                ),
+                Visibility(
+                  visible: _studioBannerVisible,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 8, right: 8, bottom: 4),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 8, top: 16, right: 8, bottom: 8),
+                              child: Linkify(
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                                text: useCase.user?.studioBanner ?? "",
+                                style: TextStyles.mediumRegularStyle,
+                                onOpen: (link) => launch(link.url),
+                              )),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            FlatButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4.0),
+                                    side: BorderSide(
+                                        color: Theme.of(context).accentColor)),
+                                child: Text(
+                                  "More",
+                                  style: TextStyles.mediumRegularStyle.copyWith(
+                                      color: Theme.of(context).accentColor),
+                                ),
+                                onPressed: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (context) => StudioNotes())))
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         );
