@@ -32,7 +32,7 @@ class _StudioNotesState extends State<StudioNotes> {
       appBar: AppBar(
         title: Text("Studio notes"),
       ),
-      body: _body(),
+      body: Container(width: double.infinity, child: _body()),
     );
   }
 
@@ -41,8 +41,8 @@ class _StudioNotesState extends State<StudioNotes> {
       children: [
         SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(
-                left: 16, right: 16, top: 16, bottom: 96),
+            padding:
+                const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 96),
             child: Consumer<GetUserUseCase>(
               builder: (context, useCase, _) {
                 return Visibility(
@@ -52,7 +52,7 @@ class _StudioNotesState extends State<StudioNotes> {
                     maxLines: 20,
                     controller: _controller,
                   ),
-                  replacement: Linkify(
+                  replacement: SelectableLinkify(
                     text: useCase.user?.studioBanner ?? "",
                     style: TextStyles.mediumRegularStyle,
                     onOpen: (link) => _launch(link.url),

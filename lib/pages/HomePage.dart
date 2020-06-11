@@ -10,7 +10,6 @@ import 'package:pottery_studio/pages/ManageOpeningPage.dart';
 import 'package:pottery_studio/pages/OpeningsList.dart';
 import 'package:pottery_studio/pages/ProfilePage.dart';
 import 'package:pottery_studio/pages/StudioNotes.dart';
-import 'package:pottery_studio/services/AuthService.dart';
 import 'package:pottery_studio/usecases/GetAllOpeningsUseCase.dart';
 import 'package:pottery_studio/usecases/GetPresentUsersUseCase.dart';
 import 'package:pottery_studio/usecases/GetUserUseCase.dart';
@@ -127,64 +126,56 @@ class _HomePageState extends State<HomePage> {
   Widget _studioBanner() {
     return Consumer<GetUserUseCase>(
       builder: (context, useCase, _) {
-        return Visibility(
-            visible: useCase.user?.studioBanner != null,
-            child: Container(
-              width: double.infinity,
-              child: Card(
-                margin: EdgeInsets.all(8),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+        return Container(
+          width: double.infinity,
+          child: Card(
+            margin: EdgeInsets.all(8),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Studio notes", style: TextStyles.bigRegularStyle),
+                  Column(
                     children: [
-                      Text("Studio notes", style: TextStyles.bigRegularStyle),
-                      Column(
-                        children: [
-                          Container(
-                            child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 8, top: 16, right: 8, bottom: 8),
-                                child: Linkify(
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                  text: useCase.user?.studioBanner ?? "",
-                                  style: TextStyles.mediumRegularStyle,
-                                  onOpen: (link) => launch(link.url),
-                                )),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              FlatButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4.0),
-                                    side: BorderSide(
-                                        color:
-                                        Theme
-                                            .of(context)
-                                            .accentColor)),
-                                child: Text(
-                                  "More",
-                                  style: TextStyles.mediumRegularStyle
-                                      .copyWith(
-                                      color:
-                                      Theme
-                                          .of(context)
-                                          .accentColor),
-                                ),
-                                onPressed: () =>
-                                    Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => StudioNotes())))
-                            ],
-                          )
-                        ],
+                      Container(
+                        width: double.infinity,
+                        child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 8, top: 16, right: 8, bottom: 8),
+                            child: Linkify(
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              text: useCase.user?.studioBanner ?? "",
+                              style: TextStyles.mediumRegularStyle,
+                              onOpen: (link) => launch(link.url),
+                            )),
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          FlatButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4.0),
+                                  side: BorderSide(
+                                      color: Theme.of(context).accentColor)),
+                              child: Text(
+                                "More",
+                                style: TextStyles.mediumRegularStyle.copyWith(
+                                    color: Theme.of(context).accentColor),
+                              ),
+                              onPressed: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => StudioNotes())))
+                        ],
+                      )
                     ],
                   ),
-                ),
+                ],
               ),
-            ));
+            ),
+          ),
+        );
       },
     );
   }
