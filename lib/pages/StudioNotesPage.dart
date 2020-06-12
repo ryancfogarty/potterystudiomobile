@@ -8,11 +8,11 @@ import 'package:pottery_studio/usecases/UpdateStudioBannerUseCase.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart' as launcher;
 
-class StudioNotes extends StatefulWidget {
-  _StudioNotesState createState() => _StudioNotesState();
+class StudioNotesPage extends StatefulWidget {
+  _StudioNotesPageState createState() => _StudioNotesPageState();
 }
 
-class _StudioNotesState extends State<StudioNotes> {
+class _StudioNotesPageState extends State<StudioNotesPage> {
   bool _isEditing = false;
   TextEditingController _controller = TextEditingController();
 

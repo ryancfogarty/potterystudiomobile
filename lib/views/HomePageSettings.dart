@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pottery_studio/pages/AboutPage.dart';
 import 'package:pottery_studio/pages/RegisterAsAdminPage.dart';
 import 'package:pottery_studio/services/AuthService.dart';
 import 'package:pottery_studio/usecases/GetUserUseCase.dart';
@@ -74,15 +75,8 @@ class HomePageSettings extends StatelessWidget {
         ListTile(
           leading: Icon(Icons.info, color: Theme.of(context).accentColor),
           title: Text("About"),
-          onTap: () => showAboutDialog(
-              context: context,
-              applicationName: "Pottery Studio",
-              applicationVersion: "0.1.0",
-              applicationLegalese: "© Ryan Fogarty 2020 ",
-              applicationIcon: Image(
-                  height: 30,
-                  width: 30,
-                  image: AssetImage("assets/ic_launcher.png"))),
+          onTap: () => Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => AboutPage())),
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 24),

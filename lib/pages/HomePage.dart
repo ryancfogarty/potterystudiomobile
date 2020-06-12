@@ -9,7 +9,7 @@ import 'package:pottery_studio/pages/ManageFiringPage.dart';
 import 'package:pottery_studio/pages/ManageOpeningPage.dart';
 import 'package:pottery_studio/pages/OpeningsList.dart';
 import 'package:pottery_studio/pages/ProfilePage.dart';
-import 'package:pottery_studio/pages/StudioNotes.dart';
+import 'package:pottery_studio/pages/StudioNotesPage.dart';
 import 'package:pottery_studio/usecases/GetAllOpeningsUseCase.dart';
 import 'package:pottery_studio/usecases/GetPresentUsersUseCase.dart';
 import 'package:pottery_studio/usecases/GetUserUseCase.dart';
@@ -191,7 +191,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 onPressed: () => Navigator.of(context).push(
                                     MaterialPageRoute(
-                                        builder: (context) => StudioNotes())))
+                                        builder: (context) => StudioNotesPage())))
                           ],
                         )
                       ],

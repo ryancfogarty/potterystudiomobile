@@ -9,6 +9,8 @@ import 'package:pottery_studio/services/AuthService.dart';
 import 'package:pottery_studio/views/ThirdPartySignInButton.dart';
 import 'package:provider/provider.dart';
 
+import 'AboutPage.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -213,17 +215,8 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyles.mediumRegularStyle.copyWith(
                           color: Theme.of(context).accentColor,
                           decoration: TextDecoration.underline)),
-                  onPressed: () {
-                    showAboutDialog(
-                        context: context,
-                        applicationName: "Pottery Studio",
-                        applicationVersion: "0.1.0",
-                        applicationLegalese: "© Ryan Fogarty 2020 ",
-                        applicationIcon: Image(
-                            height: 30,
-                            width: 30,
-                            image: AssetImage("assets/ic_launcher.png")));
-                  })
+                  onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => AboutPage())))
             ],
           ),
         );
