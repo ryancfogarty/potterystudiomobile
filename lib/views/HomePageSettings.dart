@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:pottery_studio/pages/RegisterAsAdminPage.dart';
 import 'package:pottery_studio/services/AuthService.dart';
-import 'package:pottery_studio/usecases/DeleteUserUseCase.dart';
 import 'package:pottery_studio/usecases/GetUserUseCase.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart' as launcher;
 
 class HomePageSettings extends StatelessWidget {
   @override
@@ -71,23 +71,54 @@ class HomePageSettings extends StatelessWidget {
           );
         }),
         Divider(),
+        ListTile(
+          leading: Icon(Icons.info, color: Theme.of(context).accentColor),
+          title: Text("About"),
+          onTap: () => showAboutDialog(
+              context: context,
+              applicationName: "Pottery Studio",
+              applicationVersion: "0.1.0",
+              applicationLegalese: "© Ryan Fogarty 2020 ",
+              applicationIcon: Image(
+                  height: 30,
+                  width: 30,
+                  image: AssetImage("assets/ic_launcher.png"))),
+        ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 24.0),
+          padding: const EdgeInsets.only(bottom: 24),
           child: ListTile(
-            leading: Icon(Icons.info, color: Theme.of(context).accentColor),
-            title: Text("About"),
-            onTap: () => showAboutDialog(
-                context: context,
-                applicationName: "Pottery Studio",
-                applicationVersion: "0.1.0",
-                applicationLegalese: "© Ryan Fogarty 2020 ",
-                applicationIcon: Image(
-                    height: 30,
-                    width: 30,
-                    image: AssetImage("assets/ic_launcher.png"))),
+            leading: Icon(Icons.email, color: Theme.of(context).accentColor),
+            title: Text("Bugs and feature requests"),
+            onTap: () => _bugsAndFeatureRequests(context),
           ),
         )
       ],
     );
+  }
+
+  void _bugsAndFeatureRequests(BuildContext context) {
+    showDialog(
+        context: context,
+        child: Dialog(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.bug_report),
+                title: Text("Report a bug"),
+                onTap: () => _email("Bug report"),
+              ),
+              ListTile(
+                leading: Icon(Icons.new_releases),
+                title: Text("Request a feature"),
+                onTap: () => _email("Feature request"),
+              ),
+            ],
+          ),
+        ));
+  }
+
+  void _email(String subject) async {
+    await launcher.launch("mailto:potterystudioapp@gmail.com?subject=$subject");
   }
 }
