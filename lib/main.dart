@@ -38,6 +38,7 @@ import 'package:pottery_studio/usecases/ManageFiringUseCase.dart';
 import 'package:pottery_studio/usecases/ManageOpeningUseCase.dart';
 import 'package:pottery_studio/usecases/RegisterAsAdminUseCase.dart';
 import 'package:pottery_studio/usecases/ToggleReservationUseCase.dart';
+import 'package:pottery_studio/usecases/UpdateProfileUseCase.dart';
 import 'package:pottery_studio/usecases/UpdateStudioBannerUseCase.dart';
 import 'package:pottery_studio/usecases/UploadPhotoUseCase.dart';
 import 'package:provider/provider.dart';
@@ -106,8 +107,10 @@ void main() async {
   var changePhotoUseCase =
       ChangePhotoUseCase(userRepository, uploadPhotoUseCase, getUserUseCase);
   var deletePhotoUseCase = DeletePhotoUseCase(userRepository, getUserUseCase);
-  var profileInteractor =
-      ProfileInteractor(changePhotoUseCase, deletePhotoUseCase);
+  var updateProfileUseCase =
+      UpdateProfileUseCase(userRepository, getUserUseCase);
+  var profileInteractor = ProfileInteractor(
+      changePhotoUseCase, deletePhotoUseCase, updateProfileUseCase);
   var getPresentUsersUseCase = GetPresentUsersUseCase(userRepository);
   var checkInUseCase = CheckInUseCase(userRepository);
   var checkOutUseCase = CheckOutUseCase(userRepository);
@@ -171,8 +174,7 @@ void main() async {
           update: (context, A, B, R) => checkedInInteractor..update(),
         ),
         ChangeNotifierProvider<UpdateStudioBannerUseCase>(
-          create: (_) => updateStudioBannerUseCase
-        )
+            create: (_) => updateStudioBannerUseCase)
       ], child: MyApp()),
     );
   });

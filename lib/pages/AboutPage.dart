@@ -23,7 +23,7 @@ class AboutPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-                "Thanks for checking out this app! I've created it in hopes that it makes managing ceramic studios easier.\n\nAs this is a side project of mine, I will add on to it when I have free time, and welcome any and all support via bug reports and feature requests!\n\nAlongside being an app developer, I'm also a beginner potter myself. Check out my pottery instagram account below 😀",
+                "Thanks for checking out this app! I've created it in hopes that it makes managing ceramics studios easier.\n\nAs this is a side project of mine, I will add on to it when I have free time, and welcome any and all support via bug reports and feature requests!\n\nAlongside being an app developer, I'm also a beginner potter myself. Check out my pottery instagram account below 😀",
                 style: TextStyles.mediumRegularStyle),
           ),
           Container(height: 24),
@@ -65,7 +65,7 @@ class AboutPage extends StatelessWidget {
 
     showAboutDialog(
         context: context,
-        applicationName: packageInfo.appName,
+        applicationName: "Pottery Studio",
         applicationVersion: packageInfo.version,
         applicationLegalese: "© Ryan Fogarty 2020",
         applicationIcon: Image(

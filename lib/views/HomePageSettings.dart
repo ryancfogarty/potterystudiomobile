@@ -15,11 +15,6 @@ class HomePageSettings extends StatelessWidget {
 
     return Column(
       children: <Widget>[
-        ListTile(
-            leading:
-                Icon(Icons.exit_to_app, color: Theme.of(context).accentColor),
-            title: Text("Sign out"),
-            onTap: () => authService.signOut(context)),
         Consumer<GetUserUseCase>(
           builder: (context, useCase, _) {
             return Visibility(
@@ -71,6 +66,11 @@ class HomePageSettings extends StatelessWidget {
                 }),
           );
         }),
+        ListTile(
+            leading:
+                Icon(Icons.exit_to_app, color: Theme.of(context).accentColor),
+            title: Text("Sign out"),
+            onTap: () => authService.signOut(context)),
         Divider(),
         ListTile(
           leading: Icon(Icons.info, color: Theme.of(context).accentColor),

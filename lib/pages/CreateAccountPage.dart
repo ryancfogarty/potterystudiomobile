@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:pottery_studio/common/HttpRetryDialog.dart';
 import 'package:pottery_studio/common/TextStyles.dart';
 import 'package:pottery_studio/interactors/CreateAccountInteractor.dart';
 import 'package:pottery_studio/services/AuthService.dart';
 import 'package:pottery_studio/views/EditablePhoto.dart';
+import 'package:provider/provider.dart';
 
 class CreateAccountPage extends StatefulWidget {
   @override
@@ -116,6 +116,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
           TextField(
             controller: _studioCodeController,
             decoration: InputDecoration(labelText: "Studio code"),
+            enableSuggestions: false,
+            textCapitalization: TextCapitalization.words,
           ),
           _createUserButton()
         ],
@@ -134,6 +136,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
           TextField(
             controller: _studioNameController,
             decoration: InputDecoration(labelText: "Studio name"),
+            enableSuggestions: false,
+            textCapitalization: TextCapitalization.words,
           ),
           _createStudioButton()
         ],
@@ -155,8 +159,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             onPressed: _createUser,
             child: Text(
               "Create account",
-              style: TextStyles
-                  .mediumRegularStyle
+              style: TextStyles.mediumRegularStyle
                   .copyWith(color: Theme.of(context).accentColor),
             ),
           ),
@@ -180,8 +183,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             onPressed: _createStudio,
             child: Text(
               "Create studio",
-              style: TextStyles
-                  .mediumRegularStyle
+              style: TextStyles.mediumRegularStyle
                   .copyWith(color: Theme.of(context).accentColor),
             ),
           ),

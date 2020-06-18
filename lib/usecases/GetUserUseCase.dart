@@ -3,7 +3,7 @@ import 'package:pottery_studio/models/User.dart';
 import 'package:pottery_studio/repositories/UserRepository.dart';
 
 abstract class GetUserUseCase extends ChangeNotifier {
-  Future<void> getUser();
+  Future<void> getUser({bool clearCache});
 
   User get user;
 }
@@ -24,8 +24,8 @@ class GetUserUseCaseImpl extends GetUserUseCase {
     notifyListeners();
   }
 
-  Future<void> getUser() async {
-    _clear();
+  Future<void> getUser({bool clearCache = true}) async {
+    if (clearCache) _clear();
 
     _user = await _repo.getUser();
     notifyListeners();
