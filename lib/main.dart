@@ -100,7 +100,7 @@ void main() async {
       RegisterAsAdminUseCase(userRepository, getUserUseCase);
   var studioService = StudioService();
   var studioRepository = StudioRepository(studioService);
-  var createStudioUseCase = CreateStudioUseCase(studioRepository, authService);
+  var createStudioUseCase = CreateStudioUseCase(studioRepository, authService, getUserUseCase);
   var uploadPhotoUseCase = UploadPhotoUseCase();
   var createAccountInteractor = CreateAccountInteractor(
       createUserUseCase, createStudioUseCase, uploadPhotoUseCase);
