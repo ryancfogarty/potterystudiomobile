@@ -16,6 +16,8 @@ class SupportsAppleLogin {
   bool get supported => _supported;
 
   static init() async {
+    print(kIsWeb);
+    print(await AppleSignIn.isAvailable());
     _supported = !kIsWeb && await AppleSignIn.isAvailable();
   }
 }
