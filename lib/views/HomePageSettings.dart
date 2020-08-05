@@ -113,6 +113,18 @@ class HomePageSettings extends StatelessWidget {
   }
 
   void _email(String subject) async {
-    await launcher.launch("mailto:potterystudioapp@gmail.com?subject=$subject");
+    final uri = Uri(
+      scheme: "mailto",
+      path: "potterystudioapp@gmail.com",
+      queryParameters: {
+        "subject": subject
+      }
+    );
+
+    if (await launcher.canLaunch(uri.toString())) {
+      await launcher.launch(uri.toString());
+    } else {
+      print("Could not launch email app");
+    }
   }
 }
