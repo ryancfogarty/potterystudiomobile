@@ -1,6 +1,8 @@
 # pottery_studio
 
-A new Flutter project.
+NOTE: 
+
+This app is no longer active. The associated API and Google access keys have been deleted.
 
 ## Getting Started
 
