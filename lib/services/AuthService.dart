@@ -16,7 +16,7 @@ class AuthService extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
       clientId:
-          "138929793965-1jbii3a9h57sanr8vkia4c0u5crmkpps.apps.googleusercontent.com");
+          "");
 
   AppState state = AppState.UNAUTHENTICATED;
 
